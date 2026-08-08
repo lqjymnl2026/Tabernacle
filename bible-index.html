@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云会幕 · 全圣经</title>
+<link rel="stylesheet" href="assets.css">
+<style>
+.book-group{margin-bottom:26px}
+.book-group h3{font-size:17px;color:var(--gold2);letter-spacing:1px;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.book-group .cnt{font-size:12px;color:var(--muted);font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.book-chip{display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:#e3e7fb;font-size:14px;text-decoration:none;transition:.2s;cursor:pointer}
+.book-chip:hover{border-color:rgba(240,217,138,.55);color:#fff;transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.timeline .tl{display:flex;gap:0;overflow-x:auto;padding:6px 2px}
+.timeline .tl span{flex:0 0 auto;font-size:13px;color:#c3c9ea;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:99px;padding:7px 14px;margin-right:8px;cursor:pointer;transition:.2s}
+.timeline .tl span:hover{color:var(--gold2);border-color:rgba(240,217,138,.5)}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-inner">
+  <a class="brand" href="index.html"><span class="mark">✝</span><span class="name">云会幕<small>YUNHUIMU · CLOUD TABERNACLE</small></span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" >首页</a>
+    <a href="bible-index.html" class="active">圣经</a>
+    <a href="live.html" >直播</a>
+    <a href="community.html" >社区</a>
+    <a href="seminary.html" >神学院</a>
+    <a href="global.html" >全球</a>
+    <a href="ai.html" >AI</a>
+    <a href="my.html" >我的</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang" onclick="toast('🌐 语言切换：中文 / 日本語 / English / 한국어（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-gold btn-sm nav-cta" onclick="toast('🔴 正在进入直播间…（演示）')">🔴 进入直播间</a>
+  </div>
+  <button class="hamburger">☰</button>
+</div></nav>
+<main class="wrap">
+<section class="pagehead reveal in">
+  <div class="icon">📖</div>
+  <h1>全圣经</h1>
+  <p>66 卷 · 1,189 章 · 3 万多节 —— 每一卷、每一章，都配有互动查经、书卷地图、人物与主题线索。</p>
+</section>
+<section class="section reveal" style="padding-top:30px">
+  <div class="box" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+    <input class="inline-input" id="bookSearch" placeholder="🔍 搜索书卷，例如「马太」「诗篇」「创世」…" style="flex:1;min-width:220px">
+    <span class="pill">📚 66 卷</span><span class="pill">📄 1,189 章</span><span class="pill">✒️ 3 万+ 节</span>
+  </div>
+</section>
+<section class="section reveal" id="ot">
+  <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>旧约 · 39 卷</h2></div></div></div>
+  <div class="book-group"><h3>律法书 <span class="cnt">5 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="创世记">创世记</a><a class="book-chip" href="bible.html" data-name="出埃及记">出埃及记</a><a class="book-chip" href="bible.html" data-name="利未记">利未记</a><a class="book-chip" href="bible.html" data-name="民数记">民数记</a><a class="book-chip" href="bible.html" data-name="申命记">申命记</a></div></div><div class="book-group"><h3>历史书 <span class="cnt">12 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="约书亚记">约书亚记</a><a class="book-chip" href="bible.html" data-name="士师记">士师记</a><a class="book-chip" href="bible.html" data-name="路得记">路得记</a><a class="book-chip" href="bible.html" data-name="撒母耳记上">撒母耳记上</a><a class="book-chip" href="bible.html" data-name="撒母耳记下">撒母耳记下</a><a class="book-chip" href="bible.html" data-name="列王纪上">列王纪上</a><a class="book-chip" href="bible.html" data-name="列王纪下">列王纪下</a><a class="book-chip" href="bible.html" data-name="历代志上">历代志上</a><a class="book-chip" href="bible.html" data-name="历代志下">历代志下</a><a class="book-chip" href="bible.html" data-name="以斯拉记">以斯拉记</a><a class="book-chip" href="bible.html" data-name="尼希米记">尼希米记</a><a class="book-chip" href="bible.html" data-name="以斯帖记">以斯帖记</a></div></div><div class="book-group"><h3>诗歌智慧书 <span class="cnt">5 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="约伯记">约伯记</a><a class="book-chip" href="bible.html" data-name="诗篇">诗篇</a><a class="book-chip" href="bible.html" data-name="箴言">箴言</a><a class="book-chip" href="bible.html" data-name="传道书">传道书</a><a class="book-chip" href="bible.html" data-name="雅歌">雅歌</a></div></div><div class="book-group"><h3>大先知书 <span class="cnt">5 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="以赛亚书">以赛亚书</a><a class="book-chip" href="bible.html" data-name="耶利米书">耶利米书</a><a class="book-chip" href="bible.html" data-name="耶利米哀歌">耶利米哀歌</a><a class="book-chip" href="bible.html" data-name="以西结书">以西结书</a><a class="book-chip" href="bible.html" data-name="但以理书">但以理书</a></div></div><div class="book-group"><h3>小先知书 <span class="cnt">12 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="何西阿书">何西阿书</a><a class="book-chip" href="bible.html" data-name="约珥书">约珥书</a><a class="book-chip" href="bible.html" data-name="阿摩司书">阿摩司书</a><a class="book-chip" href="bible.html" data-name="俄巴底亚书">俄巴底亚书</a><a class="book-chip" href="bible.html" data-name="约拿书">约拿书</a><a class="book-chip" href="bible.html" data-name="弥迦书">弥迦书</a><a class="book-chip" href="bible.html" data-name="那鸿书">那鸿书</a><a class="book-chip" href="bible.html" data-name="哈巴谷书">哈巴谷书</a><a class="book-chip" href="bible.html" data-name="西番雅书">西番雅书</a><a class="book-chip" href="bible.html" data-name="哈该书">哈该书</a><a class="book-chip" href="bible.html" data-name="撒迦利亚书">撒迦利亚书</a><a class="book-chip" href="bible.html" data-name="玛拉基书">玛拉基书</a></div></div>
+</section>
+<section class="section reveal" id="nt">
+  <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>新约 · 27 卷</h2></div></div></div>
+  <div class="book-group"><h3>福音书 <span class="cnt">4 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="马太福音">马太福音</a><a class="book-chip" href="bible.html" data-name="马可福音">马可福音</a><a class="book-chip" href="bible.html" data-name="路加福音">路加福音</a><a class="book-chip" href="bible.html" data-name="约翰福音">约翰福音</a></div></div><div class="book-group"><h3>历史书 <span class="cnt">1 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="使徒行传">使徒行传</a></div></div><div class="book-group"><h3>保罗书信 <span class="cnt">13 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="罗马书">罗马书</a><a class="book-chip" href="bible.html" data-name="哥林多前书">哥林多前书</a><a class="book-chip" href="bible.html" data-name="哥林多后书">哥林多后书</a><a class="book-chip" href="bible.html" data-name="加拉太书">加拉太书</a><a class="book-chip" href="bible.html" data-name="以弗所书">以弗所书</a><a class="book-chip" href="bible.html" data-name="腓立比书">腓立比书</a><a class="book-chip" href="bible.html" data-name="歌罗西书">歌罗西书</a><a class="book-chip" href="bible.html" data-name="帖撒罗尼迦前书">帖撒罗尼迦前书</a><a class="book-chip" href="bible.html" data-name="帖撒罗尼迦后书">帖撒罗尼迦后书</a><a class="book-chip" href="bible.html" data-name="提摩太前书">提摩太前书</a><a class="book-chip" href="bible.html" data-name="提摩太后书">提摩太后书</a><a class="book-chip" href="bible.html" data-name="提多书">提多书</a><a class="book-chip" href="bible.html" data-name="腓利门书">腓利门书</a></div></div><div class="book-group"><h3>普通书信 <span class="cnt">8 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="希伯来书">希伯来书</a><a class="book-chip" href="bible.html" data-name="雅各书">雅各书</a><a class="book-chip" href="bible.html" data-name="彼得前书">彼得前书</a><a class="book-chip" href="bible.html" data-name="彼得后书">彼得后书</a><a class="book-chip" href="bible.html" data-name="约翰一书">约翰一书</a><a class="book-chip" href="bible.html" data-name="约翰二书">约翰二书</a><a class="book-chip" href="bible.html" data-name="约翰三书">约翰三书</a><a class="book-chip" href="bible.html" data-name="犹大书">犹大书</a></div></div><div class="book-group"><h3>预言书 <span class="cnt">1 卷</span></h3><div class="chips"><a class="book-chip" href="bible.html" data-name="启示录">启示录</a></div></div>
+</section>
+<section class="section reveal">
+  <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>圣经时间线</h2><p class="sub">拖动/点击查看各时代的代表经文</p></div></div></div>
+  <div class="box timeline" id="timeline">
+    <div class="tl"><span>创造</span><span>亚伯拉罕</span><span>摩西</span><span>约书亚</span><span>士师</span><span>大卫</span><span>所罗门</span><span>南北国</span><span>先知</span><span>被掳</span><span>归回</span><span>耶稣</span><span>十字架</span><span>复活</span><span>使徒</span><span>教会</span><span>新天新地</span></div>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:12px">💡 点击任意书卷进入该卷的互动查经页（示例：马太福音 5 章已开放）</p>
+</section>
+</main>
+<footer>
+  <div class="cross">✝️</div>
+  <p class="slogan2">云会幕 — 全球线上教会 × 全圣经互动 × AI 多语言 × 线上神学院 × 小组社区</p>
+  <p style="margin-top:8px">© 2026 云会幕 · 产品原型演示</p>
+  <div class="links">
+    <a href="index.html" class="pill" style="text-decoration:none">💻 电脑版</a>
+    <a href="mobile.html" class="pill" style="text-decoration:none">📱 手机版</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 后台管理</a>
+    <a href="more.html" class="pill" style="text-decoration:none">✨ 更多功能</a>
+    <a href="PRD.md" class="pill" style="text-decoration:none">📄 PRD</a>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+<div class="stars" id="stars"></div>
+<script src="assets.js"></script>
+<script>
+document.getElementById('bookSearch').addEventListener('input',function(){
+  var q=this.value.trim().toLowerCase();
+  document.querySelectorAll('.book-chip').forEach(function(c){
+    c.style.display=(!q||c.dataset.name.toLowerCase().includes(q))?'':'none';
+  });
+});
+document.querySelectorAll('#timeline .tl span').forEach(function(s){
+  s.addEventListener('click',function(){toast('🗺️ 演示：将展示「'+s.textContent+'」时代的人物 · 经文 · 地点 · 事件');});
+});
+</script>
+</body>
+</html>

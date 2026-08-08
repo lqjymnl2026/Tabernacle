@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云会幕 · 我的</title>
+<link rel="stylesheet" href="assets.css">
+<style>
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.jrow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.jcell{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:16px;padding:16px 10px;text-align:center}
+.jcell .num{font-size:24px;font-weight:800;color:var(--gold2)}
+.jcell .num small{font-size:12px;color:var(--muted);font-weight:500}
+.jcell .lab{font-size:13px;color:var(--muted);margin-top:3px}
+.tree-stage{font-size:30px;letter-spacing:8px;text-align:center;padding:18px 0;color:var(--gold2)}
+.tree-bar{height:8px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-top:8px}
+.tree-bar .stage{height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:99px}
+.goal{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:14.5px;border-bottom:1px dashed rgba(255,255,255,.08)}
+.goal input{width:16px;height:16px;accent-color:var(--gold)}
+.tabs2{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.tabs2 button{background:rgba(255,255,255,.06);border:1px solid var(--border);color:#c7cdea;border-radius:12px;padding:10px 20px;font-size:15px;cursor:pointer;font-family:var(--sans);transition:.2s}
+.tabs2 button.on,.tabs2 button:hover{color:#241a05;background:linear-gradient(135deg,var(--gold2),var(--gold));border-color:transparent;font-weight:600}
+.tabpanel2{display:none}
+.tabpanel2.on{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.note-fields{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.note-fields label{font-size:14px;color:var(--gold2);margin-top:10px}
+.wall-item{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:14px;padding:14px 16px;font-size:14.5px;margin-bottom:10px}
+.wall-item .who{color:var(--gold2);font-size:12.5px;margin-bottom:3px}
+.wall-item .acts button{background:none;border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:3px 12px;font-size:12px;cursor:pointer;font-family:var(--sans)}
+.wall-item .acts button:hover{color:var(--gold2)}
+.serving-path{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sp{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:999px;padding:8px 18px;font-size:14px}
+.sp.on{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#241a05;border-color:transparent;font-weight:700}
+.sp-arrow{color:var(--gold);font-size:18px}
+@media(max-width:1060px){.grid2{grid-template-columns:1fr}}
+@media(max-width:720px){.jrow{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-inner">
+  <a class="brand" href="index.html"><span class="mark">✝</span><span class="name">云会幕<small>YUNHUIMU · CLOUD TABERNACLE</small></span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" >首页</a>
+    <a href="bible-index.html" >圣经</a>
+    <a href="live.html" >直播</a>
+    <a href="community.html" >社区</a>
+    <a href="seminary.html" >神学院</a>
+    <a href="global.html" >全球</a>
+    <a href="ai.html" >AI</a>
+    <a href="my.html" class="active">我的</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang" onclick="toast('🌐 语言切换：中文 / 日本語 / English / 한국어（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-gold btn-sm nav-cta" onclick="toast('🔴 正在进入直播间…（演示）')">🔴 进入直播间</a>
+  </div>
+  <button class="hamburger">☰</button>
+</div></nav>
+<main class="wrap">
+<section class="pagehead reveal in">
+  <div class="icon">❤️</div>
+  <h1>我的</h1>
+  <p>成长地图 · 圣经树 · 生命笔记 · 收藏与服事 —— 看见自己在这条路上走到哪里。</p>
+</section>
+<section class="section reveal" style="padding-top:26px">
+  <div class="box">
+    <h3>🌱 我的信仰成长地图</h3>
+    <div class="jrow">
+      <div class="jcell"><div class="num">126<small>/1189</small></div><div class="lab">📖 圣经章节</div></div>
+      <div class="jcell"><div class="num">12<small>/40</small></div><div class="lab">🎓 神学课程</div></div>
+      <div class="jcell"><div class="num">32</div><div class="lab">🙏 祷告次数</div></div>
+      <div class="jcell"><div class="num">2</div><div class="lab">👥 加入小组</div></div>
+      <div class="jcell"><div class="num">8</div><div class="lab">🎵 参与敬拜</div></div>
+    </div>
+    <div class="progress" style="margin-top:20px"><i style="width:10.6%"></i></div>
+    <p style="font-size:13px;color:var(--muted);margin-top:10px">圣经进度 10.6% · 成长地图只记录旅程，不排名、不比较</p>
+  </div>
+</section>
+<section class="section reveal">
+  <div class="grid2">
+    <div class="box">
+      <h3>🌳 我的圣经树</h3>
+      <div class="tree-stage">🌱 → 🌿 → 🌳 → 🌲 → 🌸 → 🌳✨</div>
+      <p style="font-size:13.5px;color:var(--muted)">读 1 章 🌱 → 完成 1 卷 🌿 → 完成旧约 🌲 → 完成 66 卷 🌳✨</p>
+      <div class="tree-bar"><div class="stage" style="width:20%"></div></div>
+    </div>
+    <div class="box">
+      <h3>🎯 本周目标</h3>
+      <div class="goal"><input type="checkbox" checked> 读完马太福音 5-7 章（登山宝训）</div>
+      <div class="goal"><input type="checkbox"> 参加周三小组聚会（东京华人青年）</div>
+      <div class="goal"><input type="checkbox"> 完成神学院 L1 课程「祷告与读经」</div>
+      <div class="goal"><input type="checkbox"> 为 3 位肢体祷告</div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="toast('✅ 目标已更新（演示）')">更新目标</button>
+    </div>
+  </div>
+</section>
+<section class="section reveal">
+  <div class="tabs2" id="myTabs">
+    <button class="on" data-p="notes">📓 生命笔记</button>
+    <button data-p="fav">❤️ 收藏经文</button>
+    <button data-p="prayers">🙏 我的祷告</button>
+    <button data-p="serving">🔥 我的服事</button>
+  </div>
+  <div class="tabpanel2 on" id="p-notes">
+    <div class="box">
+      <div class="note-fields">
+        <label>今天我看到</label><textarea class="inline-input" id="n1" placeholder="在经文或分享中看到的…"></textarea>
+        <label>今天我明白</label><textarea class="inline-input" id="n2" placeholder="神借着圣经向我显明的…"></textarea>
+        <label>神提醒我</label><textarea class="inline-input" id="n3" placeholder="需要悔改或调整的…"></textarea>
+        <label>我要实践</label><textarea class="inline-input" id="n4" placeholder="本周的具体行动…"></textarea>
+        <label>我的祷告</label><textarea class="inline-input" id="n5" placeholder="向神的交托…"></textarea>
+      </div>
+      <button class="btn btn-gold" onclick="saveNote()">💾 保存到我的圣经生命笔记</button>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:10px">几年以后，这将成为 <b style="color:var(--gold2)">❤️ 我的圣经生命记录</b></p>
+    </div>
+  </div>
+  <div class="tabpanel2" id="p-fav">
+    <div class="box">
+      <div class="wall-item"><div class="who">马太福音 5:3</div><div>「虚心的人有福了，因为天国是他们的。」</div><div class="acts"><button onclick="toast('❤️ 已取消收藏（演示）')">移除</button></div></div>
+      <div class="wall-item"><div class="who">诗篇 23:1</div><div>「耶和华是我的牧者，我必不至缺乏。」</div><div class="acts"><button onclick="toast('❤️ 已取消收藏（演示）')">移除</button></div></div>
+      <div class="wall-item"><div class="who">罗马书 8:28</div><div>「我们晓得万事都互相效力，叫爱神的人得益处。」</div><div class="acts"><button onclick="toast('❤️ 已取消收藏（演示）')">移除</button></div></div>
+    </div>
+  </div>
+  <div class="tabpanel2" id="p-prayers">
+    <div class="box">
+      <div class="wall-item"><div class="who">08-06 · 已守望</div><div>为家人的健康与信心祷告</div></div>
+      <div class="wall-item"><div class="who">08-02 · 已守望</div><div>为工作上的选择求智慧</div></div>
+      <div class="wall-item"><div class="who">07-28 · 已守望</div><div>为教会的青年事工祷告</div></div>
+    </div>
+  </div>
+  <div class="tabpanel2" id="p-serving">
+    <div class="box">
+      <div class="serving-path"><span class="sp on">🎯 学习</span><span class="sp-arrow">→</span><span class="sp">📚 培训</span><span class="sp-arrow">→</span><span class="sp">🧪 实习</span><span class="sp-arrow">→</span><span class="sp">🔥 服事</span></div>
+      <p style="font-size:14px;color:#e3e7fb;margin-top:14px">当前领域：<b style="color:var(--gold2)">🌍 翻译服事</b> · 已完成「直播字幕翻译」培训课程</p>
+      <p style="font-size:13px;color:var(--muted);margin-top:4px">下一步：参加「主日直播字幕实习」并申请成为服事同工</p>
+      <button class="btn btn-gold2 btn-sm" style="margin-top:14px" onclick="toast('🔥 已报名「翻译服事实习」（演示）')">报名实习</button>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="cross">✝️</div>
+  <p class="slogan2">云会幕 — 全球线上教会 × 全圣经互动 × AI 多语言 × 线上神学院 × 小组社区</p>
+  <p style="margin-top:8px">© 2026 云会幕 · 产品原型演示</p>
+  <div class="links">
+    <a href="index.html" class="pill" style="text-decoration:none">💻 电脑版</a>
+    <a href="mobile.html" class="pill" style="text-decoration:none">📱 手机版</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 后台管理</a>
+    <a href="more.html" class="pill" style="text-decoration:none">✨ 更多功能</a>
+    <a href="PRD.md" class="pill" style="text-decoration:none">📄 PRD</a>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+<div class="stars" id="stars"></div>
+<script src="assets.js"></script>
+<script>
+document.querySelectorAll('#myTabs button').forEach(function(b){b.addEventListener('click',function(){
+  document.querySelectorAll('#myTabs button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');
+  document.querySelectorAll('.tabpanel2').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('p-'+b.dataset.p).classList.add('on');
+});});
+function saveNote(){
+  var n=['n1','n2','n3','n4','n5'].map(function(id){return document.getElementById(id).value.trim();});
+  toast(n.some(function(x){return x;})?'💾 已保存！愿这份记录成为你生命的见证。':'📓 请先写下至少一项内容～');
+}
+</script>
+</body>
+</html>

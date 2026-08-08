@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云会幕 · 播放</title>
+<link rel="stylesheet" href="assets.css">
+<style>
+  .watch-grid{display:grid;grid-template-columns:1.7fr 1fr;gap:20px;padding-top:24px}
+  .vdesc{font-size:14.5px;color:#d5daf2;line-height:2}
+  .rel-title{font-size:16px;font-family:var(--serif);margin:20px 0 12px}
+  .note-area{width:100%;min-height:120px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:12px;color:#fff;padding:13px 15px;font-size:14px;font-family:var(--sans);outline:none;resize:vertical}
+  .note-area:focus{border-color:var(--gold)}
+  .scripture{background:rgba(201,162,39,.08);border:1px solid rgba(240,217,138,.3);border-radius:14px;padding:16px;margin-top:16px}
+  .scripture .ref{color:var(--gold2);font-size:13px;font-weight:700}
+  .scripture p{font-size:14.5px;margin-top:6px;color:#e8ecfa}
+  @media(max-width:1060px){.watch-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-inner">
+  <a class="brand" href="index.html"><span class="mark">🎬</span><span class="name">云会幕<small>CHURCH CINEMA · SEMINARY</small></span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">首页</a>
+    <a href="cinema.html">影院</a>
+    <a href="live.html">直播</a>
+    <a href="seminary.html">神学院</a>
+    <a href="community.html">社区</a>
+    <a href="my.html">我的</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang" onclick="toast('🌐 语言切换（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-red btn-sm nav-cta">🔴 进入直播间</a>
+  </div>
+  <button class="hamburger">☰</button>
+</div></nav>
+
+<main class="wrap">
+  <div class="watch-grid">
+    <div>
+      <div class="player" id="playerBox">
+        <span class="p-badge" id="pBadge">🎬 点播</span>
+        <div class="big-play" id="playBtn" onclick="toast('▶ 播放中…（演示）')">▶</div>
+        <div class="p-title" id="pTitle">影片名称</div>
+      </div>
+      <div class="vinfo">
+        <h2 id="vTitle">影片名称</h2>
+        <div class="acts">
+          <button class="btn btn-gold btn-sm" onclick="toast('❤️ 已收藏本片')">❤️ 收藏</button>
+          <button class="btn btn-ghost btn-sm" onclick="toast('🔗 已复制分享链接')">🔗 分享</button>
+          <button class="btn btn-ghost btn-sm" onclick="toast('⬇️ 暂不支持离线下载（正式版提供）')">⬇️ 下载</button>
+        </div>
+      </div>
+      <div class="vmeta" id="vMeta"></div>
+      <div class="box" style="margin-top:18px">
+        <h3>📝 影片简介</h3>
+        <p class="vdesc" id="vDesc"></p>
+      </div>
+      <div class="scripture">
+        <div class="ref">📖 关联经文（AI 自动识别）</div>
+        <p id="vVerse"></p>
+      </div>
+      <div class="box" style="margin-top:18px">
+        <h3>📓 我的笔记</h3>
+        <textarea class="note-area" id="noteArea" placeholder="写下神在这部影片中对你的提醒…"></textarea>
+        <div style="display:flex;gap:10px;margin-top:12px">
+          <button class="btn btn-gold btn-sm" onclick="toast('💾 笔记已保存')">保存笔记</button>
+          <a class="btn btn-ghost btn-sm" href="seminary.html">🎓 关联神学课程 →</a>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 class="rel-title">🎬 相关影片</h3>
+      <div id="related"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="cross">✝️</div>
+  <p class="slogan2">云会幕 — 教会影院 × 线上神学院</p>
+  <div class="links">
+    <a href="index.html" class="pill" style="text-decoration:none">🏠 首页</a>
+    <a href="cinema.html" class="pill" style="text-decoration:none">🎬 影院</a>
+    <a href="live.html" class="pill" style="text-decoration:none">🔴 直播</a>
+    <a href="seminary.html" class="pill" style="text-decoration:none">🎓 神学院</a>
+    <a href="community.html" class="pill" style="text-decoration:none">👥 社区</a>
+    <a href="my.html" class="pill" style="text-decoration:none">❤️ 我的</a>
+    <a href="live-admin.html" class="pill" style="text-decoration:none">🎛️ 直播后台</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 管理后台</a>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+<div class="stars" id="stars"></div>
+<script src="assets.js"></script>
+<script>
+var VDATA={
+  '1':['《耶稣传 · 约翰福音》','🎥 圣经电影','2:46:00','12,480 次观看 · 2026-08-05','一部以约翰福音为蓝本、逐字呈现耶稣生平的经典圣经电影。','「太初有道，道与神同在，道就是神。」（约翰福音 1:1）'],
+  '2':['王牧 · 登山宝训（一）：八福','⛪ 讲道','48:20','24,300 次观看 · 2026-08-01','登山宝训第一讲：从八福看天国子民的生活样式。','「虚心的人有福了，因为天国是他们的。」（马太福音 5:3）'],
+  '3':['在低谷中，神仍然信实','💛 见证','12:05','8,620 次观看 · 2026-07-28','一位姊妹在失业与病痛中经历神信实的真实见证。','「我的恩典够你用的。」（哥林多后书 12:9）'],
+  '4':['诗篇 23 · 全地敬拜现场','🎶 敬拜','32:15','15,300 次观看 · 2026-07-20','国际敬拜之夜：诗篇 23 篇，多语言同声敬拜。','「耶和华是我的牧者，我必不至缺乏。」（诗篇 23:1）'],
+  '5':['罗马书 8 章 · 互动查经课','📖 查经','55:40','6,980 次观看 · 2026-07-15','在圣灵里的生命：罗马书第 8 章系统查经。','「如今那些在基督耶稣里的，就不定罪了。」（罗马书 8:1）'],
+  '6':['青年特会：为什么神不回答我的祷告？','🔥 青年','42:30','9,240 次观看 · 2026-07-12','青年特会主题分享：祷告的等候与神的主权。','「你们祈求，就给你们。」（马太福音 7:7）'],
+  '7':['《十诫 · 摩西》精选片段','🎥 圣经电影','18:10','11,200 次观看 · 2026-07-08','经典圣经电影《十诫》精选：燃烧的荆棘与出埃及。','「神对摩西说：我是自有永有的。」（出埃及记 3:14）'],
+  '8':['李牧 · 登山宝训（二）：盐与光','⛪ 讲道','41:05','18,200 次观看 · 2026-08-08','登山宝训第二讲：信徒作为盐与光的社会责任。','「你们是世上的盐……你们是世上的光。」（马太福音 5:13-14）'],
+  '9':['马太福音 5 章 · 八福查经','📖 查经','42:12','5,240 次观看 · 2026-07-30','逐节查考八福，思想天国的伦理。','「虚心的人有福了。」（马太福音 5:3）'],
+  '10':['从拜偶像到归信基督','💛 见证','15:40','7,310 次观看 · 2026-07-25','十年寻索，终于认识那位独一的真神。','「除他以外，别无拯救。」（使徒行传 4:12）'],
+  '11':['圣诗之夜 · 赞美会','🎶 敬拜','58:30','19,200 次观看 · 2026-07-18','圣诗之夜：历代圣诗与当代敬拜的融合。','「当用诗章、颂词、灵歌彼此对说。」（以弗所书 5:19）'],
+  '12':['恋爱与信仰：青年问答','🔥 青年','36:50','7,880 次观看 · 2026-07-10','青年信仰问答：恋爱、婚姻与圣洁。','「你们和不信的原不相配，不要同负一轭。」（哥林多后书 6:14）']
+};
+var id=new URLSearchParams(location.search).get('vid')||'1';
+var d=VDATA[id]||VDATA['1'];
+document.title='云会幕 · '+d[0];
+document.getElementById('vTitle').textContent=d[0];
+document.getElementById('pTitle').textContent=d[0];
+document.getElementById('pBadge').textContent=d[1];
+document.getElementById('vMeta').innerHTML='<span>⏱️ '+d[2]+'</span><span>👀 '+d[3]+'</span><span>🌐 中文 · 日本語 · English 字幕</span>';
+document.getElementById('vDesc').textContent=d[4];
+document.getElementById('vVerse').textContent=d[5];
+var related=[['2','王牧 · 登山宝训（一）：八福','48:20'],['8','李牧 · 登山宝训（二）：盐与光','41:05'],['5','罗马书 8 章 · 互动查经课','55:40'],['6','青年特会','42:30']];
+document.getElementById('related').innerHTML=related.map(function(v){
+  return '<a class="course" href="watch.html?vid='+v[0]+'"><span class="c-icon">🎬</span><div class="c-body"><h4>'+v[1]+'</h4><p>'+v[2]+'</p></div><span style="color:var(--gold2)">›</span></a>';
+}).join('');
+</script>
+</body>
+</html>

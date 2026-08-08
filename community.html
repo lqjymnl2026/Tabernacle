@@ -3,117 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>云会幕 · 社区中心</title>
+<title>云会幕 · 社区</title>
 <link rel="stylesheet" href="assets.css">
 <style>
-.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
-.tabs button{background:rgba(255,255,255,.06);border:1px solid var(--border);color:#c7cdea;border-radius:12px;padding:10px 20px;font-size:15px;cursor:pointer;font-family:var(--sans);transition:.2s}
-.tabs button.on,.tabs button:hover{color:#241a05;background:linear-gradient(135deg,var(--gold2),var(--gold));border-color:transparent;font-weight:600}
-.tabpanel{display:none}
-.tabpanel.on{display:block;animation:fade .3s ease}
-@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
-.toolbar{display:flex;gap:12px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
-.prayer-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:20px}
-.row2{display:flex;gap:14px;align-items:center;margin-top:14px;flex-wrap:wrap}
-.wall{display:flex;flex-direction:column;gap:12px}
-.wall-item{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:14px;padding:14px 16px;font-size:14.5px}
-.wall-item .who{color:var(--gold2);font-size:12.5px;margin-bottom:3px}
-.wall-item .acts{margin-top:8px}
-.wall-item .acts button{background:none;border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:4px 13px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
-.wall-item .acts button:hover{color:var(--gold2);border-color:rgba(240,217,138,.5)}
-.wall-item .acts b{color:var(--gold2);margin-left:4px}
-@media(max-width:1060px){.prayer-grid{grid-template-columns:1fr}}
+  .pagehead p{max-width:640px}
+  .tabbar2{margin-top:20px}
+  .post{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:.2s}
+  .post:hover{border-color:rgba(240,217,138,.4)}
+  .post .who{font-size:12.5px;color:var(--gold2);display:flex;align-items:center;gap:8px}
+  .post .who .tag{font-size:10.5px;background:rgba(79,70,229,.25);border:1px solid rgba(129,140,248,.4);color:#a5b4fc;border-radius:999px;padding:1px 8px}
+  .post h4{font-size:15.5px;margin:7px 0 4px}
+  .post p{font-size:13.5px;color:var(--muted)}
+  .post .acts{display:flex;gap:14px;margin-top:10px;font-size:12.5px;color:var(--muted)}
+  .post .acts button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12.5px;font-family:var(--sans);display:inline-flex;gap:5px;align-items:center}
+  .post .acts button:hover{color:var(--gold2)}
+  .post .acts b{color:var(--gold2)}
+  .wall-item{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:14px;padding:15px 17px;font-size:14px;margin-bottom:11px}
+  .wall-item .who{color:var(--gold2);font-size:12px;margin-bottom:3px}
+  .wall-item .acts{margin-top:8px}
+  .wall-item .acts button{background:none;border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:4px 14px;font-size:12.5px;cursor:pointer;font-family:var(--sans)}
+  .wall-item .acts button:hover{color:var(--gold2);border-color:rgba(240,217,138,.5)}
+  .wall-item .acts b{color:var(--gold2);margin-left:4px}
+  .prayer-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}
+  @media(max-width:900px){.prayer-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <nav><div class="wrap nav-inner">
-  <a class="brand" href="index.html"><span class="mark">✝</span><span class="name">云会幕<small>YUNHUIMU · CLOUD TABERNACLE</small></span></a>
+  <a class="brand" href="index.html"><span class="mark">🎬</span><span class="name">云会幕<small>CHURCH CINEMA · SEMINARY</small></span></a>
   <div class="nav-links" id="navLinks">
-    <a href="index.html" >首页</a>
-    <a href="bible-index.html" >圣经</a>
-    <a href="live.html" >直播</a>
+    <a href="index.html">首页</a>
+    <a href="cinema.html">影院</a>
+    <a href="live.html">直播</a>
+    <a href="seminary.html">神学院</a>
     <a href="community.html" class="active">社区</a>
-    <a href="seminary.html" >神学院</a>
-    <a href="global.html" >全球</a>
-    <a href="ai.html" >AI</a>
-    <a href="my.html" >我的</a>
+    <a href="my.html">我的</a>
   </div>
   <div class="nav-right">
-    <div class="lang" onclick="toast('🌐 语言切换：中文 / 日本語 / English / 한국어（演示）')">🌐 <b>中文</b></div>
-    <a href="live.html" class="btn btn-gold btn-sm nav-cta" onclick="toast('🔴 正在进入直播间…（演示）')">🔴 进入直播间</a>
+    <div class="lang" onclick="toast('🌐 语言切换（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-red btn-sm nav-cta">🔴 进入直播间</a>
   </div>
   <button class="hamburger">☰</button>
 </div></nav>
+
 <main class="wrap">
-<section class="pagehead reveal in">
-  <div class="icon">👥</div>
-  <h1>社区中心</h1>
-  <p>小组 · 祷告 · 见证 · 青年 —— 让网站不只有知识，还有真实的人彼此连接。</p>
-</section>
-<section class="section reveal" style="padding-top:24px">
-  <div class="tabs" id="comTabs">
-    <button class="on" data-tab="groups">👥 小组</button>
-    <button data-tab="prayer">🙏 祷告墙</button>
-    <button data-tab="testimony">❤️ 见证墙</button>
-    <button data-tab="youth">🔥 青年空间</button>
-  </div>
+  <section class="pagehead reveal in">
+    <div class="icon">👥</div>
+    <h1>社区</h1>
+    <p>讨论 · 代祷 · 见证 · 学习小组 —— 让看道与学道，不再是一个人。</p>
+  </section>
 
-  <div class="tabpanel on" id="tab-groups">
-    <div class="toolbar"><span class="pill">86 个小组</span><span style="flex:1"></span><button class="btn btn-gold btn-sm" onclick="toast('👥 创建小组流程（演示）')">＋ 创建小组</button></div>
-    <div class="grid4">
-      <div class="card"><div class="tag">周三 20:00</div><span class="emoji">🇯🇵</span><h3>东京华人青年小组</h3><p>罗马书 8 章 · 8 人 · 组长 林小牧</p><div class="meta"><span>👥 加入</span><span>💬 8</span></div></div>
-      <div class="card"><div class="tag">周二 19:30</div><span class="emoji">📖</span><h3>大阪青年查经</h3><p>马太福音 · 12 人 · 组长 佐藤健</p><div class="meta"><span>👥 加入</span><span>💬 12</span></div></div>
-      <div class="card"><div class="tag">周五 21:00</div><span class="emoji">🌏</span><h3>国际大学生小组</h3><p>三语 · 15 人 · 组长 Pastor David</p><div class="meta"><span>👥 加入</span><span>💬 15</span></div></div>
-      <div class="card"><div class="tag">每日 20:30</div><span class="emoji">🏠</span><h3>线上家庭小组</h3><p>家庭灵修 · 6 家 · 组长 王姊妹</p><div class="meta"><span>👥 加入</span><span>💬 6</span></div></div>
+  <section class="section reveal" style="padding-top:12px">
+    <div class="tabbar2" id="comTabs">
+      <button class="on" data-p="discuss">💬 讨论区</button>
+      <button data-p="prayer">🙏 代祷墙</button>
+      <button data-p="witness">❤️ 见证墙</button>
+      <button data-p="groups">👥 学习小组</button>
     </div>
-  </div>
 
-  <div class="tabpanel" id="tab-prayer">
-    <div class="prayer-grid">
-      <div class="box">
-        <h3>写下你的祷告</h3>
-        <textarea id="prayerInput" class="inline-input" style="min-height:110px" placeholder="可匿名 · 全球同路人会为你守望"></textarea>
-        <div class="row2"><button class="btn btn-gold" onclick="sendPrayer()">✉️ 交托给神</button><span class="pill">已有 <b style="color:var(--gold2)">1,024</b> 人守望</span></div>
+    <div class="tabpanel on" id="tab-discuss">
+      <div class="box" style="margin-bottom:14px">
+        <h3>发布讨论</h3>
+        <input class="inline-input" id="postInput" placeholder="写下你想讨论的问题…（可关联影片/课程）">
+        <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+          <button class="btn btn-gold btn-sm" onclick="publishPost()">📤 发布</button>
+          <span class="pill">#登山宝训</span><span class="pill">#罗马书</span><span class="pill">#祷告</span>
+        </div>
       </div>
-      <div class="box">
-        <h3>最新祷告</h3>
-        <div class="wall" id="prayerWall">
-          <div class="wall-item"><div class="who">🇯🇵 东京 · 匿名 · 10 分钟前</div><div>请为我家人的健康祷告，也求神给我信心等候祂的时间。</div><div class="acts"><button onclick="pray(this)">🙏 祷告 <b>32</b></button></div></div>
-          <div class="wall-item"><div class="who">🇨🇳 上海 · 匿名 · 1 小时前</div><div>为儿子的工作与信仰祷告，愿他早日回转。</div><div class="acts"><button onclick="pray(this)">🙏 祷告 <b>18</b></button></div></div>
-          <div class="wall-item"><div class="who">🇺🇸 纽约 · 匿名 · 2 小时前</div><div>考试压力很大，求神赐平安与智慧。</div><div class="acts"><button onclick="pray(this)">🙏 祷告 <b>27</b></button></div></div>
+      <div id="postList">
+        <div class="post"><div class="who">🇨🇳 林姊妹 <span class="tag">影片·八福</span></div><h4>「虚心的人有福了」——这里的「虚心」到底是怎样的生命状态？</h4><p>看了王牧的登山宝训后一直在想：虚心是不是就是「承认自己需要神」？</p><div class="acts"><button onclick="like(this)">👍 <b>24</b></button><button onclick="toast('💬 评论功能（演示）')">💬 12</button><span>⏱️ 2 小时前</span></div></div>
+        <div class="post"><div class="who">🇯🇵 佐藤 <span class="tag">课程·救恩论</span></div><h4>因信称义和「行为」到底是什么关系？</h4><p>雅各书说「没有行为的信心是死的」，和「因信称义」冲突吗？</p><div class="acts"><button onclick="like(this)">👍 <b>31</b></button><button onclick="toast('💬 评论功能（演示）')">💬 18</button><span>⏱️ 5 小时前</span></div></div>
+        <div class="post"><div class="who">🇺🇸 Sarah <span class="tag">直播·主日</span></div><h4>Where can I find the Chinese subtitle replay?</h4><p>Can the Sunday service replay include Chinese subs?</p><div class="acts"><button onclick="like(this)">👍 <b>9</b></button><button onclick="toast('💬 评论功能（演示）')">💬 6</button><span>⏱️ 昨天</span></div></div>
+      </div>
+    </div>
+
+    <div class="tabpanel" id="tab-prayer">
+      <div class="prayer-grid">
+        <div class="box">
+          <h3>写下你的代祷</h3>
+          <textarea class="inline-input" id="prayInput" style="min-height:100px" placeholder="可匿名 · 全球同路人会为你守望"></textarea>
+          <button class="btn btn-gold btn-sm" style="margin-top:12px" onclick="sendPrayer()">✉️ 交托给神</button>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:10px">已有 <b style="color:var(--gold2)">1,024</b> 人在本周代祷守望</p>
+        </div>
+        <div class="box">
+          <h3>最新代祷</h3>
+          <div id="prayWall">
+            <div class="wall-item"><div class="who">🇯🇵 东京 · 匿名 · 10 分钟前</div><div>请为我家人的健康祷告，也求神给我等候的信心。</div><div class="acts"><button onclick="pray(this)">🙏 我愿意祷告 <b>32</b></button></div></div>
+            <div class="wall-item"><div class="who">🇨🇳 上海 · 匿名 · 1 小时前</div><div>为儿子的工作与信仰祷告，愿他早日回转。</div><div class="acts"><button onclick="pray(this)">🙏 我愿意祷告 <b>18</b></button></div></div>
+            <div class="wall-item"><div class="who">🇺🇸 纽约 · 匿名 · 2 小时前</div><div>考试压力很大，求神赐平安与智慧。</div><div class="acts"><button onclick="pray(this)">🙏 我愿意祷告 <b>27</b></button></div></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="tabpanel" id="tab-testimony">
-    <div class="grid3">
-      <div class="card"><span class="emoji">🌊</span><h3>神如何带我走过低谷</h3><p>三年前失业时，我在祷告墙写下第一句祷告……</p><div class="meta"><button class="btn btn-ghost btn-sm" onclick="encourage(this)">❤️ 鼓励 <b>24</b></button><span>🙏 12 人代祷</span></div></div>
-      <div class="card"><span class="emoji">🏠</span><h3>从拜偶像到归信基督</h3><p>十年的寻索，终于明白「除祂以外，别无拯救」……</p><div class="meta"><button class="btn btn-ghost btn-sm" onclick="encourage(this)">❤️ 鼓励 <b>31</b></button><span>🙏 18 人代祷</span></div></div>
-      <div class="card"><span class="emoji">✈️</span><h3>留学途中遇见云会幕</h3><p>异国他乡的孤独里，线上小组成了我的家人……</p><div class="meta"><button class="btn btn-ghost btn-sm" onclick="encourage(this)">❤️ 鼓励 <b>19</b></button><span>🙏 9 人代祷</span></div></div>
+    <div class="tabpanel" id="tab-witness">
+      <div class="grid3">
+        <div class="card" onclick="toast('📖 阅读完整见证（演示）')"><span class="emoji">🌊</span><h3>神如何带我走过低谷</h3><p>三年前失业时，我在这里写下第一句祷告……</p><div class="meta"><button class="btn btn-ghost btn-sm" onclick="encourage(this)">❤️ 鼓励 <b>24</b></button><span>🙏 12 人代祷</span></div></div>
+        <div class="card" onclick="toast('📖 阅读完整见证（演示）')"><span class="emoji">🏠</span><h3>从拜偶像到归信基督</h3><p>十年的寻索，终于明白「除祂以外，别无拯救」……</p><div class="meta"><button class="btn btn-ghost btn-sm" onclick="encourage(this)">❤️ 鼓励 <b>31</b></button><span>🙏 18 人代祷</span></div></div>
+        <div class="card" onclick="toast('📖 阅读完整见证（演示）')"><span class="emoji">✈️</span><h3>留学途中遇见云会幕</h3><p>异国他乡的孤独里，线上小组成了我的家人……</p><div class="meta"><button class="btn btn-ghost btn-sm" onclick="encourage(this)">❤️ 鼓励 <b>19</b></button><span>🙏 9 人代祷</span></div></div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:16px" onclick="toast('📝 写见证（演示）')">＋ 分享我的见证</button>
     </div>
-  </div>
 
-  <div class="tabpanel" id="tab-youth">
-    <div class="grid4">
-      <div class="card" onclick="toast('💬 青年话题：为什么神不回答我的祷告？（演示）')"><span class="emoji">🙏</span><h3>为什么神不回答我的祷告？</h3><p>1,286 人关注 · 42 个回应</p></div>
-      <div class="card" onclick="toast('💬 青年话题：基督徒应该怎样谈恋爱？（演示）')"><span class="emoji">💍</span><h3>基督徒应该怎样谈恋爱？</h3><p>2,041 人关注 · 87 个回应</p></div>
-      <div class="card" onclick="toast('💬 青年话题：我怀疑自己的信仰怎么办？（演示）')"><span class="emoji">🌫️</span><h3>我怀疑自己的信仰怎么办？</h3><p>1,563 人关注 · 55 个回应</p></div>
-      <div class="card" onclick="toast('💬 青年话题：信仰和科学冲突吗？（演示）')"><span class="emoji">🔬</span><h3>信仰和科学冲突吗？</h3><p>1,872 人关注 · 63 个回应</p></div>
+    <div class="tabpanel" id="tab-groups">
+      <div class="grid4">
+        <div class="card" onclick="toast('👥 加入：东京青年观影小组（演示）')"><span class="emoji">🇯🇵</span><h3>东京青年观影小组</h3><p>每周三 20:00 一起看 + 讨论</p><div class="meta"><span>👥 8 人</span></div></div>
+        <div class="card" onclick="toast('👥 加入：罗马书查经小组（演示）')"><span class="emoji">📖</span><h3>罗马书查经小组</h3><p>配合神学院「救恩论」课程</p><div class="meta"><span>👥 12 人</span></div></div>
+        <div class="card" onclick="toast('👥 加入：国际见证分享组（演示）')"><span class="emoji">🌏</span><h3>国际见证分享组</h3><p>中/日/英三语分享</p><div class="meta"><span>👥 15 人</span></div></div>
+        <div class="card" onclick="toast('👥 加入：家庭灵修小组（演示）')"><span class="emoji">🏠</span><h3>家庭灵修小组</h3><p>每晚 20:30 家庭敬拜</p><div class="meta"><span>👥 6 家</span></div></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 </main>
+
 <footer>
   <div class="cross">✝️</div>
-  <p class="slogan2">云会幕 — 全球线上教会 × 全圣经互动 × AI 多语言 × 线上神学院 × 小组社区</p>
-  <p style="margin-top:8px">© 2026 云会幕 · 产品原型演示</p>
+  <p class="slogan2">云会幕 — 教会影院 × 线上神学院</p>
   <div class="links">
-    <a href="index.html" class="pill" style="text-decoration:none">💻 电脑版</a>
-    <a href="mobile.html" class="pill" style="text-decoration:none">📱 手机版</a>
-    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 后台管理</a>
-    <a href="more.html" class="pill" style="text-decoration:none">✨ 更多功能</a>
-    <a href="PRD.md" class="pill" style="text-decoration:none">📄 PRD</a>
+    <a href="index.html" class="pill" style="text-decoration:none">🏠 首页</a>
+    <a href="cinema.html" class="pill" style="text-decoration:none">🎬 影院</a>
+    <a href="live.html" class="pill" style="text-decoration:none">🔴 直播</a>
+    <a href="seminary.html" class="pill" style="text-decoration:none">🎓 神学院</a>
+    <a href="community.html" class="pill" style="text-decoration:none">👥 社区</a>
+    <a href="my.html" class="pill" style="text-decoration:none">❤️ 我的</a>
+    <a href="live-admin.html" class="pill" style="text-decoration:none">🎛️ 直播后台</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 管理后台</a>
   </div>
 </footer>
 <div class="toast" id="toast"></div>
@@ -123,18 +137,29 @@
 document.querySelectorAll('#comTabs button').forEach(function(b){b.addEventListener('click',function(){
   document.querySelectorAll('#comTabs button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');
   document.querySelectorAll('.tabpanel').forEach(function(p){p.classList.remove('on');});
-  document.getElementById('tab-'+b.dataset.tab).classList.add('on');
+  document.getElementById('tab-'+b.dataset.p).classList.add('on');
 });});
+function publishPost(){
+  var t=document.getElementById('postInput').value.trim();
+  if(!t){toast('📝 请先写下你的问题');return;}
+  var list=document.getElementById('postList');
+  var d=document.createElement('div');d.className='post';
+  d.innerHTML='<div class="who">🌐 我 <span class="tag">新发布</span></div><h4>'+t.replace(/</g,'&lt;')+'</h4><p>刚刚发布 · 期待大家的回应</p><div class="acts"><button onclick="like(this)">👍 <b>0</b></button><button onclick="toast(\'💬 评论功能（演示）\')">💬 0</button><span>⏱️ 刚刚</span></div>';
+  list.prepend(d);document.getElementById('postInput').value='';
+  toast('📤 已发布！');
+}
+function like(btn){var b=btn.querySelector('b');b.textContent=parseInt(b.textContent)+1;}
+function encourage(btn){var b=btn.querySelector('b');b.textContent=parseInt(b.textContent)+1;toast('❤️ 已鼓励');}
 function sendPrayer(){
-  var t=document.getElementById('prayerInput').value.trim();
-  var w=document.getElementById('prayerWall');
+  var t=document.getElementById('prayInput').value.trim();
+  if(!t){toast('🙏 请写下你的代祷');return;}
+  var w=document.getElementById('prayWall');
   var d=document.createElement('div');d.className='wall-item';
-  d.innerHTML='<div class="who">🌐 我 · 刚刚 · 匿名</div><div>'+t+'</div><div class="acts"><button onclick="pray(this)">🙏 祷告 <b>1</b></button></div>';
-  w.prepend(d);document.getElementById('prayerInput').value='';
-  toast(t?'🙏 已交托！全球同路人正在为你守望。':'🙏 你已加入祷告守望');
+  d.innerHTML='<div class="who">🌐 我 · 刚刚 · 匿名</div><div>'+t.replace(/</g,'&lt;')+'</div><div class="acts"><button onclick="pray(this)">🙏 我愿意祷告 <b>1</b></button></div>';
+  w.prepend(d);document.getElementById('prayInput').value='';
+  toast('🙏 已交托！全球同路人正在为你守望');
 }
 function pray(btn){var b=btn.querySelector('b');b.textContent=parseInt(b.textContent)+1;toast('🙏 你已为这位肢体祷告');}
-function encourage(btn){var b=btn.querySelector('b');b.textContent=parseInt(b.textContent)+1;toast('❤️ 已鼓励，愿主的爱临到他/她');}
 </script>
 </body>
 </html>

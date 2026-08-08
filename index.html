@@ -3,668 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>云会幕 — 线上教会大厅</title>
+<title>云会幕 · 教会影院 + 线上神学院</title>
+<link rel="stylesheet" href="assets.css">
 <style>
-  :root{
-    --bg0:#060a1c; --bg1:#0b1026; --bg2:#141a3d; --bg3:#251b56;
-    --gold:#c9a227; --gold2:#f0d98a; --gold3:#8a6d1a;
-    --text:#f3f5ff; --muted:#a7aed8;
-    --card:rgba(255,255,255,.045); --border:rgba(255,255,255,.11);
-    --radius:22px;
-    --serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;
-    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:var(--sans);color:var(--text);line-height:1.75;overflow-x:hidden;
-    background:
-      radial-gradient(1300px 760px at 82% -12%, rgba(93,70,222,.32), transparent 62%),
-      radial-gradient(1000px 680px at -8% 28%, rgba(40,86,224,.22), transparent 58%),
-      radial-gradient(900px 620px at 50% 112%, rgba(190,24,93,.20), transparent 60%),
-      linear-gradient(165deg,var(--bg1),var(--bg2) 52%,var(--bg3));
-    min-height:100vh;
-  }
-  ::selection{background:rgba(201,162,39,.35);color:#fff}
-
-  /* 星空 */
-  .stars{position:fixed;inset:0;pointer-events:none;z-index:0}
-  .stars i{position:absolute;border-radius:50%;background:#fff;opacity:.45;animation:tw 3.4s infinite ease-in-out}
-  @keyframes tw{0%,100%{opacity:.15}50%{opacity:.85}}
-  .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 28px}
-
-  /* ================= 导航 ================= */
-  nav{
-    position:sticky;top:0;z-index:100;backdrop-filter:blur(18px);
-    background:linear-gradient(180deg,rgba(8,12,32,.92),rgba(8,12,32,.72));
-    border-bottom:1px solid rgba(255,255,255,.09);
-    box-shadow:0 10px 40px rgba(0,0,0,.25);
-  }
-  .nav-inner{display:flex;align-items:center;gap:34px;height:78px}
-  .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:#fff;flex:0 0 auto}
-  .brand .mark{
-    width:46px;height:46px;flex:0 0 46px;border-radius:14px;
-    background:linear-gradient(135deg,var(--gold2),var(--gold) 60%,#8a6d1a);
-    display:flex;align-items:center;justify-content:center;
-    font-size:24px;color:#241a05;font-weight:900;box-shadow:0 6px 22px rgba(201,162,39,.35);
-  }
-  .brand .name{font-size:21px;font-weight:800;letter-spacing:4px;line-height:1.25}
-  .brand .name small{display:block;font-size:9.5px;font-weight:500;letter-spacing:2.6px;color:var(--muted)}
-  .nav-links{display:flex;align-items:center;gap:6px;margin-left:auto}
-  .nav-links a{
-    position:relative;color:#c7cdea;text-decoration:none;font-size:15.5px;letter-spacing:.5px;
-    padding:10px 15px;border-radius:10px;transition:.22s;white-space:nowrap;
-  }
-  .nav-links a::after{
-    content:"";position:absolute;left:15px;right:15px;bottom:4px;height:2px;border-radius:2px;
-    background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:left;transition:transform .25s ease;
-  }
-  .nav-links a:hover{color:#fff;background:rgba(255,255,255,.05)}
-  .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
-  .nav-links a.active{color:#fff}
-  .nav-right{display:flex;align-items:center;gap:18px;flex:0 0 auto}
-  .lang{
-    display:flex;align-items:center;gap:8px;font-size:13.5px;color:#c7cdea;
-    border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 15px;cursor:pointer;transition:.2s;
-  }
-  .lang:hover{border-color:rgba(240,217,138,.5);color:#fff}
-  .lang b{color:var(--gold2);font-weight:600}
-  .nav-cta{white-space:nowrap}
-  .hamburger{display:none;background:none;border:1px solid var(--border);color:#fff;border-radius:11px;padding:8px 12px;font-size:19px;cursor:pointer}
-
-  /* ================= 通用 ================= */
-  .section{padding:74px 0 16px}
-  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:30px;flex-wrap:wrap}
-  .sec-head .t{display:flex;align-items:center;gap:14px}
-  .sec-head .bar{width:5px;height:30px;border-radius:4px;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 0 14px rgba(201,162,39,.45)}
-  .sec-head h2{font-family:var(--serif);font-size:clamp(25px,3vw,34px);letter-spacing:2px;font-weight:700}
-  .sec-head .sub{color:var(--muted);font-size:14.5px;margin-top:4px}
-  .more{color:var(--gold2);font-size:14.5px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.2s}
-  .more:hover{letter-spacing:.5px}
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:9px;border:none;cursor:pointer;
-    font-family:var(--sans);font-size:16px;font-weight:600;padding:14px 28px;border-radius:14px;text-decoration:none;transition:.25s;
-  }
-  .btn-gold{
-    background:linear-gradient(135deg,var(--gold2),var(--gold) 55%,#a9821c);color:#241a05;
-    box-shadow:0 8px 26px rgba(201,162,39,.32), inset 0 1px 0 rgba(255,255,255,.4);
-  }
-  .btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(201,162,39,.45)}
-  .btn-ghost{background:rgba(255,255,255,.07);color:#fff;border:1px solid var(--border)}
-  .btn-ghost:hover{background:rgba(255,255,255,.13);transform:translateY(-2px)}
-  .btn-sm{padding:10px 20px;font-size:14px;border-radius:12px}
-  .pill{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;padding:6px 15px;border-radius:999px;border:1px solid var(--border);color:#c7cdea;background:rgba(255,255,255,.04)}
-  .card{
-    border:1px solid var(--border);border-radius:var(--radius);padding:26px;
-    background:var(--card);backdrop-filter:blur(10px);transition:.3s;cursor:pointer;position:relative;overflow:hidden;
-  }
-  .card::before{
-    content:"";position:absolute;inset:0;border-radius:var(--radius);opacity:0;transition:.3s;
-    background:radial-gradient(400px 200px at 20% 0%,rgba(201,162,39,.12),transparent 60%);
-  }
-  .card:hover{transform:translateY(-5px);border-color:rgba(240,217,138,.45);box-shadow:0 20px 46px rgba(0,0,0,.4)}
-  .card:hover::before{opacity:1}
-  .card .emoji{font-size:34px;display:block}
-  .card h3{font-size:19px;margin:14px 0 8px;letter-spacing:.5px}
-  .card p{font-size:15px;color:var(--muted)}
-  .card .tag{position:absolute;top:18px;right:18px;font-size:12px;color:var(--gold2);border:1px solid rgba(240,217,138,.4);padding:3px 11px;border-radius:999px;background:rgba(201,162,39,.08)}
-  .card .meta{display:flex;gap:16px;margin-top:16px;font-size:13px;color:var(--muted);flex-wrap:wrap}
-  .card .meta span{display:inline-flex;align-items:center;gap:5px}
-
-  /* ================= Hero ================= */
-  .hero{text-align:center;padding:96px 0 64px;position:relative}
-  .hero::after{
-    content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);
-    width:min(640px,80%);height:1px;
-    background:linear-gradient(90deg,transparent,rgba(240,217,138,.55),transparent);
-  }
-  .hero .mark-big{
-    width:92px;height:92px;margin:0 auto;border-radius:26px;
-    background:linear-gradient(135deg,var(--gold2),var(--gold) 55%,#8a6d1a);
-    display:flex;align-items:center;justify-content:center;font-size:46px;color:#241a05;font-weight:900;
-    box-shadow:0 18px 50px rgba(201,162,39,.4), inset 0 2px 0 rgba(255,255,255,.5);
-  }
-  .hero h1{
-    font-family:var(--serif);
-    font-size:clamp(48px,7vw,84px);font-weight:800;letter-spacing:14px;line-height:1.15;margin:34px 0 18px;
-    background:linear-gradient(150deg,#ffffff 20%,var(--gold2) 60%,var(--gold));
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-    text-shadow:0 0 60px rgba(201,162,39,.18);
-  }
-  .hero .slogan{font-size:clamp(19px,2.4vw,25px);letter-spacing:3px;color:var(--gold2);margin-bottom:22px}
-  .hero .desc{color:#c3c9ea;max-width:680px;margin:0 auto;font-size:17px}
-  .hero-langs{margin-top:26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-
-  /* ================= 直播卡 ================= */
-  .live-card{
-    border-radius:28px;overflow:hidden;position:relative;
-    border:1px solid rgba(240,217,138,.28);
-    background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-    backdrop-filter:blur(14px);box-shadow:0 30px 80px rgba(0,0,0,.45);
-  }
-  .live-card::before{
-    content:"";position:absolute;inset:-2px;border-radius:30px;z-index:-1;
-    background:conic-gradient(from 180deg,rgba(201,162,39,.5),transparent 30%,rgba(124,58,237,.4) 60%,transparent 85%,rgba(201,162,39,.5));
-    filter:blur(14px);opacity:.55;animation:rotate 9s linear infinite;
-  }
-  @keyframes rotate{to{transform:rotate(360deg)}}
-  .live-video{position:relative;height:400px;background:
-    radial-gradient(640px 320px at 28% 18%,rgba(99,102,241,.4),transparent 60%),
-    radial-gradient(560px 320px at 82% 82%,rgba(217,70,239,.28),transparent 60%),
-    linear-gradient(160deg,#0e1230,#1c1244);
-    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
-  .live-video .stage-icon{font-size:72px;filter:drop-shadow(0 10px 30px rgba(240,217,138,.45))}
-  .live-video .stage-t{font-size:17px;color:#c3c9ea}
-  .live-badge{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:9px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.22);padding:9px 16px;border-radius:999px;font-size:14px;backdrop-filter:blur(8px)}
-  .live-dot{width:9px;height:9px;border-radius:50%;background:#ff5a5f;animation:blink 1.2s infinite}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-  .viewers{position:absolute;top:20px;right:20px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.22);padding:9px 16px;border-radius:999px;font-size:14px;backdrop-filter:blur(8px)}
-  .viewers b{color:var(--gold2)}
-  .live-langs{position:absolute;bottom:20px;left:20px;display:flex;gap:8px}
-  .live-langs span{font-size:12.5px;background:rgba(255,255,255,.15);padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.2)}
-  .live-info{padding:26px 30px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-  .live-info .txt{flex:1;min-width:260px}
-  .live-info .txt h3{font-size:23px;margin-bottom:6px;font-family:var(--serif)}
-  .live-info .txt p{color:var(--muted);font-size:15px}
-  .live-info .cta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-
-  /* ================= 网格 ================= */
-  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-
-  /* ================= 祷告 ================= */
-  .prayer{display:grid;grid-template-columns:1.15fr 1fr;gap:22px}
-  .prayer-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;backdrop-filter:blur(10px)}
-  .prayer textarea{
-    width:100%;min-height:110px;background:rgba(0,0,0,.25);border:1px solid var(--border);
-    border-radius:14px;color:#fff;padding:15px 17px;font-size:16px;font-family:var(--sans);resize:vertical;outline:none;transition:.2s;
-  }
-  .prayer textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.15)}
-  .prayer .row{display:flex;gap:14px;margin-top:16px;align-items:center;flex-wrap:wrap}
-  .prayer .note{font-size:13.5px;color:var(--muted)}
-  .prayer .note b{color:var(--gold2)}
-  .wall{display:flex;flex-direction:column;gap:12px}
-  .wall-item{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:16px;padding:16px 18px;font-size:15px;transition:.2s}
-  .wall-item:hover{border-color:rgba(240,217,138,.4)}
-  .wall-item .who{color:var(--gold2);font-size:12.5px;margin-bottom:3px}
-  .wall-item .acts{display:flex;gap:14px;margin-top:10px;color:var(--muted);font-size:13px}
-  .wall-item .acts button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;font-family:var(--sans);display:inline-flex;gap:5px;align-items:center}
-  .wall-item .acts button:hover{color:var(--gold2)}
-  .wall-item .acts .n{color:var(--gold2)}
-
-  /* ================= 旅程 ================= */
-  .journey{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:26px;padding:32px}
-  .journey h3{font-size:20px;margin-bottom:20px;font-family:var(--serif)}
-  .jrow{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-  .jcell{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;transition:.25s}
-  .jcell:hover{border-color:rgba(240,217,138,.45);transform:translateY(-3px)}
-  .jcell .num{font-size:26px;font-weight:800;color:var(--gold2)}
-  .jcell .num small{font-size:13px;color:var(--muted);font-weight:500}
-  .jcell .lab{font-size:13.5px;color:var(--muted);margin-top:4px}
-  .bar{height:8px;background:rgba(255,255,255,.1);border-radius:99px;margin-top:20px;overflow:hidden}
-  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:99px;transition:width 1.4s ease}
-
-  /* ================= 页脚 ================= */
-  footer{border-top:1px solid rgba(255,255,255,.09);margin-top:80px;padding:44px 0 52px;color:var(--muted);font-size:14.5px;text-align:center;background:rgba(6,10,28,.55)}
-  footer .cross{color:var(--gold);font-size:22px}
-  footer .slogan2{color:#c7cdea;font-size:16px;margin-top:10px;letter-spacing:1px}
-  footer .links{display:flex;gap:12px;justify-content:center;margin-top:22px;flex-wrap:wrap}
-  footer .links a{color:var(--muted);text-decoration:none}
-  footer .links a:hover{color:var(--gold2)}
-
-  .toast{
-    position:fixed;left:50%;bottom:34px;transform:translate(-50%,90px);z-index:200;
-    background:rgba(13,17,40,.96);border:1px solid var(--gold);color:#fff;padding:14px 26px;border-radius:16px;
-    font-size:15px;box-shadow:0 18px 50px rgba(0,0,0,.55);transition:.4s;opacity:0;pointer-events:none;max-width:88vw;text-align:center;
-  }
-  .toast.show{transform:translate(-50%,0);opacity:1}
-
-  /* 滚动显现 */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
-  .reveal.in{opacity:1;transform:none}
-
-  /* ================= 响应式 ================= */
-  @media(max-width:1240px){
-    .nav-links{display:none;position:absolute;top:78px;left:0;right:0;background:rgba(8,12,32,.98);flex-direction:column;align-items:stretch;padding:14px 22px 22px;gap:2px;border-bottom:1px solid var(--border);box-shadow:0 24px 50px rgba(0,0,0,.4)}
-    .nav-links.open{display:flex}
-    .nav-links a{padding:12px 14px;font-size:16px}
-    .nav-links a::after{left:14px;right:14px;bottom:6px}
-    .hamburger{display:block}
-  }
-  @media(max-width:1060px){
-    .grid3{grid-template-columns:repeat(2,1fr)}
-    .grid4{grid-template-columns:repeat(2,1fr)}
-    .jrow{grid-template-columns:repeat(3,1fr)}
-    .prayer{grid-template-columns:1fr}
-    .hero h1{letter-spacing:8px}
-  }
-  @media(max-width:720px){
-    .grid3,.grid4{grid-template-columns:1fr}
-    .jrow{grid-template-columns:repeat(2,1fr)}
-    .hero{padding:70px 0 50px}
-    .hero h1{font-size:clamp(38px,11vw,52px);letter-spacing:5px}
-    .nav-inner{height:68px;gap:14px}
-    .brand .name{font-size:18px;letter-spacing:2px}
-    .lang{display:none}
-    .live-video{height:280px}
-    .section{padding:56px 0 8px}
-  }
-
-  /* ---------- 全圣经书架（主页） ---------- */
-  .shelf{background:rgba(255,255,255,.045);border:1px solid var(--border);border-radius:26px;padding:28px;backdrop-filter:blur(10px)}
-  .shelf-top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:22px}
-  .shelf-stats{display:flex;gap:10px;flex-wrap:wrap}
-  .shelf-search{flex:1;min-width:220px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:12px;color:#fff;padding:11px 16px;font-size:15px;font-family:var(--sans);outline:none;transition:.2s}
-  .shelf-search:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.15)}
-  .shelf-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-  .shelf-col-head{font-family:var(--serif);font-size:18px;letter-spacing:2px;color:var(--gold2);margin-bottom:8px;padding-bottom:10px;border-bottom:1px solid rgba(240,217,138,.25)}
-  .book-group{margin-bottom:20px}
-  .book-group h3{font-size:15px;color:#e3e7fb;display:flex;align-items:center;gap:10px;margin-bottom:10px;letter-spacing:1px}
-  .book-group .g-tag{font-size:10.5px;color:#241a05;background:linear-gradient(135deg,var(--gold2),var(--gold));border-radius:99px;padding:2px 9px;font-weight:600}
-  .book-group .g-cnt{font-size:11.5px;color:var(--muted);font-weight:400}
-  .chips{display:flex;flex-wrap:wrap;gap:9px}
-  .book-chip{display:inline-flex;align-items:center;padding:8px 14px;border:1px solid var(--border);border-radius:11px;background:rgba(255,255,255,.04);color:#e3e7fb;font-size:13.5px;text-decoration:none;transition:.2s}
-  .book-chip:hover{border-color:rgba(240,217,138,.55);color:#fff;transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3)}
-  @media(max-width:900px){.shelf-cols{grid-template-columns:1fr}}
-
+  .hero{text-align:center;padding:80px 0 40px;position:relative}
+  .hero .mark-big{width:88px;height:88px;margin:0 auto;border-radius:26px;background:linear-gradient(135deg,var(--gold2),var(--gold) 55%,#8a6d1a);display:flex;align-items:center;justify-content:center;font-size:42px;color:#241a05;font-weight:900;box-shadow:0 18px 50px rgba(201,162,39,.4)}
+  .hero h1{font-family:var(--serif);font-size:clamp(42px,6vw,68px);font-weight:800;letter-spacing:10px;margin:30px 0 16px;background:linear-gradient(150deg,#fff 20%,var(--gold2) 60%,var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero .slogan{font-size:clamp(18px,2.4vw,24px);letter-spacing:2px;color:var(--gold2);margin-bottom:18px}
+  .hero .desc{color:#c3c9ea;max-width:660px;margin:0 auto;font-size:16.5px}
+  .hero-actions{display:flex;gap:14px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+  .featured{position:relative;border-radius:24px;overflow:hidden;border:1px solid rgba(240,217,138,.3);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));box-shadow:0 28px 70px rgba(0,0,0,.45);cursor:pointer;text-decoration:none;display:block;transition:.3s}
+  .featured:hover{transform:translateY(-4px);border-color:rgba(240,217,138,.6)}
+  .featured .f-thumb{position:relative;aspect-ratio:21/9;display:flex;align-items:center;justify-content:center;font-size:64px;background:radial-gradient(600px 300px at 30% 20%,rgba(99,102,241,.45),transparent 60%),radial-gradient(500px 300px at 80% 80%,rgba(217,70,239,.3),transparent 60%),#0a0d24}
+  .featured .f-play{position:absolute;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#ff6b6b,#e63946);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 12px 40px rgba(230,57,70,.55)}
+  .featured .f-info{position:absolute;left:0;right:0;bottom:0;padding:26px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.8))}
+  .featured .f-info h3{font-size:clamp(18px,3vw,26px);font-family:var(--serif);letter-spacing:1px}
+  .featured .f-info p{color:#c3c9ea;font-size:14px;margin-top:4px}
+  .live-banner{display:flex;align-items:center;gap:20px;background:linear-gradient(135deg,rgba(230,57,70,.18),rgba(230,57,70,.05));border:1px solid rgba(230,57,70,.4);border-radius:20px;padding:22px 26px;text-decoration:none;transition:.3s;flex-wrap:wrap}
+  .live-banner:hover{border-color:rgba(230,57,70,.7);transform:translateY(-3px)}
+  .live-banner .lb-dot{width:12px;height:12px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite;flex:0 0 auto}
+  .live-banner .lb-txt{flex:1;min-width:220px}
+  .live-banner .lb-txt h3{font-size:19px}
+  .live-banner .lb-txt p{font-size:13.5px;color:var(--muted)}
+  .live-banner .lb-cnt{font-size:13px;color:var(--gold2)}
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:900px){.values{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="stars" id="stars"></div>
-
-<!-- ================= 导航 ================= -->
-<nav>
-  <div class="wrap nav-inner">
-    <a class="brand" href="#home">
-      <span class="mark">✝</span>
-      <span class="name">云会幕<small>YUNHUIMU · CLOUD TABERNACLE</small></span>
-    </a>
-    <div class="nav-links" id="navLinks">
-      <a href="#home" class="active">首页</a>
-      <a href="bible-index.html">圣经</a>
-      <a href="live.html">直播</a>
-      <a href="community.html">社区</a>
-      <a href="seminary.html">神学院</a>
-      <a href="global.html">全球</a>
-      <a href="ai.html">AI</a>
-      <a href="my.html">我的</a>
-    </div>
-    <div class="nav-right">
-      <div class="lang" onclick="toast('🌐 语言切换：中文 / 日本語 / English / 한국어（演示）')">🌐 <b>中文</b></div>
-      <a href="live.html" class="btn btn-gold btn-sm nav-cta">🔴 进入直播间</a>
-    </div>
-    <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+<nav><div class="wrap nav-inner">
+  <a class="brand" href="index.html"><span class="mark">🎬</span><span class="name">云会幕<small>CHURCH CINEMA · SEMINARY</small></span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" class="active">首页</a>
+    <a href="cinema.html">影院</a>
+    <a href="live.html">直播</a>
+    <a href="seminary.html">神学院</a>
+    <a href="community.html">社区</a>
+    <a href="my.html">我的</a>
   </div>
-</nav>
+  <div class="nav-right">
+    <div class="lang" onclick="toast('🌐 语言切换：中文 / 日本語 / English（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-red btn-sm nav-cta">🔴 进入直播间</a>
+  </div>
+  <button class="hamburger">☰</button>
+</div></nav>
 
-<div class="wrap" id="home">
-  <!-- ================= HERO ================= -->
+<div class="wrap">
   <header class="hero reveal in">
-    <div class="mark-big">✝</div>
+    <div class="mark-big">🎬</div>
     <h1>云会幕</h1>
-    <div class="slogan">🌍 Wherever you are, we worship together.</div>
-    <p class="desc">让任何地方、任何语言、任何年龄的人，都可以认识圣经、参与教会、一起学习、彼此连接，并找到自己的服事。</p>
-    <div class="hero-langs">
-      <span class="pill">🇨🇳 中文</span><span class="pill">🇯🇵 日本語</span><span class="pill">🇺🇸 English</span>
-      <span class="pill">🇰🇷 한국어</span><span class="pill">🇪🇸 Español</span><span class="pill">+ 更多语言</span>
+    <div class="slogan">教会影院 × 线上神学院</div>
+    <p class="desc">看道 · 学道 · 行道 —— 在这里观看讲道与圣经影视，系统装备神学课程，一场聚会、一节课，让信仰真实成长。</p>
+    <div class="hero-actions">
+      <a href="cinema.html" class="btn btn-gold">🎬 进入影院</a>
+      <a href="live.html" class="btn btn-red">🔴 正在直播</a>
+      <a href="seminary.html" class="btn btn-ghost">🎓 开始神学课程</a>
     </div>
   </header>
 
-  <!-- ================= 直播卡 ================= -->
-  <section class="section reveal" id="live">
-    <div class="sec-head">
-      <div class="t"><span class="bar"></span><div><h2>正在发生</h2><p class="sub">主日崇拜 · 全球同步 · AI 实时多语言字幕</p></div></div>
-      <a href="#live" class="more">本周聚会时间 →</a>
-    </div>
-    <div class="live-card">
-      <div class="live-video">
-        <span class="live-badge"><span class="live-dot"></span> LIVE NOW · 主日崇拜</span>
-        <span class="viewers">👥 <b id="viewers">1,284</b> 人在线</span>
-        <span class="stage-icon">🏛️</span>
-        <div class="stage-t">圣殿敬拜 · 直播画面</div>
-        <div class="live-langs"><span>🌐 中文</span><span>日本語</span><span>English</span></div>
-      </div>
-      <div class="live-info">
-        <div class="txt">
-          <h3>主日崇拜 · 荣耀的教会</h3>
-          <p>讲道 · 敬拜 · 圣餐 · 代祷　|　直播结束后自动生成笔记与经文回放</p>
-        </div>
-        <div class="cta">
-          <a href="live.html" class="btn btn-gold">🎥 进入直播间</a>
-          <a href="#bible" class="btn btn-ghost">📖 今日经文</a>
-        </div>
-      </div>
-    </div>
+  <section class="section reveal">
+    <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>本周精选</h2><p class="sub">教会影院 · 编辑推荐</p></div></div><a href="cinema.html" class="more">全部影片 →</a></div>
+    <a class="featured" href="watch.html?vid=1">
+      <div class="f-thumb">📽️<span class="f-play">▶</span></div>
+      <div class="f-info"><h3>《耶稣传 · 约翰福音》</h3><p>圣经电影 · 2 小时 46 分 · 已被 12,480 人观看</p></div>
+    </a>
   </section>
 
-  <!-- ================= 今天一起读 ================= -->
-  <section class="section reveal" id="bible">
-    <div class="sec-head">
-      <div class="t"><span class="bar"></span><div><h2>今天一起读</h2><p class="sub">66 卷 · 全圣经互动查经</p></div></div>
-      <a href="bible.html" class="more">进入圣经 →</a>
-    </div>
+  <section class="section reveal">
+    <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>🔴 正在直播</h2><p class="sub">主日崇拜 · AI 多语言字幕</p></div></div><a href="live.html" class="more">进入直播间 →</a></div>
+    <a class="live-banner" href="live.html">
+      <span class="lb-dot"></span>
+      <div class="lb-txt"><h3>主日崇拜 · 荣耀的教会</h3><p>实时字幕 · AI 翻译 · 经文同步 · 互动祷告</p></div>
+      <span class="lb-cnt">👥 <b id="lv">1,284</b> 人在线</span>
+      <span class="btn btn-red btn-sm">进入直播</span>
+    </a>
+  </section>
+
+  <section class="section reveal">
+    <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>🎬 影院精选</h2><p class="sub">讲道 · 圣经电影 · 见证 · 敬拜</p></div></div><a href="cinema.html" class="more">浏览全部 →</a></div>
+    <div class="vgrid" id="homeVideos"></div>
+  </section>
+
+  <section class="section reveal">
+    <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>🎓 今日神学院</h2><p class="sub">从入门到服事 · 4 级体系</p></div></div><a href="seminary.html" class="more">全部课程 →</a></div>
     <div class="grid3">
-      <div class="card" onclick="location.href='bible.html'">
-        <div class="tag">10 分钟</div>
-        <span class="emoji">📜</span>
-        <h3>马太福音 5 章</h3>
-        <p>「虚心的人有福了……」八福：天国子民的生活样式。</p>
-        <div class="meta"><span>📖 阅读</span><span>🧠 思考</span><span>🎮 互动</span><span>🙏 祷告</span></div>
-      </div>
-      <div class="card" onclick="location.href='bible.html'">
-        <div class="tag">互动查经</div>
-        <span class="emoji">⚡</span>
-        <h3>今日 30 秒挑战</h3>
-        <p>耶稣讲「八福」是在哪座山上？快速回答赢取灵粮积分。</p>
-        <div class="meta"><span>⏱️ 30 秒</span><span>🎁 每日盲盒同步开启</span></div>
-      </div>
-      <div class="card" onclick="location.href='bible.html'">
-        <div class="tag">新约 · 福音书</div>
-        <span class="emoji">👑</span>
-        <h3>书卷地图：马太福音</h3>
-        <p>君王降生 → 受洗 → 试探 → 天国生活 → 十字架 → 复活与大使命。</p>
-        <div class="meta"><span>🗺️ 10 站</span><span>28 章</span></div>
-      </div>
+      <a class="card" href="course.html?id=1"><span class="emoji" style="font-size:30px">🌱</span><h3>信仰入门 · 认识神</h3><p>12 课 · 3,240 人学习 · 完成率 82%</p><div class="progress" style="margin-top:12px"><i style="width:82%"></i></div></a>
+      <a class="card" href="course.html?id=2"><span class="emoji" style="font-size:30px">📖</span><h3>新约概论</h3><p>14 课 · 1,880 人学习 · 完成率 64%</p><div class="progress" style="margin-top:12px"><i style="width:64%"></i></div></a>
+      <a class="card" href="course.html?id=3"><span class="emoji" style="font-size:30px">⚖️</span><h3>因信称义 · 救恩论</h3><p>8 课 · 1,186 人学习 · 完成率 74%</p><div class="progress" style="margin-top:12px"><i style="width:74%"></i></div></a>
     </div>
   </section>
 
-
-  <!-- ================= 全圣经 · 66 卷（云会幕核心） ================= -->
-  <section class="section reveal" id="fullbible">
-    <div class="sec-head">
-      <div class="t"><span class="bar"></span><div><h2>全圣经 · 66 卷</h2><p class="sub">云会幕的核心地基 —— 每一卷、每一章都可互动查经</p></div></div>
-      <a href="bible-index.html" class="more">进入完整书架 →</a>
-    </div>
-    <div class="box shelf">
-      <div class="shelf-top">
-        <div class="shelf-stats"><span class="pill">📚 旧约 39 卷</span><span class="pill">📕 新约 27 卷</span><span class="pill">📄 1,189 章</span><span class="pill">✒️ 3 万余节</span></div>
-        <input class="shelf-search" id="homeSearch" placeholder="🔍 搜索书卷，例如「马太」「诗篇」…">
-      </div>
-      <div class="shelf-cols">
-        <div class="shelf-col">
-          <div class="shelf-col-head">旧约 · 39 卷</div>
-          <div class="book-group"><h3>律法书 <span class="g-tag">旧约</span><span class="g-cnt">5 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=创世记">创世记</a><a class="book-chip" href="book.html?book=出埃及记">出埃及记</a><a class="book-chip" href="book.html?book=利未记">利未记</a><a class="book-chip" href="book.html?book=民数记">民数记</a><a class="book-chip" href="book.html?book=申命记">申命记</a></div></div><div class="book-group"><h3>历史书 <span class="g-tag">旧约</span><span class="g-cnt">12 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=约书亚记">约书亚记</a><a class="book-chip" href="book.html?book=士师记">士师记</a><a class="book-chip" href="book.html?book=路得记">路得记</a><a class="book-chip" href="book.html?book=撒母耳记上">撒母耳记上</a><a class="book-chip" href="book.html?book=撒母耳记下">撒母耳记下</a><a class="book-chip" href="book.html?book=列王纪上">列王纪上</a><a class="book-chip" href="book.html?book=列王纪下">列王纪下</a><a class="book-chip" href="book.html?book=历代志上">历代志上</a><a class="book-chip" href="book.html?book=历代志下">历代志下</a><a class="book-chip" href="book.html?book=以斯拉记">以斯拉记</a><a class="book-chip" href="book.html?book=尼希米记">尼希米记</a><a class="book-chip" href="book.html?book=以斯帖记">以斯帖记</a></div></div><div class="book-group"><h3>诗歌智慧书 <span class="g-tag">旧约</span><span class="g-cnt">5 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=约伯记">约伯记</a><a class="book-chip" href="book.html?book=诗篇">诗篇</a><a class="book-chip" href="book.html?book=箴言">箴言</a><a class="book-chip" href="book.html?book=传道书">传道书</a><a class="book-chip" href="book.html?book=雅歌">雅歌</a></div></div><div class="book-group"><h3>大先知书 <span class="g-tag">旧约</span><span class="g-cnt">5 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=以赛亚书">以赛亚书</a><a class="book-chip" href="book.html?book=耶利米书">耶利米书</a><a class="book-chip" href="book.html?book=耶利米哀歌">耶利米哀歌</a><a class="book-chip" href="book.html?book=以西结书">以西结书</a><a class="book-chip" href="book.html?book=但以理书">但以理书</a></div></div><div class="book-group"><h3>小先知书 <span class="g-tag">旧约</span><span class="g-cnt">12 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=何西阿书">何西阿书</a><a class="book-chip" href="book.html?book=约珥书">约珥书</a><a class="book-chip" href="book.html?book=阿摩司书">阿摩司书</a><a class="book-chip" href="book.html?book=俄巴底亚书">俄巴底亚书</a><a class="book-chip" href="book.html?book=约拿书">约拿书</a><a class="book-chip" href="book.html?book=弥迦书">弥迦书</a><a class="book-chip" href="book.html?book=那鸿书">那鸿书</a><a class="book-chip" href="book.html?book=哈巴谷书">哈巴谷书</a><a class="book-chip" href="book.html?book=西番雅书">西番雅书</a><a class="book-chip" href="book.html?book=哈该书">哈该书</a><a class="book-chip" href="book.html?book=撒迦利亚书">撒迦利亚书</a><a class="book-chip" href="book.html?book=玛拉基书">玛拉基书</a></div></div>
-        </div>
-        <div class="shelf-col">
-          <div class="shelf-col-head">新约 · 27 卷</div>
-          <div class="book-group"><h3>福音书 <span class="g-tag">新约</span><span class="g-cnt">4 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=马太福音">马太福音</a><a class="book-chip" href="book.html?book=马可福音">马可福音</a><a class="book-chip" href="book.html?book=路加福音">路加福音</a><a class="book-chip" href="book.html?book=约翰福音">约翰福音</a></div></div><div class="book-group"><h3>历史书 <span class="g-tag">新约</span><span class="g-cnt">1 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=使徒行传">使徒行传</a></div></div><div class="book-group"><h3>保罗书信 <span class="g-tag">新约</span><span class="g-cnt">13 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=罗马书">罗马书</a><a class="book-chip" href="book.html?book=哥林多前书">哥林多前书</a><a class="book-chip" href="book.html?book=哥林多后书">哥林多后书</a><a class="book-chip" href="book.html?book=加拉太书">加拉太书</a><a class="book-chip" href="book.html?book=以弗所书">以弗所书</a><a class="book-chip" href="book.html?book=腓立比书">腓立比书</a><a class="book-chip" href="book.html?book=歌罗西书">歌罗西书</a><a class="book-chip" href="book.html?book=帖撒罗尼迦前书">帖撒罗尼迦前书</a><a class="book-chip" href="book.html?book=帖撒罗尼迦后书">帖撒罗尼迦后书</a><a class="book-chip" href="book.html?book=提摩太前书">提摩太前书</a><a class="book-chip" href="book.html?book=提摩太后书">提摩太后书</a><a class="book-chip" href="book.html?book=提多书">提多书</a><a class="book-chip" href="book.html?book=腓利门书">腓利门书</a></div></div><div class="book-group"><h3>普通书信 <span class="g-tag">新约</span><span class="g-cnt">8 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=希伯来书">希伯来书</a><a class="book-chip" href="book.html?book=雅各书">雅各书</a><a class="book-chip" href="book.html?book=彼得前书">彼得前书</a><a class="book-chip" href="book.html?book=彼得后书">彼得后书</a><a class="book-chip" href="book.html?book=约翰一书">约翰一书</a><a class="book-chip" href="book.html?book=约翰二书">约翰二书</a><a class="book-chip" href="book.html?book=约翰三书">约翰三书</a><a class="book-chip" href="book.html?book=犹大书">犹大书</a></div></div><div class="book-group"><h3>预言书 <span class="g-tag">新约</span><span class="g-cnt">1 卷</span></h3><div class="chips"><a class="book-chip" href="book.html?book=启示录">启示录</a></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 今日神学院 ================= -->
-  <section class="section reveal" id="seminary">
-    <div class="sec-head">
-      <div class="t"><span class="bar"></span><div><h2>今日神学院</h2><p class="sub">系统装备 · 从入门到服事</p></div></div>
-      <a href="#seminary" class="more">全部课程 →</a>
-    </div>
-    <div class="grid3">
-      <div class="card">
-        <div class="tag">12 分钟</div>
-        <span class="emoji">⚖️</span>
-        <h3>什么是因信称义？</h3>
-        <p>罗马书 3-5 章：不是靠行为，而是靠信心领受神的义。</p>
-        <div class="meta"><span>Level 1 🌱</span><span>系统神学 · 救恩论</span></div>
-      </div>
-      <div class="card">
-        <div class="tag">8 分钟</div>
-        <span class="emoji">🗺️</span>
-        <h3>旧约历史大纲：出埃及 → 进迦南</h3>
-        <p>一条时间线看懂摩西五经与历史书的连接。</p>
-        <div class="meta"><span>Level 2 🌿</span><span>圣经概论</span></div>
-      </div>
-      <div class="card">
-        <div class="tag">互动课堂</div>
-        <span class="emoji">📊</span>
-        <h3>课堂即时问答</h3>
-        <p>老师提问，手机实时作答，全班投票结果即时呈现。</p>
-        <div class="meta"><span>🎓 作业</span><span>📝 考试</span><span>🏆 证书</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 祷告 ================= -->
-  <section class="section reveal" id="prayer">
-    <div class="sec-head">
-      <div class="t"><span class="bar"></span><div><h2>今天的祷告</h2><p class="sub">「你最近有什么事情需要交托给神？」</p></div></div>
-    </div>
-    <div class="prayer">
-      <div class="prayer-box">
-        <textarea id="prayerInput" placeholder="写下你的祷告……（可匿名，全球同路人会为你守望）"></textarea>
-        <div class="row">
-          <button class="btn btn-gold" onclick="sendPrayer()">✉️ 交托给神</button>
-          <span class="note">已有 <b id="prayerCount">1,024</b> 人今天在祷告墙守望</span>
-        </div>
-      </div>
-      <div class="wall">
-        <div class="wall-item">
-          <div class="who">🇯🇵 东京 · 匿名姊妹 · 10 分钟前</div>
-          <div>请为我家人的健康祷告，也求神给我信心等候祂的时间。</div>
-          <div class="acts"><button onclick="prayFor(this)">🙏 我愿意祷告 <span class="n">32</span></button><span>❤️ 24 人已为你祷告</span></div>
-        </div>
-        <div class="wall-item">
-          <div class="who">🇨🇳 上海 · 一位父亲 · 1 小时前</div>
-          <div>为儿子的工作与信仰祷告，愿他早日回转归向神。</div>
-          <div class="acts"><button onclick="prayFor(this)">🙏 我愿意祷告 <span class="n">18</span></button><span>❤️ 12 人已为你祷告</span></div>
-        </div>
-        <div class="wall-item">
-          <div class="who">🇺🇸 纽约 · 留学生 · 2 小时前</div>
-          <div>考试压力很大，求神赐平安与智慧。</div>
-          <div class="acts"><button onclick="prayFor(this)">🙏 我愿意祷告 <span class="n">27</span></button><span>❤️ 19 人已为你祷告</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 社区 ================= -->
-  <section class="section reveal" id="community">
-    <div class="sec-head">
-      <div class="t"><span class="bar"></span><div><h2>找到你的社区</h2><p class="sub">小组 · 青年 · 祷告 · 见证</p></div></div>
-      <a href="#community" class="more">浏览全部小组 →</a>
-    </div>
-    <div class="grid4">
-      <div class="card"><div class="tag">周三 20:00</div><span class="emoji">🇯🇵</span><h3>东京华人青年小组</h3><p>罗马书 8 章 · 8 人</p><div class="meta"><span>👥 加入</span><span>💬 聊天</span><span>📖 查经</span></div></div>
-      <div class="card"><div class="tag">周二 19:30</div><span class="emoji">🇯🇵</span><h3>大阪青年查经</h3><p>马太福音 · 12 人</p><div class="meta"><span>👥 加入</span><span>💬 聊天</span><span>📖 查经</span></div></div>
-      <div class="card"><div class="tag">周五 21:00</div><span class="emoji">🌏</span><h3>国际大学生小组</h3><p>EN / 中 / 日三语 · 15 人</p><div class="meta"><span>👥 加入</span><span>🌍 多语言</span></div></div>
-      <div class="card"><div class="tag">每日 20:30</div><span class="emoji">🏠</span><h3>线上家庭小组</h3><p>全家一起读经祷告 · 6 家</p><div class="meta"><span>👥 加入</span><span>🧒 儿童模式</span></div></div>
-    </div>
-  </section>
-
-  <!-- ================= AI ================= -->
-  <section class="section reveal" id="ai">
-    <div class="sec-head">
-      <div class="t"><span class="bar"></span><div><h2>AI 圣经导师</h2><p class="sub">AI 不替你读经，而是陪你查经：提问 → 阅读 → 观察 → 思考 → 发现</p></div></div>
-    </div>
-    <div class="prayer">
-      <div class="prayer-box">
-        <div style="font-size:14.5px;color:var(--muted);margin-bottom:12px">试一个问题（原型演示）：</div>
-        <div class="chat-demo" id="chatDemo">
-          <div class="msg user">为什么彼得三次不认耶稣？</div>
-          <div class="msg ai">好问题！我们先观察一下：在彼得否认耶稣之前，耶稣对他说了什么？（提示：马太福音 26:31-35）</div>
-        </div>
-        <div class="row">
-          <input id="aiInput" placeholder="问问圣经导师……" onkeydown="if(event.key==='Enter')askAI()">
-          <button class="btn btn-ghost" onclick="askAI()">发送</button>
-        </div>
-      </div>
-      <div class="prayer-box">
-        <h3 style="font-size:18px;margin-bottom:14px;font-family:var(--serif)">AI 还能做什么</h3>
-        <div style="display:flex;flex-direction:column;gap:12px;font-size:14.5px;color:var(--muted)">
-          <div>🎙️ 牧师说日语 → 你耳机里听中文（AI 实时翻译）</div>
-          <div>📖 牧师读「马太福音 5:44」→ 系统自动打开经文页</div>
-          <div>📝 直播结束 → 自动生成查经笔记与要点</div>
-          <div>🧒 同一段圣经 → 生成儿童版 / 青年版 / 成人版 / 神学版</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 全球 ================= -->
-  <section class="section reveal" id="global">
-    <div class="sec-head">
-      <div class="t"><span class="bar"></span><div><h2>全球教会</h2><p class="sub">一个教会、一个身体、许多语言</p></div></div>
-    </div>
-    <div class="live-card" style="padding:34px">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
-        <span class="pill">🇨🇳 中文</span><span class="pill">🇯🇵 日本語</span><span class="pill">🇺🇸 English</span>
-        <span class="pill">🇰🇷 한국어</span><span class="pill">🇪🇸 Español</span><span class="pill">🇫🇷 Français</span>
-        <span class="pill">🇩🇪 Deutsch</span><span class="pill">🇹🇭 ไทย</span><span class="pill">🇻🇳 Tiếng Việt</span><span class="pill">+ 更多</span>
-      </div>
-      <p style="text-align:center;color:#c3c9ea;font-size:16px;margin-top:22px;line-height:2">
-        一场聚会，世界各地的人都能参加：每个人用母语听道、提问、被回应。<br>
-        圣经是内容核心 · 教会是关系核心 · AI 是工具 · 多语言是连接世界的桥梁。
-      </p>
-    </div>
-  </section>
-
-  <!-- ================= 我的旅程 ================= -->
-  <section class="section reveal" id="me">
-    <div class="sec-head">
-      <div class="t"><span class="bar"></span><div><h2>我的旅程</h2><p class="sub">不是刷分，而是看见自己在这条路上走到哪里了</p></div></div>
-    </div>
-    <div class="journey">
-      <h3>❤️ 我的信仰成长地图</h3>
-      <div class="jrow">
-        <div class="jcell"><div class="num">126<small>/1,189</small></div><div class="lab">📖 圣经章节</div></div>
-        <div class="jcell"><div class="num">12<small>/40</small></div><div class="lab">🎓 神学课程</div></div>
-        <div class="jcell"><div class="num">32</div><div class="lab">🙏 祷告次数</div></div>
-        <div class="jcell"><div class="num">2</div><div class="lab">👥 加入小组</div></div>
-        <div class="jcell"><div class="num">8</div><div class="lab">🎵 参与敬拜</div></div>
-      </div>
-      <div class="bar"><i id="progressBar"></i></div>
-      <p style="font-size:13.5px;color:var(--muted);margin-top:12px">圣经进度：10.6% · 我的圣经树 🌱 → 🌿 → 🌳</p>
+  <section class="section reveal">
+    <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>为什么是云会幕</h2></div></div></div>
+    <div class="values">
+      <div class="card"><span class="emoji" style="font-size:30px">🎬</span><h3>看道</h3><p>讲道、查经、圣经电影、见证、敬拜，一站式观影，支持多语言字幕。</p></div>
+      <div class="card"><span class="emoji" style="font-size:30px">🎓</span><h3>学道</h3><p>从信仰入门到服事装备的完整神学院体系，视频课 + 作业 + 测验 + 证书。</p></div>
+      <div class="card"><span class="emoji" style="font-size:30px">🔴</span><h3>行道</h3><p>直播聚会全球同步，AI 实时翻译，让任何地方、任何语言的人一起敬拜。</p></div>
     </div>
   </section>
 </div>
 
 <footer>
   <div class="cross">✝️</div>
-  <p class="slogan2">云会幕 — 全球线上教会 × 全圣经互动 × AI 多语言 × 线上神学院 × 小组社区</p>
-  <p style="margin-top:8px">© 2026 云会幕 · 产品原型演示</p>
+  <p class="slogan2">云会幕 — 教会影院 × 线上神学院</p>
+  <p style="margin-top:6px">© 2026 云会幕 · 产品原型演示</p>
   <div class="links">
-    <a href="index.html" class="pill" style="text-decoration:none">💻 电脑版</a>
-    <a href="mobile.html" class="pill" style="text-decoration:none">📱 手机版</a>
-    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 后台管理</a>
-    <a href="more.html" class="pill" style="text-decoration:none">✨ 更多功能</a>
-    <a href="PRD.md" class="pill" style="text-decoration:none">📄 查看 PRD</a>
+    <a href="index.html" class="pill" style="text-decoration:none">🏠 首页</a>
+    <a href="cinema.html" class="pill" style="text-decoration:none">🎬 影院</a>
+    <a href="live.html" class="pill" style="text-decoration:none">🔴 直播</a>
+    <a href="seminary.html" class="pill" style="text-decoration:none">🎓 神学院</a>
+    <a href="community.html" class="pill" style="text-decoration:none">👥 社区</a>
+    <a href="my.html" class="pill" style="text-decoration:none">❤️ 我的</a>
+    <a href="live-admin.html" class="pill" style="text-decoration:none">🎛️ 直播后台</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 管理后台</a>
   </div>
 </footer>
-
 <div class="toast" id="toast"></div>
-
+<div class="stars" id="stars"></div>
+<script src="assets.js"></script>
 <script>
-  // 星光
-  (function(){
-    const box=document.getElementById('stars');
-    for(let i=0;i<110;i++){
-      const s=document.createElement('i');
-      s.style.left=Math.random()*100+'%';
-      s.style.top=Math.random()*100+'%';
-      s.style.width=s.style.height=(Math.random()*2+1)+'px';
-      s.style.animationDelay=(Math.random()*3.4)+'s';
-      box.appendChild(s);
-    }
-  })();
-
-  // 在线人数
-  const v=document.getElementById('viewers');
-  let n=1284;
-  setInterval(()=>{n=Math.max(900,Math.min(1600,n+Math.floor(Math.random()*15-7)));v.textContent=n.toLocaleString();},2600);
-
-  // 祷告
-  function sendPrayer(){
-    const t=document.getElementById('prayerInput').value.trim();
-    const c=document.getElementById('prayerCount');
-    c.textContent=(parseInt(c.textContent.replace(/,/g,''))+1).toLocaleString();
-    toast(t?'🙏 已交托！全球同路人正在为你守望。':'🙏 你已加入今天的祷告守望。');
-    document.getElementById('prayerInput').value='';
-  }
-  function prayFor(btn){
-    const n=btn.querySelector('.n');
-    n.textContent=parseInt(n.textContent)+1;
-    toast('🙏 你已为这位肢体祷告');
-  }
-
-  // AI 演示
-  const answers=[
-    '我们再往前看：耶稣在客西马尼园说「你们不能同我警醒片时吗？」——彼得当时怎么回应的？（马太福音 26:40-41）',
-    '很棒！现在对比一下：彼得三次否认之前，耶稣说「鸡叫以先，你要三次不认我」。你读到这里，观察到彼得心里是什么状态？',
-    '留意这个细节：第三次否认时，鸡就叫了，彼得「想起耶稣所说的话，就出去痛哭」（26:75）。悔改从「想起主的话」开始。'
+  var n=1284;setInterval(function(){n=Math.max(900,Math.min(1600,n+Math.floor(Math.random()*15-7)));var e=document.getElementById('lv');if(e)e.textContent=n.toLocaleString();},2600);
+  var vids=[
+    ['watch.html?vid=2','讲道','⛪','王牧 · 登山宝训（一）：八福','48:20','2.4万次观看'],
+    ['watch.html?vid=3','见证','💛','在低谷中，神仍然信实','12:05','8,620次观看'],
+    ['watch.html?vid=4','敬拜','🎶','诗篇 23 · 全地敬拜现场','32:15','15,300次观看'],
+    ['watch.html?vid=5','查经','📖','罗马书 8 章 · 互动查经课','55:40','6,980次观看'],
+    ['watch.html?vid=6','青年','🔥','青年特会：为什么神不回答我的祷告？','42:30','9,240次观看'],
+    ['watch.html?vid=7','圣经电影','🕊️','《十诫 · 摩西》精选片段','18:10','11,200次观看']
   ];
-  let aiIdx=0;
-  function askAI(){
-    const inp=document.getElementById('aiInput');
-    const q=inp.value.trim();
-    if(!q)return;
-    const box=document.getElementById('chatDemo');
-    const u=document.createElement('div');u.className='msg user';u.textContent=q;
-    box.appendChild(u);
-    inp.value='';
-    const a=document.createElement('div');a.className='msg ai';
-    a.textContent=answers[aiIdx%answers.length];aiIdx++;
-    box.appendChild(a);
-    box.scrollTop=box.scrollHeight;
-  }
-
-  // 进入直播间
-  function joinLive(e){e.preventDefault();toast('🎥 演示：直播间的实时字幕 + AI 翻译 + 当前经文 + 聊天室将在正式版实现');}
-
-  // toast
-  let toastTimer;
-  function toast(msg){
-    const t=document.getElementById('toast');
-    t.textContent=msg;
-    t.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
-  }
-
-  // 进度条
-  setTimeout(()=>{document.getElementById('progressBar').style.width='10.6%';},400);
-
-  // 滚动显现
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
-  document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
-
-  // 导航高亮 + 点击收起
-  const links=document.querySelectorAll('.nav-links a');
-  links.forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
-  const spy=new IntersectionObserver(es=>{
-    es.forEach(e=>{
-      if(e.isIntersecting){
-        links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));
-      }
-    });
-  },{rootMargin:'-40% 0px -55% 0px'});
-  document.querySelectorAll('section[id],header[id]').forEach(s=>spy.observe(s));
+  document.getElementById('homeVideos').innerHTML=vids.map(function(v){
+    return '<a class="vcard" href="'+v[0]+'"><div class="vthumb" style="background:linear-gradient(135deg,#2b1a5e,#4f46e5)"><span class="cat">'+v[1]+'</span><span class="play">▶</span><span class="dur">'+v[3].split('|')[0]+'</span><span style="font-size:34px">'+v[2]+'</span></div><div class="vbody"><h4>'+v[3]+'</h4><div class="meta"><span>'+v[4]+'</span><span class="views">'+v[5]+'</span></div></div></a>';
+  }).join('');
 </script>
-
-<style>
-  .chat-demo{display:flex;flex-direction:column;gap:12px;max-height:240px;overflow:auto;margin-bottom:14px}
-  .msg{max-width:88%;padding:12px 16px;border-radius:16px;font-size:15px;line-height:1.7}
-  .msg.user{align-self:flex-end;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-bottom-right-radius:5px}
-  .msg.ai{align-self:flex-start;background:rgba(255,255,255,.08);border:1px solid var(--border);border-bottom-left-radius:5px}
-  #aiInput{
-    flex:1;min-width:180px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:14px;
-    color:#fff;padding:12px 16px;font-size:15px;outline:none;font-family:var(--sans);transition:.2s;
-  }
-  #aiInput:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.15)}
-</style>
-
-<script>
-  // 主页全圣经搜索
-  (function(){
-    var inp=document.getElementById('homeSearch');
-    if(!inp)return;
-    inp.addEventListener('input',function(){
-      var q=this.value.trim().toLowerCase();
-      document.querySelectorAll('#fullbible .book-chip').forEach(function(c){
-        c.style.display=(!q||c.textContent.includes(q))?'':'none';
-      });
-    });
-  })();
-</script>
-
 </body>
 </html>

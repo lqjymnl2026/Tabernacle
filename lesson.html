@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云会幕 · 视频课</title>
+<link rel="stylesheet" href="assets.css">
+<style>
+  .lesson-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;padding-top:22px}
+  .note-area{width:100%;min-height:110px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:12px;color:#fff;padding:13px 15px;font-size:14px;font-family:var(--sans);outline:none;resize:vertical}
+  .note-area:focus{border-color:var(--gold)}
+  .quiz-opt.correct{border-color:#22c55e;background:rgba(34,197,94,.12)}
+  .quiz-opt.wrong{border-color:#e63946;background:rgba(230,57,70,.12)}
+  .nav-lesson{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  @media(max-width:1060px){.lesson-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-inner">
+  <a class="brand" href="index.html"><span class="mark">🎬</span><span class="name">云会幕<small>CHURCH CINEMA · SEMINARY</small></span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">首页</a>
+    <a href="cinema.html">影院</a>
+    <a href="live.html">直播</a>
+    <a href="seminary.html">神学院</a>
+    <a href="community.html">社区</a>
+    <a href="my.html">我的</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang" onclick="toast('🌐 语言切换（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-red btn-sm nav-cta">🔴 进入直播间</a>
+  </div>
+  <button class="hamburger">☰</button>
+</div></nav>
+
+<main class="wrap">
+  <div class="lesson-grid">
+    <div>
+      <div class="player">
+        <span class="p-badge">🎓 神学院 · 视频课</span>
+        <div class="big-play" onclick="toast('▶ 播放中…（演示）')">▶</div>
+        <div class="p-title" id="lTitle">第 1 课</div>
+      </div>
+      <div class="vinfo">
+        <h2 id="lTitle2">第 1 课 · 认识独一真神</h2>
+        <div class="acts">
+          <button class="btn btn-gold btn-sm" onclick="toast('✓ 已标记为完成')">✅ 完成本课</button>
+          <button class="btn btn-ghost btn-sm" onclick="toast('📝 笔记已保存')">📝 记笔记</button>
+        </div>
+      </div>
+      <div class="box" style="margin-top:18px">
+        <h3>📝 课程笔记</h3>
+        <textarea class="note-area" id="noteArea" placeholder="今天我看到 / 我明白 / 神提醒我 / 我要实践…"></textarea>
+        <div class="nav-lesson">
+          <a class="btn btn-ghost btn-sm" id="prevBtn" href="#">‹ 上一课</a>
+          <a class="btn btn-gold btn-sm" id="nextBtn" href="#">下一课 ›</a>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="box">
+        <h3>📊 随堂测验</h3>
+        <p style="font-size:14px;color:#e3e7fb;margin-bottom:12px" id="quizQ">Q1：以下哪个最能描述「神的创造」？</p>
+        <div class="quiz-opt" onclick="quiz(this,'A',true)">A. 神用话语从无到有创造</div>
+        <div class="quiz-opt" onclick="quiz(this,'B',false)">B. 世界是偶然的巧合</div>
+        <div class="quiz-opt" onclick="quiz(this,'C',false)">C. 神只是推动世界后离开</div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px" id="quizNote">点击选项作答（演示）· 正式版记录成绩</p>
+      </div>
+      <div class="box" style="margin-top:16px">
+        <h3>💬 课堂讨论</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:13.5px;color:#dfe3f8">
+          <div><b style="color:var(--gold2)">🇨🇳 林姊妹：</b>「从无到有」的创造让我敬畏神的权能。</div>
+          <div><b style="color:var(--gold2)">🇯🇵 佐藤：</b>創世記1章を読むたびに、神の秩序に感動します。</div>
+          <div><b style="color:var(--gold2)">🇺🇸 Sarah：</b>God's creation reveals His character.</div>
+        </div>
+        <input class="inline-input" style="margin-top:12px" id="discInput" placeholder="加入讨论…" onkeydown="if(event.key==='Enter'){toast('💬 已发布（演示）');this.value='';}">
+      </div>
+      <div class="box" style="margin-top:16px">
+        <h3>📚 本课参考经文</h3>
+        <div class="scripture" style="background:rgba(201,162,39,.08);border:1px solid rgba(240,217,138,.3);border-radius:14px;padding:14px">
+          <div class="ref">创世记 1:1-3</div>
+          <p style="font-size:14px;color:#e8ecfa;margin-top:6px">「起初，神创造天地。地是空虚混沌，渊面黑暗；神的灵运行在水面上。神说：要有光，就有了光。」</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="cross">✝️</div>
+  <p class="slogan2">云会幕 — 教会影院 × 线上神学院</p>
+  <div class="links">
+    <a href="index.html" class="pill" style="text-decoration:none">🏠 首页</a>
+    <a href="cinema.html" class="pill" style="text-decoration:none">🎬 影院</a>
+    <a href="live.html" class="pill" style="text-decoration:none">🔴 直播</a>
+    <a href="seminary.html" class="pill" style="text-decoration:none">🎓 神学院</a>
+    <a href="community.html" class="pill" style="text-decoration:none">👥 社区</a>
+    <a href="my.html" class="pill" style="text-decoration:none">❤️ 我的</a>
+    <a href="live-admin.html" class="pill" style="text-decoration:none">🎛️ 直播后台</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 管理后台</a>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+<div class="stars" id="stars"></div>
+<script src="assets.js"></script>
+<script>
+var params=new URLSearchParams(location.search);
+var id=params.get('id')||'1', l=parseInt(params.get('l')||'1',10);
+var TITLES=['认识独一真神','神的属性','神的创造','人的堕落','救恩的预备','耶稣基督','十字架与复活','圣灵的工作','回应与委身','活在教会中','祷告的操练','读经的方法'];
+var t=TITLES[l-1]||'课程主题 '+l;
+document.title='云会幕 · 第 '+l+' 课 · '+t;
+document.getElementById('lTitle').textContent='第 '+l+' 课 · '+t;
+document.getElementById('lTitle2').textContent='第 '+l+' 课 · '+t;
+document.getElementById('prevBtn').href='lesson.html?id='+id+'&l='+Math.max(1,l-1);
+document.getElementById('nextBtn').href='lesson.html?id='+id+'&l='+(l+1);
+var quizDone=false;
+function quiz(el,ans,correct){
+  if(quizDone){toast('⏳ 你已作答');return;}quizDone=true;
+  el.classList.add(correct?'correct':'wrong');
+  toast(correct?'🎉 答对了！':'❌ 答错了，再看一遍本课内容～');
+}
+</script>
+</body>
+</html>

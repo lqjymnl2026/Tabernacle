@@ -6,74 +6,67 @@
 <title>云会幕 · 直播间</title>
 <link rel="stylesheet" href="assets.css">
 <style>
-.live-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}
-.video-stage{position:relative;height:330px;border-radius:16px;background:radial-gradient(560px 280px at 28% 18%,rgba(99,102,241,.4),transparent 60%),radial-gradient(480px 280px at 82% 82%,rgba(217,70,239,.28),transparent 60%),linear-gradient(160deg,#0e1230,#1c1244);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;border:1px solid rgba(255,255,255,.14);margin-bottom:14px}
-.live-badge2{position:absolute;top:14px;left:14px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.22);padding:7px 14px;border-radius:999px;font-size:13px}
-.live-badge2 .dot{width:8px;height:8px;border-radius:50%;background:#ff5a5f;animation:blink 1.2s infinite}
-.viewers2{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.22);padding:7px 14px;border-radius:999px;font-size:13px}
-.viewers2 b{color:var(--gold2)}
-.stage-icon{font-size:62px;filter:drop-shadow(0 10px 30px rgba(240,217,138,.45))}
-.stage-t{font-size:15px;color:#c3c9ea}
-.subtitle-bar{background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:14px}
-.lang-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.lang-tabs button{background:rgba(255,255,255,.07);border:1px solid var(--border);color:#c7cdea;border-radius:999px;padding:5px 13px;font-size:12.5px;cursor:pointer;font-family:var(--sans);transition:.2s}
-.lang-tabs button.on,.lang-tabs button:hover{color:#241a05;background:linear-gradient(135deg,var(--gold2),var(--gold));border-color:transparent}
-.subtitle{font-size:16.5px;line-height:1.9;color:#f3f5ff}
-.verse-now{font-size:13px;color:var(--muted);margin-top:10px}
-.live-actions{display:flex;gap:10px;flex-wrap:wrap}
-.live-side h3{font-size:16px;margin-bottom:12px;font-family:var(--serif)}
-.chat{height:230px;overflow:auto;display:flex;flex-direction:column;gap:8px;background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px}
-.msg2{font-size:13.5px;color:#dfe3f8;line-height:1.6}
-.msg2 .who2{color:var(--gold2);margin-right:8px;font-weight:600}
-.chat-input{display:flex;gap:10px}
-.chat-input .inline-input{flex:1;min-width:0}
-.poll-q{font-size:14.5px;margin-bottom:10px;color:#e3e7fb}
-.poll-row{display:flex;align-items:center;gap:12px;padding:8px 0;cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.08)}
-.poll-row .opt{flex:0 0 150px;font-size:14px}
-.poll-row .track{flex:1;height:10px;background:rgba(255,255,255,.09);border-radius:99px;overflow:hidden}
-.poll-row .track i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:99px;transition:width .6s}
-.poll-row b{width:44px;text-align:right;color:var(--gold2);font-size:14px}
-.notes{display:flex;flex-direction:column;gap:12px}
-.note-line{font-size:15px;color:#e3e7fb}
-.note-line b{color:var(--gold2)}
-@media(max-width:1060px){.live-grid{grid-template-columns:1fr}}
+  .live-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;padding-top:22px}
+  .video-stage{position:relative;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:radial-gradient(560px 300px at 28% 18%,rgba(99,102,241,.4),transparent 60%),radial-gradient(480px 280px at 82% 82%,rgba(217,70,239,.28),transparent 60%),#0a0d24;border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+  .stage-icon{font-size:58px;filter:drop-shadow(0 10px 30px rgba(240,217,138,.45))}
+  .stage-t{font-size:15px;color:#c3c9ea}
+  .lb2{position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);padding:8px 15px;border-radius:999px;font-size:13px}
+  .lb2 .dot{width:9px;height:9px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite}
+  .vc2{position:absolute;top:16px;right:16px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);padding:8px 15px;border-radius:999px;font-size:13px}
+  .vc2 b{color:var(--gold2)}
+  .sub-bar{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin:14px 0}
+  .lang-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .lang-tabs button{background:rgba(255,255,255,.07);border:1px solid var(--border);color:#c7cdea;border-radius:999px;padding:5px 13px;font-size:12.5px;cursor:pointer;font-family:var(--sans);transition:.2s}
+  .lang-tabs button.on,.lang-tabs button:hover{color:#241a05;background:linear-gradient(135deg,var(--gold2),var(--gold));border-color:transparent}
+  .subtitle{font-size:16px;line-height:1.9;color:#f3f5ff;min-height:58px}
+  .verse-now{font-size:13px;color:var(--muted);margin-top:9px}
+  .live-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .chat{height:260px;overflow:auto;display:flex;flex-direction:column;gap:8px;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:14px;padding:13px;margin-bottom:10px}
+  .msg2{font-size:13.5px;color:#dfe3f8;line-height:1.6}
+  .msg2 .who2{color:var(--gold2);margin-right:8px;font-weight:600}
+  .msg2 .tr{font-size:11.5px;color:var(--muted);margin-left:6px}
+  .chat-input{display:flex;gap:10px}
+  .chat-input .inline-input{flex:1;min-width:0}
+  .poll-q{font-size:14.5px;margin-bottom:10px}
+  .poll-row{display:flex;align-items:center;gap:12px;padding:8px 0;cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.08)}
+  .poll-row .opt{flex:0 0 160px;font-size:14px}
+  .poll-row .track{flex:1;height:10px;background:rgba(255,255,255,.09);border-radius:99px;overflow:hidden}
+  .poll-row .track i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:99px;transition:width .6s}
+  .poll-row b{width:44px;text-align:right;color:var(--gold2)}
+  .notes{display:flex;flex-direction:column;gap:12px}
+  .note-line{font-size:15px;color:#e3e7fb}
+  .note-line b{color:var(--gold2)}
+  @media(max-width:1060px){.live-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <nav><div class="wrap nav-inner">
-  <a class="brand" href="index.html"><span class="mark">✝</span><span class="name">云会幕<small>YUNHUIMU · CLOUD TABERNACLE</small></span></a>
+  <a class="brand" href="index.html"><span class="mark">🎬</span><span class="name">云会幕<small>CHURCH CINEMA · SEMINARY</small></span></a>
   <div class="nav-links" id="navLinks">
-    <a href="index.html" >首页</a>
-    <a href="bible-index.html" >圣经</a>
+    <a href="index.html">首页</a>
+    <a href="cinema.html">影院</a>
     <a href="live.html" class="active">直播</a>
-    <a href="community.html" >社区</a>
-    <a href="seminary.html" >神学院</a>
-    <a href="global.html" >全球</a>
-    <a href="ai.html" >AI</a>
-    <a href="my.html" >我的</a>
+    <a href="seminary.html">神学院</a>
+    <a href="community.html">社区</a>
+    <a href="my.html">我的</a>
   </div>
   <div class="nav-right">
-    <div class="lang" onclick="toast('🌐 语言切换：中文 / 日本語 / English / 한국어（演示）')">🌐 <b>中文</b></div>
-    <a href="live.html" class="btn btn-gold btn-sm nav-cta" onclick="toast('🔴 正在进入直播间…（演示）')">🔴 进入直播间</a>
+    <div class="lang" onclick="toast('🌐 语言切换（演示）')">🌐 <b>中文</b></div>
+    <a href="live-admin.html" class="btn btn-ghost btn-sm nav-cta">🎛️ 直播后台</a>
   </div>
   <button class="hamburger">☰</button>
 </div></nav>
+
 <main class="wrap">
-<section class="pagehead reveal in">
-  <div class="icon">🔴</div>
-  <h1>直播间</h1>
-  <p>视频 + 实时字幕 + AI 多语言翻译 + 当前经文 + 聊天室 + 投票 + 祷告，一场聚会，全世界一起参加。</p>
-</section>
-<section class="section reveal" style="padding-top:26px">
   <div class="live-grid">
-    <div class="box live-main">
+    <div>
       <div class="video-stage">
-        <span class="live-badge2"><span class="dot"></span> LIVE · 主日崇拜</span>
-        <span class="viewers2">👥 <b id="lv">1,284</b> 在线</span>
-        <div class="stage-icon">🏛️</div>
+        <span class="lb2"><span class="dot"></span> LIVE · 主日崇拜</span>
+        <span class="vc2">👥 <b id="lv">1,284</b> 在线</span>
+        <span class="stage-icon">🏛️</span>
         <div class="stage-t">圣殿敬拜 · 直播画面</div>
       </div>
-      <div class="subtitle-bar">
+      <div class="sub-bar">
         <div class="lang-tabs" id="subTabs">
           <button class="on" data-lang="中文">🇨🇳 中文</button>
           <button data-lang="日本語">🇯🇵 日本語</button>
@@ -82,58 +75,66 @@
           <button data-lang="Español">🇪🇸 Español</button>
         </div>
         <div class="subtitle" id="subtitle">「虚心的人有福了，因为天国是他们的。你们是世上的盐，是世上的光——愿神的国临到每一个族群。」</div>
-        <div class="verse-now">📖 当前经文：<b>马太福音 5:3-16</b>　<a href="bible.html" style="color:var(--gold2)">打开互动查经 →</a></div>
+        <div class="verse-now">📖 当前经文：<b>马太福音 5:3-16</b> · AI 实时识别 · <span style="color:var(--gold2)">打开查经页 →</span></div>
       </div>
       <div class="live-actions">
-        <button class="btn btn-ghost btn-sm" onclick="toast('👍 已点赞 · 本周共 2,386 赞')">👍 点赞</button>
-        <button class="btn btn-ghost btn-sm" onclick="toast('🙏 已加入代祷守望')">🙏 祷告</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('👍 已点赞 · 本周 2,386 赞')">👍 点赞</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('🙏 已加入代祷守望')">🙏 代祷</button>
         <button class="btn btn-ghost btn-sm" onclick="toast('🔔 已订阅回放提醒')">🔔 提醒</button>
-        <button class="btn btn-ghost btn-sm" onclick="toast('👥 小组入口：东京华人青年小组（演示）')">👥 小组</button>
-        <button class="btn btn-gold btn-sm" onclick="toast('📖 直播结束后自动生成笔记与经文回放（演示）')">📝 直播笔记</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('👥 小组入口（演示）')">👥 小组</button>
+        <button class="btn btn-gold btn-sm" onclick="toast('📝 直播结束后自动生成笔记（演示）')">📝 直播笔记</button>
+        <button class="btn btn-red btn-sm" onclick="toast('🖥️ 分享直播间链接')">🔗 分享</button>
+      </div>
+      <div class="box" style="margin-top:18px">
+        <h3>📝 自动生成的直播笔记（AI 预览）</h3>
+        <div class="notes">
+          <div class="note-line">🎙️ <b>主题：</b>八福与天国子民的生活样式</div>
+          <div class="note-line">📖 <b>经文：</b>马太福音 5:1-16（自动识别）</div>
+          <div class="note-line">💡 <b>要点：</b>① 天国是主动降临的恩典 ② 信徒是盐与光 ③ 八福指向以神为中心的人生</div>
+          <div class="note-line">🎯 <b>应用：</b>本周为一位「仇敌」祷告</div>
+        </div>
       </div>
     </div>
-    <div class="box live-side">
-      <h3>💬 聊天室 <span class="pill" style="font-size:11px;margin-left:6px">AI 自动翻译</span></h3>
-      <div class="chat" id="chatBox">
-        <div class="msg2"><b class="who2">🇯🇵 田中</b><span>今日のメッセージ、とても励まされました！</span></div>
-        <div class="msg2"><b class="who2">🇨🇳 林姊妹</b><span>受造，愿我们成为世上的光！</span></div>
-        <div class="msg2"><b class="who2">🇺🇸 Sarah</b><span>What a powerful reminder of the beatitudes.</span></div>
-        <div class="msg2"><b class="who2">🇰🇷 민지</b><span>팔복이 마음에 와 닿아요 🙏</span></div>
+    <div>
+      <div class="box">
+        <h3>💬 聊天室 <span class="pill" style="font-size:11px">AI 自动翻译</span></h3>
+        <div class="chat" id="chatBox">
+          <div class="msg2"><b class="who2">🇯🇵 田中</b><span>今日のメッセージ、とても励まされました！</span><span class="tr">→ 信息让我大受鼓舞</span></div>
+          <div class="msg2"><b class="who2">🇨🇳 林姊妹</b><span>愿我们成为世上的光！</span></div>
+          <div class="msg2"><b class="who2">🇺🇸 Sarah</b><span>What a powerful reminder of the beatitudes.</span><span class="tr">→ 八福的提醒很有力量</span></div>
+          <div class="msg2"><b class="who2">🇰🇷 민지</b><span>팔복이 마음에 와 닿아요 🙏</span><span class="tr">→ 八福触动我心</span></div>
+        </div>
+        <div class="chat-input"><input class="inline-input" id="chatInput" placeholder="说点什么…（支持多语言，自动翻译）" onkeydown="if(event.key==='Enter')sendChat()"><button class="btn btn-gold btn-sm" onclick="sendChat()">发送</button></div>
       </div>
-      <div class="chat-input"><input class="inline-input" id="chatInput" placeholder="说点什么…（可多语言）" onkeydown="if(event.key==='Enter')sendChat()"><button class="btn btn-gold btn-sm" onclick="sendChat()">发送</button></div>
-      <h3 style="margin-top:20px">📊 互动投票</h3>
-      <div id="poll">
+      <div class="box" style="margin-top:16px">
+        <h3>📊 互动投票</h3>
         <div class="poll-q">今天最触动你的经文是哪一福？</div>
         <div class="poll-row" onclick="vote(this,0)"><span class="opt">虚心的人</span><div class="track"><i style="width:32%"></i></div><b>32%</b></div>
         <div class="poll-row" onclick="vote(this,1)"><span class="opt">使人和睦的人</span><div class="track"><i style="width:46%"></i></div><b>46%</b></div>
         <div class="poll-row" onclick="vote(this,2)"><span class="opt">清心的人</span><div class="track"><i style="width:22%"></i></div><b>22%</b></div>
-        <p style="font-size:12px;color:var(--muted);margin-top:10px">1,847 人已投票 · 点击选项参与（实时统计）</p>
+        <p style="font-size:12px;color:var(--muted);margin-top:10px">1,847 人已投票 · 点击选项实时参与</p>
+      </div>
+      <div class="box" style="margin-top:16px">
+        <h3>🙏 为直播守望</h3>
+        <textarea class="inline-input" style="min-height:70px" id="prayInput" placeholder="写下为这场聚会的代祷…"></textarea>
+        <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="toast('🙏 已提交，同路人会为你守望')">提交代祷</button>
       </div>
     </div>
   </div>
-</section>
-<section class="section reveal">
-  <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>自动生成的直播笔记</h2><p class="sub">AI 在直播结束后生成 · 后台可校对</p></div></div></div>
-  <div class="box">
-    <div class="notes">
-      <div class="note-line">🎙️ <b>主题：</b>八福与天国子民的生活样式</div>
-      <div class="note-line">📖 <b>经文：</b>马太福音 5:1-16（自动识别）</div>
-      <div class="note-line">💡 <b>要点：</b>① 天国是主动降临的恩典 ② 信徒是盐与光 ③ 八福指向「以神为中心」的人生</div>
-      <div class="note-line">🎯 <b>应用挑战：</b>本周为一位「仇敌」祷告</div>
-    </div>
-  </div>
-</section>
 </main>
+
 <footer>
   <div class="cross">✝️</div>
-  <p class="slogan2">云会幕 — 全球线上教会 × 全圣经互动 × AI 多语言 × 线上神学院 × 小组社区</p>
-  <p style="margin-top:8px">© 2026 云会幕 · 产品原型演示</p>
+  <p class="slogan2">云会幕 — 教会影院 × 线上神学院</p>
   <div class="links">
-    <a href="index.html" class="pill" style="text-decoration:none">💻 电脑版</a>
-    <a href="mobile.html" class="pill" style="text-decoration:none">📱 手机版</a>
-    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 后台管理</a>
-    <a href="more.html" class="pill" style="text-decoration:none">✨ 更多功能</a>
-    <a href="PRD.md" class="pill" style="text-decoration:none">📄 PRD</a>
+    <a href="index.html" class="pill" style="text-decoration:none">🏠 首页</a>
+    <a href="cinema.html" class="pill" style="text-decoration:none">🎬 影院</a>
+    <a href="live.html" class="pill" style="text-decoration:none">🔴 直播</a>
+    <a href="seminary.html" class="pill" style="text-decoration:none">🎓 神学院</a>
+    <a href="community.html" class="pill" style="text-decoration:none">👥 社区</a>
+    <a href="my.html" class="pill" style="text-decoration:none">❤️ 我的</a>
+    <a href="live-admin.html" class="pill" style="text-decoration:none">🎛️ 直播后台</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 管理后台</a>
   </div>
 </footer>
 <div class="toast" id="toast"></div>
@@ -149,16 +150,16 @@ var n=1284;setInterval(function(){n=Math.max(900,Math.min(1600,n+Math.floor(Math
 function sendChat(){
   var inp=document.getElementById('chatInput'),q=inp.value.trim();if(!q)return;
   var box=document.getElementById('chatBox'),m=document.createElement('div');m.className='msg2';
-  m.innerHTML='<b class="who2">🌐 我（AI 已翻译）</b><span>'+q.replace(/</g,'&lt;')+'</span>';box.appendChild(m);inp.value='';box.scrollTop=box.scrollHeight;
+  m.innerHTML='<b class="who2">🌐 我</b><span>'+q.replace(/</g,'&lt;')+'</span><span class="tr">→ AI 已同步翻译为所选语言</span>';
+  box.appendChild(m);inp.value='';box.scrollTop=box.scrollHeight;
 }
 var polled=false;
 function vote(el,idx){
   if(polled){toast('⏳ 你已投过票了');return;}polled=true;
-  var rows=document.querySelectorAll('.poll-row'),vals=[32,46,22];
-  vals[idx]+=3;
+  var rows=document.querySelectorAll('.poll-row'),vals=[32,46,22];vals[idx]+=3;
   var sum=vals.reduce(function(a,b){return a+b;},0);
   rows.forEach(function(r,i){r.querySelector('i').style.width=Math.round(vals[i]/sum*100)+'%';r.querySelector('b').textContent=Math.round(vals[i]/sum*100)+'%';});
-  toast('🗳️ 已投票！实时统计已更新');
+  toast('🗳️ 已投票，实时统计已更新');
 }
 </script>
 </body>

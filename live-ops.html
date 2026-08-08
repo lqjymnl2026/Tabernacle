@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云会幕 · 直播导播台</title>
+<style>
+  :root{--ink:#0e1228;--sub:#5a6280;--line:#e6e8f2;--bg:#f4f5fb;--brand:#4f46e5;--brand2:#7c3aed;--gold:#c9a227;--red:#dc2626;--green:#16a34a;--orange:#d97706;--radius:12px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);font-size:13px;height:100vh;overflow:hidden}
+  a{text-decoration:none;color:inherit}
+  .app{display:grid;grid-template-rows:44px 1fr;height:100vh}
+  /* 顶部栏 */
+  .topbar{display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--ink);color:#cfd4ee;font-size:13px}
+  .topbar .logo{font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
+  .topbar .logo span{background:linear-gradient(135deg,#f0d98a,#c9a227);color:#241a05;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .status-badge{background:rgba(220,38,38,.2);color:#ff8a8e;border:1px solid rgba(255,255,255,.15);padding:3px 10px;border-radius:999px;font-size:11px;display:flex;align-items:center;gap:6px}
+  .status-badge .dot{width:7px;height:7px;border-radius:50%;background:#ff5a5f;animation:pulse 1.2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .topbar .spacer{flex:1}
+  .topbar .time{font-family:monospace;font-size:14px;color:#fff}
+  /* 主体 */
+  .main{display:grid;grid-template-columns:200px 1fr 280px;gap:0}
+  /* 左侧：场景 + 混音 */
+  .sidebar{background:#111628;color:#cfd4ee;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.08)}
+  .sidebar .grp{font-size:10.5px;color:#6f77a0;letter-spacing:1.5px;padding:12px 14px 6px}
+  .scene-btn{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-radius:0;font-size:13px;transition:.15s;border-left:3px solid transparent}
+  .scene-btn:hover{background:rgba(255,255,255,.06)}
+  .scene-btn.active{background:rgba(79,70,229,.25);border-left-color:var(--brand);color:#fff;font-weight:600}
+  .scene-btn .icon{width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:14px}
+  /* 混音 */
+  .mixer{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding:14px}
+  .mixer .grp{padding:0 0 10px 0}
+  .mixer-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .mixer-row .label{width:64px;font-size:11.5px;color:#a7aed8;flex:0 0 64px}
+  .mixer-row .track{flex:1;height:6px;background:rgba(255,255,255,.12);border-radius:99px;position:relative;cursor:pointer}
+  .mixer-row .track i{position:absolute;top:0;left:0;height:100%;border-radius:99px;background:var(--brand)}
+  .mixer-row .val{width:32px;text-align:right;font-size:11px;color:#a7aed8}
+  /* 中央：导播台 + 监控 */
+  .center{display:grid;grid-template-rows:1fr 220px;background:#0a0d20;overflow:hidden}
+  .preview-area{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:10px}
+  .pv-box{background:#111628;border-radius:10px;overflow:hidden;position:relative;border:2px solid rgba(255,255,255,.1)}
+  .pv-box.program{border-color:var(--green)}
+  .pv-box .label{position:absolute;top:8px;left:8px;font-size:11px;background:rgba(0,0,0,.6);padding:2px 8px;border-radius:6px;color:#fff;z-index:2}
+  .pv-box .label.pv{color:var(--brand2)}
+  .pv-box .label.pg{color:var(--green)}
+  .pv-box .img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;background:linear-gradient(135deg,#141a3d,#251b56)}
+  .pv-box .img.video{font-size:28px}
+  .pv-box .img.video.active{box-shadow:inset 0 0 60px rgba(34,197,94,.3)}
+  .pv-box .img .rec{position:absolute;top:8px;right:8px;font-size:11px;color:var(--red);display:flex;align-items:center;gap:5px}
+  .pv-box .img .rec span{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 1.2s infinite}
+  /* 导播按钮条 */
+  .ctrl-bar{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.08)}
+  .ctrl-btn{padding:10px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:.2s}
+  .ctrl-btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff}
+  .ctrl-btn.primary:hover{transform:scale(1.04)}
+  .ctrl-btn.outline{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff}
+  .ctrl-btn.danger{background:linear-gradient(135deg,#ff6b6b,#e63946);color:#fff}
+  /* 底部监控 */
+  .monitor{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:10px 14px;background:#0a0d20;border-top:1px solid rgba(255,255,255,.08)}
+  .mon-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+  .mon-card h4{font-size:12px;color:var(--gold2);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .mon-card .stat{font-size:22px;font-weight:800;color:#fff;margin-bottom:4px}
+  .mon-card .sub{font-size:11px;color:var(--muted)}
+  .mon-card .list{margin-top:8px;font-size:11.5px;color:#c7cdea}
+  .mon-card .list div{padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .mon-card .list div:last-child{border-bottom:none}
+  /* 右侧：字幕 + 提词 + 投弹 */
+  .right{background:#111628;color:#cfd4ee;display:flex;flex-direction:column;border-left:1px solid rgba(255,255,255,.08)}
+  .right .grp{font-size:10.5px;color:#6f77a0;letter-spacing:1.5px;padding:12px 14px 6px}
+  .teleprompt{background:#1a1f36;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;font-size:14px;line-height:1.8;color:#e3e7fb;margin-bottom:10px}
+  .teleprompt .cur{background:rgba(240,217,138,.25);color:#f0d98a;padding:1px 4px;border-radius:4px}
+  .teleprompt .ctrl{display:flex;gap:6px;margin-top:10px}
+  .teleprompt .ctrl button{flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:6px;cursor:pointer;font-family:inherit;font-size:12px}
+  .teleprompt .ctrl button.on{background:var(--brand);border-color:transparent}
+  /* 投弹区 */
+  .inject{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px;flex:1}
+  .inject h4{font-size:12px;color:var(--gold2);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+  .inject .btns{display:flex;flex-direction:column;gap:8px}
+  .inject .btns button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:#e3e7fb;border-radius:10px;padding:10px 14px;text-align:left;font-size:13px;cursor:pointer;font-family:inherit;transition:.2s}
+  .inject .btns button:hover{border-color:rgba(240,217,138,.5);background:rgba(240,217,138,.08)}
+  .inject .btns button .tag{float:right;font-size:10.5px;background:rgba(79,70,229,.3);border-radius:999px;padding:1px 8px}
+  /* 弹窗 */
+  .modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:flex;align-items:center;justify-content:center}
+  .modal-mask.hidden{display:none}
+  .modal{background:#fff;border-radius:18px;padding:28px;width:420px;max-width:92vw;color:var(--ink);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .modal h3{font-size:17px;margin-bottom:16px}
+  .modal .row{display:flex;gap:12px;margin-bottom:14px}
+  .modal .row label{flex:1}
+  .modal input,.modal select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13.5px;color:var(--ink);outline:none;font-family:inherit}
+  .modal .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+  .modal .actions button{padding:10px 20px;border-radius:10px;font-size:13.5px;cursor:pointer;font-family:inherit;font-weight:600;border:none}
+  .modal .actions .btn-ok{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff}
+  .modal .actions .btn-cancel{background:#fff;border:1px solid var(--line)!important;color:var(--sub)}
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);background:var(--ink);color:#fff;padding:11px 22px;border-radius:12px;font-size:13px;z-index:200;transition:.35s;opacity:0}
+  .toast.show{transform:translate(-50%,0);opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 顶部 -->
+  <div class="topbar">
+    <div class="logo"><span>🔴</span>云会幕 导播台</div>
+    <div class="status-badge" id="statusBadge"><span class="dot"></span> OFF AIR</div>
+    <div class="spacer"></div>
+    <div class="pill" style="font-size:11px;color:#cfd4ee">🔗 连线：<b style="color:var(--green)">● 已连接</b></div>
+    <div class="pill" style="font-size:11px;color:#cfd4ee">⏱️ <span id="liveTime">00:00:00</span></div>
+    <div class="pill" style="font-size:11px;color:#cfd4ee">🌐 <b>中文</b> / 日本語 / English</div>
+    <a href="live.html" target="_blank" class="pill" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff">🖥️ 预览前端</a>
+  </div>
+  <div class="main">
+    <!-- 左侧 -->
+    <div class="sidebar">
+      <div class="grp">场景（Scene）</div>
+      <div class="scene-btn active" data-scene="开场"><div class="icon">🚪</div>开场</div>
+      <div class="scene-btn" data-scene="诗歌"><div class="icon">🎵</div>诗歌</div>
+      <div class="scene-btn" data-scene="祷告"><div class="icon">🙏</div>祷告</div>
+      <div class="scene-btn" data-scene="讲道"><div class="icon">🎤</div>讲道</div>
+      <div class="scene-btn" data-scene="见证"><div class="icon">💛</div>见证</div>
+      <div class="scene-btn" data-scene="祝福"><div class="icon">✝️</div>祝福</div>
+      <div class="scene-btn" data-scene="结束"><div class="icon">🏁</div>结束</div>
+      <div class="grp" style="margin-top:12px">字幕（Subtitle）</div>
+      <div class="scene-btn" data-scene="中"><div class="icon">🇨🇳</div>中文</div>
+      <div class="scene-btn" data-scene="日"><div class="icon">🇯🇵</div>日本語</div>
+      <div class="scene-btn" data-scene="英"><div class="icon">🇺🇸</div>English</div>
+      <div class="scene-btn" data-scene="无"><div class="icon">✖</div>无</div>
+      <div class="grp" style="margin-top:12px">多机位</div>
+      <div class="scene-btn" data-scene="主"><div class="icon">🎥</div>主机位</div>
+      <div class="scene-btn" data-scene="侧"><div class="icon">📹</div>侧机位</div>
+      <div class="scene-btn" data-scene="特"><div class="icon">🔍</div>特写</div>
+      <div class="scene-btn" data-scene="众"><div class="icon">👥</div>观众席</div>
+      <!-- 混音 -->
+      <div class="mixer">
+        <div class="grp">混音台（Audio）</div>
+        <div class="mixer-row"><span class="label">🎤 主麦</span><div class="track" onclick="setVol(this,.78)"><i style="width:78%"></i></div><span class="val">78%</span></div>
+        <div class="mixer-row"><span class="label">🎤 辅麦</span><div class="track" onclick="setVol(this,.0)"><i style="width:0%"></i></div><span class="val">0%</span></div>
+        <div class="mixer-row"><span class="label">🎵 音乐</span><div class="track" onclick="setVol(this,.45)"><i style="width:45%"></i></div><span class="val">45%</span></div>
+        <div class="mixer-row"><span class="label">🔊 效果</span><div class="track" onclick="setVol(this,.0)"><i style="width:0%"></i></div><span class="val">0%</span></div>
+      </div>
+    </div>
+    <!-- 中央 -->
+    <div class="center">
+      <div class="preview-area">
+        <div class="pv-box">
+          <div class="label pv">👁️ 预览（Preview）</div>
+          <div class="img" id="pvImg">🎥 待机中...</div>
+        </div>
+        <div class="pv-box program">
+          <div class="label pg">📺 节目（Program）</div>
+          <div class="img video active" id="pgImg">⏸️ 未开始</div>
+        </div>
+      </div>
+      <div class="ctrl-bar">
+        <button class="ctrl-btn outline" onclick="prevScene()">⏮ 上一场景</button>
+        <button class="ctrl-btn primary" onclick="switchScene()">▶ 切换场景</button>
+        <button class="ctrl-btn outline" onclick="nextScene()">下一场景 ⏭</button>
+        <button class="ctrl-btn danger" onclick="toggleLive()">🔴 开始直播</button>
+        <button class="ctrl-btn outline" onclick="openTeleprompt()">📝 提词器</button>
+      </div>
+      <div class="monitor">
+        <div class="mon-card">
+          <h4>👥 观众</h4>
+          <div class="stat" id="monViewers">0</div>
+          <div class="sub">当前在线观众</div>
+          <div class="list" id="monViewersList"></div>
+        </div>
+        <div class="mon-card">
+          <h4>💬 弹幕</h4>
+          <div class="stat" id="monChat">0</div>
+          <div class="sub">本场弹幕数</div>
+          <div class="list" id="monChatList"></div>
+        </div>
+        <div class="mon-card">
+          <h4>📖 当前经文</h4>
+          <div style="font-size:15px;font-weight:700;color:var(--gold2);margin:6px 0">-</div>
+          <div class="sub">AI 实时识别经文引用</div>
+          <div style="margin-top:10px">
+            <button class="ctrl-btn outline" style="padding:6px 14px;font-size:12px" onclick="loadVerse('马太福音 5:3-5')">加载经文</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 右侧 -->
+    <div class="right">
+      <div class="grp">提词器（Teleprompter）</div>
+      <div class="teleprompt" id="teleprompt">
+        欢迎来到<b class="cur">云会幕</b>主日崇拜！<br>
+        今天我们一同领受<b class="cur">八福</b>的教导...
+        <div class="ctrl">
+          <button onclick="telePrompt('prev')">⏮ 上一段</button>
+          <button class="on" onclick="telePrompt('play')">▶ 播放</button>
+          <button onclick="telePrompt('next')">下一段 ⏭</button>
+        </div>
+      </div>
+      <div class="grp">投弹（Inject）</div>
+      <div class="inject">
+        <h4>快捷操作 <button class="ctrl-btn outline" style="padding:4px 12px;font-size:11px;float:right" onclick="openVote()">📊 投投票</button></h4>
+        <div class="btns">
+          <button onclick="inject('📖 打开经文：马太福音 5:3-5')"><span class="tag">经文</span>打开经文页面</button>
+          <button onclick="inject('🙏 代祷时段开始...')"><span class="tag">祷告</span>开启代祷时段</button>
+          <button onclick="inject('🎵 诗歌敬拜开始...')"><span class="tag">音乐</span>诗歌敬拜</button>
+          <button onclick="inject('📺 镜头切到讲道位')"><span class="tag">机位</span>切换机位</button>
+          <button onclick="inject('🗳️ 发起投票...')"><span class="tag">互动</span>发起投票</button>
+          <button onclick="inject('🔔 播放开场钟声...')"><span class="tag">特效</span>音效/特效</button>
+        </div>
+      </div>
+      <div class="grp" style="margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)">
+        <div style="font-size:11.5px;color:#6f77a0">🎛️ 导播台 v1.0 · 云会幕</div>
+        <div style="font-size:11px;color:#4a5280;margin-top:4px">前端实时同步 · 字幕 AI 翻译 · 多机位</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 提词弹窗 -->
+<div class="modal-mask hidden" id="telepromptModal">
+  <div class="modal">
+    <h3>📝 提词器 · 编辑讲章</h3>
+    <div class="row"><label style="flex:1"><div style="font-size:11.5px;color:var(--sub);margin-bottom:4px">标题</div><input id="tpTitle" value="登山宝训 · 八福"></label></div>
+    <div style="margin-bottom:14px"><div style="font-size:11.5px;color:var(--sub);margin-bottom:4px">讲章内容（支持换行）</div>
+    <textarea id="tpContent" style="width:100%;min-height:160px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:14px;color:var(--ink);outline:none;resize:vertical;font-family:inherit">${document.getElementById('teleprompt').innerText}</textarea></div>
+    <div class="actions">
+      <button class="btn-cancel" onclick="closeTeleprompt()">取消</button>
+      <button class="btn-ok" onclick="applyTeleprompt()">应用并自动滚动</button>
+    </div>
+  </div>
+</div>
+
+<!-- 投票弹窗 -->
+<div class="modal-mask hidden" id="voteModal">
+  <div class="modal">
+    <h3>📊 发起投票</h3>
+    <div class="row"><label style="flex:1"><div style="font-size:11.5px;color:var(--sub);margin-bottom:4px">题目</div><input id="voteQ" placeholder="今天最触动你的经文是哪一福？"></label></div>
+    <div style="margin-bottom:14px"><div style="font-size:11.5px;color:var(--sub);margin-bottom:6px">选项（每行一个）</div>
+    <textarea id="voteOpts" style="width:100%;min-height:80px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:14px;color:var(--ink);outline:none;resize:vertical;font-family:inherit">虚心的人
+使人和睦的人
+清心的人</textarea></div>
+    <div class="actions">
+      <button class="btn-cancel" onclick="closeVote()">取消</button>
+      <button class="btn-ok" onclick="launchVote()">🚀 发布到直播间</button>
+    </div>
+  </div>
+</div>
+
+<!-- 场景弹窗 -->
+<div class="modal-mask hidden" id="sceneModal">
+  <div class="modal">
+    <h3>⏭ 切换场景</h3>
+    <div style="margin-bottom:14px"><div style="font-size:11.5px;color:var(--sub);margin-bottom:4px">目标场景</div>
+    <select id="sceneSelect" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:14px;color:var(--ink);outline:none;font-family:inherit">
+      <option>开场</option><option>诗歌</option><option>祷告</option><option selected>讲道</option><option>见证</option><option>祝福</option><option>结束</option>
+    </select></div>
+    <div class="actions">
+      <button class="btn-cancel" onclick="closeSceneModal()">取消</button>
+      <button class="btn-ok" onclick="confirmSwitch()">✅ 切换</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  var states={scene:'开场',pv:null,pg:null,online:1284,chat:3912,live:false,start:Date.now(),elapsed:0};
+  var scenes=['开场','诗歌','祷告','讲道','见证','祝福','结束'];
+  var curIdx=0;
+  var tvTimer=null;
+  // 时间
+  setInterval(function(){
+    var d=new Date();
+    document.getElementById('liveTime').textContent=d.toLocaleTimeString('zh-CN',{hour12:false});
+    if(states.live){
+      states.elapsed=Math.floor((Date.now()-states.start)/1000);
+      var h=Math.floor(states.elapsed/3600),m=Math.floor(states.elapsed%3600/60),s=states.elapsed%60;
+      document.getElementById('liveTime').textContent=h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+    }
+  },1000);
+  // 观众模拟
+  setInterval(function(){
+    states.online=Math.max(800,Math.min(2000,states.online+Math.floor(Math.random()*15-7)));
+    document.getElementById('monViewers').textContent=states.online.toLocaleString();
+    var items=['🇨🇳 林姊妹','🇯🇵 田中','🇺🇸 Sarah','🇰🇷 민지','🇪🇸 Maria','🇨🇳 李弟兄'];
+    var el=document.getElementById('monViewersList');
+    if(el.firstChild){el.firstChild.remove();}
+    el.innerHTML='<div style="color:#4ade80">▶ 新增：'+items[Math.floor(Math.random()*items.length)]+'</div>';
+  },3000);
+  // 弹幕模拟
+  setInterval(function(){
+    if(!states.live)return;
+    states.chat++;
+    document.getElementById('monChat').textContent=states.chat;
+    var msgs=['🙏 阿们！','太棒了','求主祝福','好感动','谢谢牧者','愿神赐福','🙌','哈利路亚','Amen','太棒了今天的道'];
+    var el=document.getElementById('monChatList');
+    if(el.firstChild){el.firstChild.remove();}
+    el.innerHTML='<div>'+msgs[Math.floor(Math.random()*msgs.length)]+'</div>';
+  },1800);
+  // 场景切换
+  document.querySelectorAll('.scene-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var s=this.dataset.scene;
+      if(s==='中'||s==='日'||s==='英'||s==='无'){toast('🌐 字幕已切换为：'+s);return;}
+      toast('🎬 场景切换 → '+s+'（预览中，点击「切换」生效）');
+      var prev=document.getElementById('pvImg');
+      var icons={开场:'🚪',诗歌:'🎵',祷告:'🙏',讲道:'🎤',见证:'💛',祝福:'✝️',结束:'🏁',主:'🎥',侧:'📹',特:'🔍',众:'👥'};
+      prev.textContent=(icons[s]||'🎥')+' '+s;
+      document.querySelectorAll('.scene-btn').forEach(function(b){b.classList.remove('active');});
+      this.classList.add('active');
+    });
+  });
+  function switchScene(){
+    var active=document.querySelector('.scene-btn.active');
+    if(!active){toast('⚠️ 请先选择一个场景');return;}
+    var s=active.dataset.scene;
+    if(!scenes.includes(s)){toast('⚠️ 非场景按钮');return;}
+    document.getElementById('pgImg').textContent='🎬 '+s+'（直播中）';
+    document.getElementById('pgImg').classList.add('active');
+    states.scene=s;
+    toast('✅ 场景切换：'+s+' → 已上屏');
+  }
+  function prevScene(){
+    var active=document.querySelector('.scene-btn.active');
+    var idx=scenes.indexOf(active?active.dataset.scene:'开场');
+    if(idx>0){
+      var btns=document.querySelectorAll('.scene-btn[data-scene]');
+      var target=scenes[idx-1];
+      btns.forEach(function(b){if(b.dataset.scene===target)b.click();});
+    }
+  }
+  function nextScene(){
+    var active=document.querySelector('.scene-btn.active');
+    var idx=scenes.indexOf(active?active.dataset.scene:'开场');
+    if(idx<scenes.length-1){
+      var btns=document.querySelectorAll('.scene-btn[data-scene]');
+      var target=scenes[idx+1];
+      btns.forEach(function(b){if(b.dataset.scene===target)b.click();});
+    }
+  }
+  // 开始/结束直播
+  function toggleLive(){
+    states.live=!states.live;
+    var badge=document.getElementById('statusBadge');
+    if(states.live){
+      badge.innerHTML='<span class="dot"></span> LIVE';
+      badge.style.background='rgba(220,38,38,.3)';
+      states.start=Date.now();
+      toast('🔴 直播已开始！观众可在 live.html 看到');
+      document.getElementById('pgImg').textContent='🎬 '+states.scene+'（直播中）';
+    }else{
+      badge.innerHTML='OFF AIR';
+      badge.style.background='rgba(220,38,38,.15)';
+      toast('⏹️ 直播已停止');
+      document.getElementById('pgImg').textContent='⏸️ 未开始';
+      document.getElementById('pgImg').classList.remove('active');
+    }
+  }
+  // 混音
+  function setVol(track,vol){
+    var pct=Math.round(vol*100);
+    track.querySelector('i').style.width=pct+'%';
+    track.nextElementSibling.textContent=pct+'%';
+  }
+  // 提词
+  function openTeleprompt(){document.getElementById('telepromptModal').classList.remove('hidden');}
+  function closeTeleprompt(){document.getElementById('telepromptModal').classList.add('hidden');}
+  function applyTeleprompt(){
+    var c=document.getElementById('tpContent').value;
+    document.getElementById('teleprompt').innerHTML=c.replace(/\n/g,'<br>')+'<div class="ctrl"><button onclick="telePrompt(\'prev\')">⏮</button><button class="on" onclick="telePrompt(\'play\')">▶</button><button onclick="telePrompt(\'next\')">⏭</button></div>';
+    closeTeleprompt();
+    toast('✅ 提词器已更新');
+  }
+  function telePrompt(act){
+    if(act==='play'){
+      var el=document.getElementById('teleprompt');
+      el.scrollBy({top:60,behavior:'smooth'});
+      tvTimer=setInterval(function(){
+        var t=document.getElementById('teleprompt');
+        if(t.scrollTop+t.clientHeight>=t.scrollHeight-10){clearInterval(tvTimer);toast('⏹ 已滚动到底');}
+      },600);
+    }
+  }
+  // 投弹
+  function inject(msg){
+    toast('📡 已投弹：'+msg);
+    var el=document.getElementById('monChatList');
+    if(el.firstChild){el.firstChild.remove();}
+    el.innerHTML='<div style="color:var(--gold2)">📡 '+msg+'</div>';
+  }
+  // 加载经文
+  function loadVerse(ref){
+    toast('📖 已加载经文：'+ref+'（将同步到前端）');
+    document.querySelector('.mon-card:last-child div').textContent=ref;
+  }
+  // 投票
+  function openVote(){document.getElementById('voteModal').classList.remove('hidden');}
+  function closeVote(){document.getElementById('voteModal').classList.add('hidden');}
+  function launchVote(){
+    var q=document.getElementById('voteQ').value.trim();
+    var opts=document.getElementById('voteOpts').value.trim().split('\n').filter(Boolean);
+    if(!q){toast('⚠️ 请输入题目');return;}
+    closeVote();
+    toast('🗳️ 投票已发布：'+q+'（共'+opts.length+'选项）');
+  }
+  // sceneModal
+  function openSceneModal(){document.getElementById('sceneModal').classList.remove('hidden');}
+  function closeSceneModal(){document.getElementById('sceneModal').classList.add('hidden');}
+  function confirmSwitch(){
+    var s=document.getElementById('sceneSelect').value;
+    document.querySelectorAll('.scene-btn').forEach(function(b){if(b.dataset.scene===s)b.click();});
+    closeSceneModal();
+    switchScene();
+  }
+  // toast
+  var toastTimer;
+  function toast(msg){
+    var t=document.getElementById('toast');
+    t.textContent=msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){t.classList.remove('show');},2600);
+  }
+</script>
+</body>
+</html>

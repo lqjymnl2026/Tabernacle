@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云会幕 · 课程</title>
+<link rel="stylesheet" href="assets.css">
+<style>
+  .course-hero{display:flex;gap:24px;align-items:center;padding:34px;flex-wrap:wrap}
+  .course-hero .ch-ic{width:96px;height:96px;flex:0 0 96px;border-radius:24px;background:linear-gradient(135deg,var(--gold2),var(--gold));display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 14px 40px rgba(201,162,39,.4)}
+  .course-hero .ch-body{flex:1;min-width:260px}
+  .course-hero h1{font-size:26px;font-family:var(--serif);margin-bottom:6px}
+  .course-hero .ch-meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-top:10px}
+  .course-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;padding-top:8px}
+  .cdesc{font-size:14.5px;color:#d5daf2;line-height:2}
+  .rel{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--gold2);border:1px solid rgba(240,217,138,.4);border-radius:999px;padding:4px 13px;margin-right:8px;margin-bottom:8px}
+  @media(max-width:1060px){.course-layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-inner">
+  <a class="brand" href="index.html"><span class="mark">🎬</span><span class="name">云会幕<small>CHURCH CINEMA · SEMINARY</small></span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">首页</a>
+    <a href="cinema.html">影院</a>
+    <a href="live.html">直播</a>
+    <a href="seminary.html">神学院</a>
+    <a href="community.html">社区</a>
+    <a href="my.html">我的</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang" onclick="toast('🌐 语言切换（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-red btn-sm nav-cta">🔴 进入直播间</a>
+  </div>
+  <button class="hamburger">☰</button>
+</div></nav>
+
+<main class="wrap">
+  <div class="box course-hero" style="margin-top:24px">
+    <div class="ch-ic" id="cIcon">🌱</div>
+    <div class="ch-body">
+      <h1 id="cTitle">信仰入门 · 认识神</h1>
+      <p id="cDesc" style="color:#c3c9ea;font-size:14.5px">从零开始认识那位创造天地的神：祂是谁、祂做了什么、祂如何与我们相遇。</p>
+      <div class="ch-meta" id="cMeta"></div>
+      <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">
+        <a class="btn btn-gold" href="lesson.html?id=1&l=1">▶ 开始学习</a>
+        <button class="btn btn-ghost" onclick="toast('❤️ 已收藏课程')">❤️ 收藏</button>
+        <button class="btn btn-ghost" onclick="toast('🔔 开课提醒已开启')">🔔 提醒</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-layout">
+    <div>
+      <div class="box" style="margin-top:20px">
+        <h3>📚 课程章节</h3>
+        <div id="lessonList"></div>
+      </div>
+    </div>
+    <div>
+      <div class="box" style="margin-top:20px">
+        <h3>👤 讲师介绍</h3>
+        <p id="lecturer" style="font-size:14.5px;color:#d5daf2;line-height:2"></p>
+      </div>
+      <div class="box" style="margin-top:16px">
+        <h3>🎓 完成课程你将获得</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;color:#e3e7fb">
+          <div>📖 系统的圣经/神学知识</div>
+          <div>📝 结业证书（可分享）</div>
+          <div>🔥 进入下一级学习的资格</div>
+          <div>👥 同班讨论与代祷社群</div>
+        </div>
+        <button class="btn btn-gold btn-sm" style="margin-top:14px" onclick="toast('🎓 完成全部课时后颁发证书（演示）')">🎓 查看证书要求</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="cross">✝️</div>
+  <p class="slogan2">云会幕 — 教会影院 × 线上神学院</p>
+  <div class="links">
+    <a href="index.html" class="pill" style="text-decoration:none">🏠 首页</a>
+    <a href="cinema.html" class="pill" style="text-decoration:none">🎬 影院</a>
+    <a href="live.html" class="pill" style="text-decoration:none">🔴 直播</a>
+    <a href="seminary.html" class="pill" style="text-decoration:none">🎓 神学院</a>
+    <a href="community.html" class="pill" style="text-decoration:none">👥 社区</a>
+    <a href="my.html" class="pill" style="text-decoration:none">❤️ 我的</a>
+    <a href="live-admin.html" class="pill" style="text-decoration:none">🎛️ 直播后台</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 管理后台</a>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+<div class="stars" id="stars"></div>
+<script src="assets.js"></script>
+<script>
+var COURSES={
+ '1':['🌱','信仰入门 · 认识神','L1 · 信仰入门','张牧 / 王教授','12 课时 · 约 6 小时','3,240 人学习','从零开始认识那位创造天地的神：祂是谁、祂做了什么、祂如何与我们相遇。','1-12'],
+ '2':['📖','新约概论','L2 · 圣经基础','李教授','14 课时 · 约 7 小时','1,880 人学习','一卷一卷走过新约 27 卷：福音书、使徒行传、保罗书信与启示录的整体脉络。','1-14'],
+ '3':['⚖️','因信称义 · 救恩论','L3 · 神学基础','王教授','8 课时 · 约 4 小时','1,186 人学习','深入罗马书 3-5 章与系统神学的救恩论：称义、成圣与确据。','1-8'],
+ '4':['🙏','祷告与读经习惯','L1 · 信仰入门','李姊妹','10 课时 · 约 5 小时','2,860 人学习','建立稳定的灵修生活：祷告的方法、读经的框架与属灵操练。','1-10'],
+ '5':['📜','旧约概论','L2 · 圣经基础','陈教授','14 课时 · 约 7 小时','1,940 人学习','从创造到先知：旧约 39 卷的历史脉络与救赎主线。','1-14'],
+ '6':['✝️','基督论','L3 · 神学基础','张牧','9 课时 · 约 4.5 小时','1,020 人学习','耶稣是谁？道成肉身、神人二性与救赎的奥秘。','1-9'],
+ '7':['🎤','讲道学基础','L4 · 服事装备','张牧','10 课时 · 约 5 小时','642 人学习','释经讲道的方法：从经文到信息，从信息到讲章。','1-10'],
+ '8':['🔥','青年事工导论','L4 · 服事装备','Pastor David','9 课时 · 约 4.5 小时','518 人学习','认识这一代青年：文化、危机与福音的切入点。','1-9']
+};
+var id=new URLSearchParams(location.search).get('id')||'1';
+var c=COURSES[id]||COURSES['1'];
+document.title='云会幕 · '+c[1];
+document.getElementById('cIcon').textContent=c[0];
+document.getElementById('cTitle').textContent=c[1];
+document.getElementById('cDesc').textContent=c[6];
+document.getElementById('cMeta').innerHTML='<span>🏷️ '+c[2]+'</span><span>👨‍🏫 '+c[3]+'</span><span>⏱️ '+c[4]+'</span><span>👥 '+c[5]+'</span>';
+document.getElementById('lecturer').textContent=c[3]+'：课程由 '+c[3].split(' / ')[0]+' 主讲，结合视频讲道、互动测验与讨论作业，帮助你扎实装备。';
+var range=c[7].split('-'),start=parseInt(range[0]),end=parseInt(range[1]);
+var lessons='';
+  var titles=['认识独一真神','神的属性','神的创造','人的堕落','救恩的预备','耶稣基督','十字架与复活','圣灵的工作','回应与委身','活在教会中','祷告的操练','读经的方法'];
+  for(var i=start;i<=end;i++){
+    var done=(i>start&&i<=start+1)?' done':'';
+    var title=titles[i-1]||'课程主题 '+i;
+    lessons+='<a class="lesson '+(i===start?'now':'')+done+'" href="lesson.html?id='+id+'&l='+i+'"><span class="l-n">'+(i===start?'▶':i)+'</span><div class="l-body"><b>第 '+i+' 课 · '+title+'</b><small>'+c[0]+' · 视频课</small></div><span class="l-time">30:00</span></a>';
+  }
+  document.getElementById('lessonList').innerHTML=lessons;
+</script>
+</body>
+</html>

@@ -2,25 +2,17 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>云会幕 · 后台管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云会幕 · 管理后台</title>
 <style>
-  :root{
-    --ink:#0f1428; --sub:#5a6280; --line:#e6e8f2; --bg:#f4f5fb;
-    --brand:#4f46e5; --brand2:#7c3aed; --gold:#c9a227; --goldbg:#fbf4dd;
-    --ok:#16a34a; --okbg:#e7f7ec; --warn:#d97706; --warnbg:#fdf3e3;
-    --danger:#dc2626; --dangerbg:#fdeaea; --radius:14px;
-  }
+  :root{--ink:#10142b;--sub:#5a6280;--line:#e6e8f2;--bg:#f4f5fb;--brand:#4f46e5;--gold:#c9a227;--ok:#16a34a;--okbg:#e7f7ec;--warn:#d97706;--warnbg:#fdf3e3;--danger:#dc2626;--dangerbg:#fdeaea;--radius:14px}
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
   a{text-decoration:none;color:inherit}
-
   .layout{display:flex;min-height:100vh}
-
-  /* 侧边栏 */
-  .side{width:232px;flex:0 0 232px;background:linear-gradient(180deg,#0d1228,#171a3a 70%,#241244);color:#cfd4ee;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+  .side{width:228px;flex:0 0 228px;background:linear-gradient(180deg,#0d1228,#171a3a 70%,#241244);color:#cfd4ee;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
   .side .logo{display:flex;align-items:center;gap:9px;padding:20px 20px 16px;font-weight:800;font-size:16px;color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
-  .side .logo .x{color:var(--gold);font-size:19px}
+  .side .logo .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#f0d98a,#c9a227);display:flex;align-items:center;justify-content:center;font-size:16px}
   .side .logo small{display:block;font-size:9.5px;color:#8b93bd;font-weight:400;letter-spacing:2px}
   .side nav{flex:1;overflow-y:auto;padding:12px 10px}
   .side .grp{font-size:10.5px;color:#6f77a0;letter-spacing:2px;padding:14px 10px 6px}
@@ -29,248 +21,116 @@
   .side .item.on{background:linear-gradient(90deg,rgba(99,102,241,.35),rgba(124,58,237,.2));color:#fff;font-weight:600}
   .side .item .badge{margin-left:auto;background:var(--danger);color:#fff;font-size:10px;border-radius:99px;padding:1px 7px}
   .side .foot{padding:14px 18px;font-size:11px;color:#6f77a0;border-top:1px solid rgba(255,255,255,.08)}
-
-  /* 主区 */
-  .main{flex:1;min-width:0;display:flex;flex-direction:column}
-  .topbar{display:flex;align-items:center;gap:14px;padding:14px 26px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
-  .topbar h1{font-size:18px;font-family:"Songti SC","STSong",serif}
-  .topbar .crumb{color:var(--sub);font-size:12px}
+  .main{flex:1;min-width:0}
+  .topbar{display:flex;align-items:center;gap:14px;padding:13px 26px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
+  .topbar h1{font-size:18px}
   .topbar .sp{flex:1}
-  .search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:13px;color:var(--sub);width:240px}
-  .search input{border:none;outline:none;background:none;font-size:13px;color:var(--ink);width:100%;font-family:inherit}
   .chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--sub);cursor:pointer;background:#fff}
-  .chip:hover{color:var(--brand);border-color:var(--brand)}
-  .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}
-
-  .content{padding:22px 26px 40px;max-width:1240px;width:100%}
+  .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--brand),#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .content{padding:22px 26px 40px;max-width:1240px}
   .panel{display:none}
   .panel.on{display:block;animation:fade .25s ease}
   @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
-
-  /* KPI */
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
   .kpi{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
-  .kpi .lab{font-size:12px;color:var(--sub);display:flex;align-items:center;gap:6px}
+  .kpi .lab{font-size:12px;color:var(--sub)}
   .kpi .num{font-size:26px;font-weight:800;margin:6px 0 2px}
   .kpi .delta{font-size:11.5px}
-  .kpi .delta.up{color:var(--ok)} .kpi .delta.down{color:var(--danger)}
-  .kpi .delta .ic{font-size:10px}
-
-  /* 图表区 */
-  .charts{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-top:14px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px}
-  .card h3{font-size:14px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-  .card h3 .right{margin-left:auto;font-size:11px;color:var(--sub);font-weight:400}
-  .bars{display:flex;align-items:flex-end;gap:10px;height:150px;padding-top:8px}
-  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
-  .bar-col .v{height:var(--h);width:100%;max-width:34px;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#818cf8,#4f46e5);position:relative;min-height:6px}
-  .bar-col:nth-child(7) .v{background:linear-gradient(180deg,#f4d98b,#c9a227)}
-  .bar-col .d{font-size:10.5px;color:var(--sub)}
-  .bar-col .val{font-size:10px;color:var(--sub)}
-  .legend{display:flex;flex-direction:column;gap:12px}
-  .lg-row{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--sub)}
-  .lg-row b{color:var(--ink);width:34px}
-  .lg-row .track{flex:1;height:8px;background:#eef0f8;border-radius:99px;overflow:hidden}
-  .lg-row .track i{display:block;height:100%;border-radius:99px}
-  .lg-row .pct{width:38px;text-align:right;font-weight:700;color:var(--ink)}
-
-  /* 表格 */
+  .kpi .delta.up{color:var(--ok)}.kpi .delta.down{color:var(--danger)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-top:14px}
+  .card h3{font-size:14px;margin-bottom:14px}
   .tbl-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:auto;margin-top:14px}
-  table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
   th{background:#fafbfe;text-align:left;padding:11px 16px;color:var(--sub);font-size:11.5px;letter-spacing:.5px;border-bottom:1px solid var(--line);white-space:nowrap}
   td{padding:11px 16px;border-bottom:1px solid #f0f1f8;white-space:nowrap}
-  tr:last-child td{border-bottom:none}
   tr:hover td{background:#fafbff}
   .cell-main{font-weight:600}
   .cell-sub{font-size:11.5px;color:var(--sub)}
   .st{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;padding:3px 10px;border-radius:999px}
-  .st.live{background:var(--dangerbg);color:var(--danger)} .st.live i{width:6px;height:6px;border-radius:50%;background:var(--danger);display:inline-block;animation:blink 1.2s infinite}
-  .st.ok{background:var(--okbg);color:var(--ok)} .st.wait{background:var(--warnbg);color:var(--warn)} .st.gray{background:#eef0f8;color:var(--sub)}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-  .act{display:inline-flex;gap:6px}
+  .st.ok{background:var(--okbg);color:var(--ok)}.st.wait{background:var(--warnbg);color:var(--warn)}.st.gray{background:#eef0f8;color:var(--sub)}
   .btn-s{font-size:12px;padding:4px 11px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--sub);cursor:pointer;font-family:inherit}
   .btn-s:hover{border-color:var(--brand);color:var(--brand)}
-  .btn-s.ok{color:var(--ok);border-color:#bfe6cc;background:var(--okbg)}
-  .btn-s.danger{color:var(--danger);border-color:#f3c6c6;background:var(--dangerbg)}
-  .btn-s.primary{color:#fff;background:var(--brand);border-color:var(--brand)}
-  .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border:none;font-size:13px;font-weight:600;padding:9px 18px;border-radius:10px;cursor:pointer;font-family:inherit}
-  .btn-primary:hover{filter:brightness(1.07)}
-  .btn-ghost{background:#fff;border:1px solid var(--line);font-size:13px;padding:8px 16px;border-radius:10px;cursor:pointer;color:var(--sub);font-family:inherit}
-  .btn-ghost:hover{color:var(--brand);border-color:var(--brand)}
-
+  .btn-primary{background:linear-gradient(135deg,var(--brand),#7c3aed);color:#fff;border:none;font-size:13px;font-weight:600;padding:9px 18px;border-radius:10px;cursor:pointer;font-family:inherit}
   .toolbar{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}
   .toolbar .sp{flex:1}
   .mini-input{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px;color:var(--ink);outline:none;font-family:inherit}
-  .mini-input:focus{border-color:var(--brand)}
-
-  /* 审核卡片 */
-  .queue{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
-  .qcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
-  .qcard .who{font-size:11.5px;color:var(--sub);display:flex;align-items:center;gap:8px}
-  .qcard .who .lang{font-size:10px;background:var(--goldbg);color:var(--gold);border-radius:99px;padding:1px 8px}
-  .qcard p{font-size:13px;margin:8px 0}
+  .qcard{background:#fafbfe;border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:10px}
+  .qcard .who{font-size:11.5px;color:var(--sub)}
+  .qcard p{font-size:13px;margin:6px 0}
   .qcard .acts{display:flex;gap:8px}
-  .qcard .meta{font-size:11px;color:var(--sub);margin-top:8px}
-
-  /* AI 设置 */
-  .toggle-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #f0f1f8}
-  .toggle-row:last-child{border-bottom:none}
-  .toggle-row .info{flex:1}
-  .toggle-row .info b{font-size:13.5px}
-  .toggle-row .info p{font-size:12px;color:var(--sub)}
-  .switch{width:42px;height:24px;border-radius:99px;background:#d7daea;position:relative;cursor:pointer;transition:.2s;flex:0 0 auto}
-  .switch.on{background:var(--brand)}
-  .switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-  .switch.on::after{left:21px}
-
-  .vswitch{position:fixed;right:14px;bottom:14px;z-index:60;display:flex;flex-direction:column;gap:6px}
-  .vswitch a{font-size:11px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 13px;text-decoration:none;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.12)}
-
-  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);background:#0f1428;color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;transition:.35s;opacity:0;z-index:99;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);background:#10142b;color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;transition:.35s;opacity:0;z-index:99}
   .toast.show{transform:translate(-50%,0);opacity:1}
-
-  @media(max-width:1080px){
-    .kpis{grid-template-columns:repeat(2,1fr)}
-    .charts,.queue{grid-template-columns:1fr}
-  }
-  @media(max-width:860px){
-    .side{display:none}
-    .search{width:150px}
-  }
+  @media(max-width:1080px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:860px){.side{display:none}}
 </style>
 </head>
 <body>
 <div class="layout">
-
-  <!-- 侧边栏 -->
   <aside class="side">
-    <div class="logo"><span class="x">✝️</span><div>云会幕 后台<small>YUNHUIMU ADMIN</small></div></div>
+    <div class="logo"><span class="mark">🎬</span><div>云会幕 管理后台<small>ADMIN</small></div></div>
     <nav>
       <div class="grp">总览</div>
-      <div class="item on" data-panel="dash">📊 仪表盘</div>
-      <div class="grp">内容运营</div>
-      <div class="item" data-panel="live">🔴 直播管理 <span class="badge">2</span></div>
-      <div class="item" data-panel="bible">📖 圣经内容</div>
-      <div class="item" data-panel="course">🎓 神学院课程</div>
+      <div class="item on" data-panel="dash">📊 数据看板</div>
+      <div class="grp">内容管理</div>
+      <div class="item" data-panel="videos">🎬 影片管理</div>
+      <div class="item" data-panel="courses">🎓 课程管理</div>
+      <div class="item" data-panel="review">📋 评论审核 <span class="badge">4</span></div>
+      <div class="grp">运营</div>
+      <div class="item" data-panel="users">👤 用户管理</div>
       <div class="item" data-panel="ai">🤖 AI 设置</div>
-      <div class="grp">社区</div>
-      <div class="item" data-panel="user">👤 用户管理</div>
-      <div class="item" data-panel="group">👥 小组管理</div>
-      <div class="item" data-panel="moderate">📋 审核中心 <span class="badge">5</span></div>
-      <div class="grp">系统</div>
-      <div class="item" data-panel="trans">🌍 翻译管理</div>
-      <div class="item" data-panel="serving">🔥 服事管理</div>
-      <div class="item" data-panel="setting">⚙️ 系统设置</div>
     </nav>
-    <div class="foot">管理员：牧者账号<br>最后登录：2026-08-08 21:00</div>
+    <div class="foot">管理员：牧者账号<br>最后登录：2026-08-09 00:40</div>
   </aside>
 
-  <!-- 主区 -->
   <div class="main">
     <div class="topbar">
-      <h1 id="pageTitle">📊 仪表盘</h1>
-      <span class="crumb" id="pageCrumb">总览 / 仪表盘</span>
+      <h1 id="pageTitle">📊 数据看板</h1>
       <div class="sp"></div>
-      <div class="search">🔍<input placeholder="搜索用户 / 经文 / 小组…"></div>
       <span class="chip">🌐 中文</span>
       <div class="avatar">管</div>
     </div>
-
     <div class="content">
-
-      <!-- ========== 仪表盘 ========== -->
       <div class="panel on" id="panel-dash">
         <div class="kpis">
-          <div class="kpi"><div class="lab">👥 今日在线</div><div class="num">2,847</div><div class="delta up"><span class="ic">▲</span> +18% 较昨日</div></div>
-          <div class="kpi"><div class="lab">🧑 注册用户</div><div class="num">12,480</div><div class="delta up"><span class="ic">▲</span> +326 本周</div></div>
-          <div class="kpi"><div class="lab">👥 活跃小组</div><div class="num">86</div><div class="delta up"><span class="ic">▲</span> +5 本周</div></div>
-          <div class="kpi"><div class="lab">🙏 本周祷告</div><div class="num">3,912</div><div class="delta up"><span class="ic">▲</span> +12% 较上周</div></div>
+          <div class="kpi"><div class="lab">🎬 影片总数</div><div class="num">486</div><div class="delta up">▲ +12 本周</div></div>
+          <div class="kpi"><div class="lab">🎓 课程总数</div><div class="num">40</div><div class="delta up">▲ +2 本月</div></div>
+          <div class="kpi"><div class="lab">👥 注册用户</div><div class="num">12,480</div><div class="delta up">▲ +326 本周</div></div>
+          <div class="kpi"><div class="lab">▶️ 本周播放量</div><div class="num">48.2<span style="font-size:14px">万</span></div><div class="delta up">▲ +18%</div></div>
         </div>
-        <div class="kpis" style="margin-top:14px">
-          <div class="kpi"><div class="lab">📖 完成章节（累计）</div><div class="num">184,320</div><div class="delta up"><span class="ic">▲</span> 日人均 1.6 章</div></div>
-          <div class="kpi"><div class="lab">🎓 神学院完成率</div><div class="num">68%</div><div class="delta up"><span class="ic">▲</span> +4% 本月</div></div>
-          <div class="kpi"><div class="lab">🔴 本月直播场次</div><div class="num">34</div><div class="delta down"><span class="ic">▼</span> 2 场待审核</div></div>
-          <div class="kpi"><div class="lab">🌍 覆盖语言</div><div class="num">12</div><div class="delta up"><span class="ic">▲</span> 新增 한국어</div></div>
-        </div>
-        <div class="charts">
-          <div class="card">
-            <h3>📈 近 7 日活跃用户 <span class="right">单位：人次 · 电脑版 + 手机版 + 后台</span></h3>
-            <div class="bars" id="barChart"></div>
-          </div>
-          <div class="card">
-            <h3>🌍 用户语言分布</h3>
-            <div class="legend" id="langLegend"></div>
-          </div>
-        </div>
-        <div class="card" style="margin-top:14px">
+        <div class="card">
           <h3>🕐 最近动态</h3>
           <table>
-            <thead><tr><th>时间</th><th>类型</th><th>内容</th><th>来源</th></tr></thead>
+            <thead><tr><th>时间</th><th>类型</th><th>内容</th></tr></thead>
             <tbody>
-              <tr><td class="cell-sub">21:04</td><td><span class="st ok">祷告</span></td><td class="cell-main">为家人的健康祷告（已审核通过）</td><td class="cell-sub">🇯🇵 东京 · 匿名</td></tr>
-              <tr><td class="cell-sub">21:02</td><td><span class="st live">直播</span></td><td class="cell-main">主日崇拜 · 荣耀的教会 开播</td><td class="cell-sub">直播中心</td></tr>
-              <tr><td class="cell-sub">20:58</td><td><span class="st gray">注册</span></td><td class="cell-main">新用户 Sarah（🇺🇸）完成注册</td><td class="cell-sub">国际版</td></tr>
-              <tr><td class="cell-sub">20:41</td><td><span class="st wait">待审核</span></td><td class="cell-main">见证《神如何带我走过低谷》</td><td class="cell-sub">见证墙</td></tr>
-              <tr><td class="cell-sub">20:30</td><td><span class="st ok">小组</span></td><td class="cell-main">大阪青年查经 新增 2 名成员</td><td class="cell-sub">社区</td></tr>
+              <tr><td class="cell-sub">00:38</td><td><span class="st ok">影片</span></td><td class="cell-main">《登山宝训（二）》已通过审核并上线</td></tr>
+              <tr><td class="cell-sub">00:30</td><td><span class="st wait">待审核</span></td><td class="cell-main">4 条影片评论进入审核队列</td></tr>
+              <tr><td class="cell-sub">昨天</td><td><span class="st ok">课程</span></td><td class="cell-main">「因信称义」课程新增随堂测验</td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- ========== 直播管理 ========== -->
-      <div class="panel" id="panel-live">
+      <div class="panel" id="panel-videos">
         <div class="toolbar">
-          <span style="font-size:13px;color:var(--sub)">共 12 场直播 · 2 场进行中</span>
+          <span style="font-size:13px;color:var(--sub)">486 部影片</span>
           <div class="sp"></div>
-          <select class="mini-input"><option>全部状态</option><option>进行中</option><option>已预约</option><option>已结束</option></select>
-          <button class="btn-primary" onclick="toast('📅 新建直播场次（演示）')">＋ 新建直播</button>
+          <select class="mini-input"><option>全部分类</option><option>讲道</option><option>查经</option><option>圣经电影</option><option>见证</option><option>敬拜</option><option>青年</option></select>
+          <button class="btn-primary" onclick="toast('📤 上传影片（演示）')">＋ 上传影片</button>
         </div>
         <div class="tbl-wrap">
           <table>
-            <thead><tr><th>标题</th><th>类型</th><th>时间</th><th>主讲</th><th>语言</th><th>观看</th><th>状态</th><th>操作</th></tr></thead>
+            <thead><tr><th>标题</th><th>分类</th><th>时长</th><th>播放</th><th>字幕语言</th><th>状态</th><th>操作</th></tr></thead>
             <tbody>
-              <tr><td class="cell-main">主日崇拜 · 荣耀的教会</td><td class="cell-sub">主日</td><td class="cell-sub">今天 10:00</td><td class="cell-sub">张牧</td><td class="cell-sub">🇨🇳 🇯🇵 🇺🇸</td><td>1,284</td><td><span class="st live"><i></i>直播中</span></td><td class="act"><button class="btn-s" onclick="toast('📺 进入直播间（演示）')">观看</button><button class="btn-s" onclick="toast('📋 直播控制台（演示）')">管理</button></td></tr>
-              <tr><td class="cell-main">周三查经 · 罗马书 8 章</td><td class="cell-sub">查经</td><td class="cell-sub">周三 20:00</td><td class="cell-sub">李姊妹</td><td class="cell-sub">🇨🇳</td><td>—</td><td><span class="st wait">已预约</span></td><td class="act"><button class="btn-s" onclick="toast('📝 编辑场次（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">国际青年聚会 · Love & Work</td><td class="cell-sub">青年</td><td class="cell-sub">周五 21:00</td><td class="cell-sub">Pastor David</td><td class="cell-sub">🇺🇸 🇯🇵 🇰🇷</td><td>—</td><td><span class="st wait">已预约</span></td><td class="act"><button class="btn-s" onclick="toast('📝 编辑场次（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">神学院直播课 · 因信称义</td><td class="cell-sub">课程</td><td class="cell-sub">昨天 19:30</td><td class="cell-sub">王教授</td><td class="cell-sub">🇨🇳 🇯🇵</td><td>862</td><td><span class="st gray">已结束</span></td><td class="act"><button class="btn-s" onclick="toast('📝 已自动生成直播笔记（演示）')">笔记</button></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="card" style="margin-top:14px">
-          <h3>🎙️ 直播 AI 能力状态</h3>
-          <div class="legend">
-            <div class="lg-row"><b>实时字幕</b><div class="track"><i style="width:98%;background:#4f46e5"></i></div><span class="pct">98%</span></div>
-            <div class="lg-row"><b>AI 翻译</b><div class="track"><i style="width:94%;background:#4f46e5"></i></div><span class="pct">94%</span></div>
-            <div class="lg-row"><b>经文识别</b><div class="track"><i style="width:96%;background:#4f46e5"></i></div><span class="pct">96%</span></div>
-            <div class="lg-row"><b>语音翻译</b><div class="track"><i style="width:82%;background:#c9a227"></i></div><span class="pct">82%</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ========== 圣经内容 ========== -->
-      <div class="panel" id="panel-bible">
-        <div class="toolbar">
-          <span style="font-size:13px;color:var(--sub)">66 卷 · 1,189 章 · 已完成互动化 <b style="color:var(--ok)">12 卷</b></span>
-          <div class="sp"></div>
-          <select class="mini-input"><option>全部类别</option><option>律法书</option><option>历史书</option><option>诗歌智慧书</option><option>先知书</option><option>福音书</option><option>书信</option><option>启示录</option></select>
-          <button class="btn-ghost" onclick="toast('⬆️ 批量导入多语言圣经数据（演示）')">⬆️ 批量导入</button>
-        </div>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>书卷</th><th>类别</th><th>章节</th><th>书卷地图</th><th>互动化进度</th><th>语言覆盖</th><th>操作</th></tr></thead>
-            <tbody>
-              <tr><td class="cell-main">创世记</td><td class="cell-sub">律法书</td><td>50</td><td><span class="st ok">已完成</span></td><td><span class="st ok">100%</span></td><td class="cell-sub">12 种</td><td class="act"><button class="btn-s" onclick="toast('📝 编辑创世记（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">出埃及记</td><td class="cell-sub">律法书</td><td>40</td><td><span class="st wait">编辑中</span></td><td><span class="st wait">68%</span></td><td class="cell-sub">12 种</td><td class="act"><button class="btn-s" onclick="toast('📝 继续编辑出埃及记（演示）')">继续</button></td></tr>
-              <tr><td class="cell-main">马太福音</td><td class="cell-sub">福音书</td><td>28</td><td><span class="st ok">已完成</span></td><td><span class="st ok">100%</span></td><td class="cell-sub">12 种</td><td class="act"><button class="btn-s" onclick="toast('📝 编辑马太福音（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">诗篇</td><td class="cell-sub">诗歌智慧书</td><td>150</td><td><span class="st gray">未开始</span></td><td><span class="st gray">0%</span></td><td class="cell-sub">12 种</td><td class="act"><button class="btn-s" onclick="toast('🎵 诗篇与音乐模块联动（演示）')">关联音乐</button></td></tr>
-              <tr><td class="cell-main">启示录</td><td class="cell-sub">预言书</td><td>22</td><td><span class="st gray">未开始</span></td><td><span class="st gray">0%</span></td><td class="cell-sub">12 种</td><td class="act"><button class="btn-s" onclick="toast('🗺️ 创建启示录书卷地图（演示）')">创建地图</button></td></tr>
+              <tr><td class="cell-main">王牧 · 登山宝训（一）：八福</td><td class="cell-sub">讲道</td><td>48:20</td><td>2.4万</td><td class="cell-sub">6 种</td><td><span class="st ok">已上线</span></td><td><button class="btn-s" onclick="toast('📝 编辑（演示）')">编辑</button></td></tr>
+              <tr><td class="cell-main">《耶稣传 · 约翰福音》</td><td class="cell-sub">圣经电影</td><td>2:46:00</td><td>1.2万</td><td class="cell-sub">12 种</td><td><span class="st ok">已上线</span></td><td><button class="btn-s" onclick="toast('📝 编辑（演示）')">编辑</button></td></tr>
+              <tr><td class="cell-main">青年特会：为什么神不回答我的祷告？</td><td class="cell-sub">青年</td><td>42:30</td><td>9,240</td><td class="cell-sub">4 种</td><td><span class="st wait">字幕处理中</span></td><td><button class="btn-s" onclick="toast('🤖 重新生成字幕（演示）')">生成字幕</button></td></tr>
+              <tr><td class="cell-main">周三查经回放 · 罗马书 8 章</td><td class="cell-sub">查经</td><td>55:40</td><td>6,980</td><td class="cell-sub">3 种</td><td><span class="st ok">已上线</span></td><td><button class="btn-s" onclick="toast('📝 编辑（演示）')">编辑</button></td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- ========== 神学院 ========== -->
-      <div class="panel" id="panel-course">
+      <div class="panel" id="panel-courses">
         <div class="toolbar">
           <span style="font-size:13px;color:var(--sub)">40 门课程 · 4 个等级</span>
           <div class="sp"></div>
@@ -278,231 +138,73 @@
         </div>
         <div class="tbl-wrap">
           <table>
-            <thead><tr><th>课程</th><th>等级</th><th>类别</th><th>章节</th><th>学生</th><th>完成率</th><th>状态</th><th>操作</th></tr></thead>
+            <thead><tr><th>课程</th><th>等级</th><th>课时</th><th>学生</th><th>完成率</th><th>状态</th></tr></thead>
             <tbody>
-              <tr><td class="cell-main">信仰入门 · 认识神</td><td class="cell-sub">🌱 L1</td><td class="cell-sub">入门</td><td>12</td><td>3,240</td><td><span class="st ok">82%</span></td><td><span class="st ok">发布中</span></td><td class="act"><button class="btn-s" onclick="toast('📝 编辑课程（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">因信称义（系统神学）</td><td class="cell-sub">🌳 L3</td><td class="cell-sub">神学</td><td>8</td><td>1,186</td><td><span class="st ok">74%</span></td><td><span class="st ok">发布中</span></td><td class="act"><button class="btn-s" onclick="toast('📝 编辑课程（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">讲道学基础</td><td class="cell-sub">🌲 L4</td><td class="cell-sub">服事装备</td><td>10</td><td>642</td><td><span class="st wait">56%</span></td><td><span class="st wait">草稿</span></td><td class="act"><button class="btn-s" onclick="toast('📝 编辑课程（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">青年事工导论</td><td class="cell-sub">🌲 L4</td><td class="cell-sub">服事装备</td><td>9</td><td>518</td><td><span class="st wait">61%</span></td><td><span class="st ok">发布中</span></td><td class="act"><button class="btn-s" onclick="toast('📝 编辑课程（演示）')">编辑</button></td></tr>
+              <tr><td class="cell-main">信仰入门 · 认识神</td><td class="cell-sub">🌱 L1</td><td>12</td><td>3,240</td><td><span class="st ok">82%</span></td><td><span class="st ok">发布中</span></td></tr>
+              <tr><td class="cell-main">因信称义 · 救恩论</td><td class="cell-sub">🌳 L3</td><td>8</td><td>1,186</td><td><span class="st ok">74%</span></td><td><span class="st ok">发布中</span></td></tr>
+              <tr><td class="cell-main">讲道学基础</td><td class="cell-sub">🌲 L4</td><td>10</td><td>642</td><td><span class="st wait">56%</span></td><td><span class="st wait">草稿</span></td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- ========== AI 设置 ========== -->
-      <div class="panel" id="panel-ai">
-        <div class="card" style="margin-top:0">
-          <h3>🤖 AI 能力开关</h3>
-          <div class="toggle-row"><div class="info"><b>AI 圣经导师</b><p>引导式查经问答（提问→阅读→观察→思考→发现）</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="toggle-row"><div class="info"><b>直播 AI 实时字幕</b><p>Whisper 语音识别，输出原语字幕</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="toggle-row"><div class="info"><b>AI 多语言翻译</b><p>字幕/语音跨语言实时翻译，支持 12 种语言</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="toggle-row"><div class="info"><b>自动识别经文引用</b><p>讲道中提到「马太福音5:44」时自动打开经文页</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="toggle-row"><div class="info"><b>自动生成直播笔记</b><p>直播结束后生成查经要点与笔记</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="toggle-row"><div class="info"><b>多版本内容生成（儿童/青年/成人/神学）</b><p>同一段圣经自动适配年龄与深度</p></div><div class="switch" onclick="this.classList.toggle('on')"></div></div>
-        </div>
+      <div class="panel" id="panel-review">
         <div class="card">
-          <h3>🛡️ 内容安全与神学审核</h3>
-          <div class="toggle-row"><div class="info"><b>AI 内容标注</b><p>所有 AI 生成内容标注「AI 生成」，重要神学问题转人工审核</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="toggle-row"><div class="info"><b>敏感内容过滤</b><p>祷告墙/见证墙/聊天室自动过滤不当内容</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="toggle-row"><div class="info"><b>儿童模式白名单</b><p>儿童内容仅允许白名单圣经材料与游戏</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
+          <h3>📋 评论审核队列（4 条）</h3>
+          <div class="qcard" id="r1"><div class="who">🇯🇵 东京 · 对《耶稣传》</div><p>感動しました。家族と一緒に観ます！</p><div class="acts"><button class="btn-s" onclick="approve('r1')">✓ 通过</button><button class="btn-s" onclick="approve('r1')">✗ 屏蔽</button></div></div>
+          <div class="qcard" id="r2"><div class="who">🇨🇳 上海 · 对《八福》</div><p>讲得非常好，求主继续使用王牧。</p><div class="acts"><button class="btn-s" onclick="approve('r2')">✓ 通过</button><button class="btn-s" onclick="approve('r2')">✗ 屏蔽</button></div></div>
+          <div class="qcard" id="r3"><div class="who">🌐 系统标记</div><p>【含外部链接】需人工确认</p><div class="acts"><button class="btn-s" onclick="approve('r3')">✓ 放行</button><button class="btn-s" onclick="approve('r3')">✗ 屏蔽</button></div></div>
+          <div class="qcard" id="r4"><div class="who">🌐 系统标记</div><p>【AI 检测：疑似广告】</p><div class="acts"><button class="btn-s" onclick="approve('r4')">✓ 放行</button><button class="btn-s" onclick="approve('r4')">✗ 屏蔽</button></div></div>
         </div>
       </div>
 
-      <!-- ========== 用户管理 ========== -->
-      <div class="panel" id="panel-user">
+      <div class="panel" id="panel-users">
         <div class="toolbar">
           <span style="font-size:13px;color:var(--sub)">12,480 位用户</span>
           <div class="sp"></div>
-          <select class="mini-input"><option>全部语言</option><option>🇨🇳 中文</option><option>🇯🇵 日本語</option><option>🇺🇸 English</option></select>
-          <button class="btn-ghost" onclick="toast('📤 导出用户数据（演示）')">📤 导出</button>
+          <button class="btn-ghost" onclick="toast('📤 导出（演示）')">📤 导出</button>
         </div>
         <div class="tbl-wrap">
           <table>
-            <thead><tr><th>用户</th><th>语言</th><th>地区</th><th>注册时间</th><th>读经进度</th><th>小组</th><th>状态</th><th>操作</th></tr></thead>
+            <thead><tr><th>用户</th><th>语言</th><th>地区</th><th>观影时长</th><th>学习进度</th><th>状态</th></tr></thead>
             <tbody>
-              <tr><td class="cell-main">林小牧</td><td class="cell-sub">🇨🇳</td><td class="cell-sub">东京</td><td class="cell-sub">2026-01-12</td><td>318/1189 章</td><td class="cell-sub">东京华人青年</td><td><span class="st ok">活跃</span></td><td class="act"><button class="btn-s" onclick="toast('👤 查看用户详情（演示）')">查看</button></td></tr>
-              <tr><td class="cell-main">Sarah K.</td><td class="cell-sub">🇺🇸</td><td class="cell-sub">纽约</td><td class="cell-sub">2026-08-08</td><td>12/1189 章</td><td class="cell-sub">国际大学生</td><td><span class="st ok">活跃</span></td><td class="act"><button class="btn-s" onclick="toast('👤 查看用户详情（演示）')">查看</button></td></tr>
-              <tr><td class="cell-main">田中 由美</td><td class="cell-sub">🇯🇵</td><td class="cell-sub">大阪</td><td class="cell-sub">2026-05-20</td><td>86/1189 章</td><td class="cell-sub">—</td><td><span class="st wait">待激活</span></td><td class="act"><button class="btn-s" onclick="toast('✉️ 发送提醒（演示）')">提醒</button></td></tr>
-              <tr><td class="cell-main">Kim Minji</td><td class="cell-sub">🇰🇷</td><td class="cell-sub">首尔</td><td class="cell-sub">2026-07-01</td><td>204/1189 章</td><td class="cell-sub">国际大学生</td><td><span class="st ok">活跃</span></td><td class="act"><button class="btn-s" onclick="toast('👤 查看用户详情（演示）')">查看</button></td></tr>
+              <tr><td class="cell-main">林小牧</td><td class="cell-sub">🇨🇳</td><td class="cell-sub">东京</td><td>42 小时</td><td>L3 · 因信称义 74%</td><td><span class="st ok">活跃</span></td></tr>
+              <tr><td class="cell-main">Sarah K.</td><td class="cell-sub">🇺🇸</td><td class="cell-sub">纽约</td><td>18 小时</td><td>L1 · 认识神 60%</td><td><span class="st ok">活跃</span></td></tr>
+              <tr><td class="cell-main">田中 由美</td><td class="cell-sub">🇯🇵</td><td class="cell-sub">大阪</td><td>6 小时</td><td>未开始</td><td><span class="st wait">待激活</span></td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- ========== 小组管理 ========== -->
-      <div class="panel" id="panel-group">
-        <div class="toolbar">
-          <span style="font-size:13px;color:var(--sub)">86 个小组</span>
-          <div class="sp"></div>
-          <button class="btn-primary" onclick="toast('👥 新建小组（演示）')">＋ 新建小组</button>
-        </div>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>小组</th><th>地区</th><th>主题</th><th>人数</th><th>聚会</th><th>组长</th><th>操作</th></tr></thead>
-            <tbody>
-              <tr><td class="cell-main">东京华人青年小组</td><td class="cell-sub">🇯🇵 东京</td><td class="cell-sub">罗马书</td><td>8</td><td class="cell-sub">周三 20:00</td><td class="cell-sub">林小牧</td><td class="act"><button class="btn-s" onclick="toast('📝 编辑小组（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">大阪青年查经</td><td class="cell-sub">🇯🇵 大阪</td><td class="cell-sub">马太福音</td><td>12</td><td class="cell-sub">周二 19:30</td><td class="cell-sub">佐藤健</td><td class="act"><button class="btn-s" onclick="toast('📝 编辑小组（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">国际大学生小组</td><td class="cell-sub">🌍 线上</td><td class="cell-sub">多语言</td><td>15</td><td class="cell-sub">周五 21:00</td><td class="cell-sub">Pastor David</td><td class="act"><button class="btn-s" onclick="toast('📝 编辑小组（演示）')">编辑</button></td></tr>
-              <tr><td class="cell-main">线上家庭小组</td><td class="cell-sub">🌍 线上</td><td class="cell-sub">家庭灵修</td><td>6 家</td><td class="cell-sub">每日 20:30</td><td class="cell-sub">王姊妹</td><td class="act"><button class="btn-s" onclick="toast('📝 编辑小组（演示）')">编辑</button></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ========== 审核中心 ========== -->
-      <div class="panel" id="panel-moderate">
-        <div class="toolbar">
-          <span style="font-size:13px;color:var(--sub)">待审核：祷告 3 · 见证 2</span>
-          <div class="sp"></div>
-          <button class="btn-ghost" onclick="toast('📋 审核规则（演示）')">审核规则</button>
-        </div>
-        <div class="queue">
-          <div class="card" style="margin-top:0">
-            <h3>🙏 祷告墙待审核</h3>
-            <div class="qcard" id="pray1">
-              <div class="who">🇯🇵 东京 · 匿名 <span class="lang">日本語</span></div>
-              <p>家族の健康と平安のために祈ってください。</p>
-              <div class="acts"><button class="btn-s ok" onclick="moderate('pray1',true)">✓ 通过</button><button class="btn-s danger" onclick="moderate('pray1',false)">✗ 驳回</button></div>
-              <div class="meta">AI 检测：无风险 · 建议通过</div>
-            </div>
-            <div class="qcard" id="pray2">
-              <div class="who">🇨🇳 上海 · 匿名 <span class="lang">中文</span></div>
-              <p>为儿子的工作与信仰祷告，愿他早日回转。</p>
-              <div class="acts"><button class="btn-s ok" onclick="moderate('pray2',true)">✓ 通过</button><button class="btn-s danger" onclick="moderate('pray2',false)">✗ 驳回</button></div>
-              <div class="meta">AI 检测：无风险 · 建议通过</div>
-            </div>
-            <div class="qcard" id="pray3">
-              <div class="who">🇺🇸 纽约 · 匿名 <span class="lang">English</span></div>
-              <p>Please pray for my exam next week, feeling very anxious.</p>
-              <div class="acts"><button class="btn-s ok" onclick="moderate('pray3',true)">✓ 通过</button><button class="btn-s danger" onclick="moderate('pray3',false)">✗ 驳回</button></div>
-              <div class="meta">AI 检测：无风险 · 建议通过</div>
-            </div>
-          </div>
-          <div class="card" style="margin-top:0">
-            <h3>❤️ 见证墙待审核</h3>
-            <div class="qcard" id="tes1">
-              <div class="who">🇯🇵 佐藤健 <span class="lang">日本語</span></div>
-              <p>神如何带我走过失业的低谷……（长文，含个人经历）</p>
-              <div class="acts"><button class="btn-s ok" onclick="moderate('tes1',true)">✓ 通过</button><button class="btn-s danger" onclick="moderate('tes1',false)">✗ 驳回</button></div>
-              <div class="meta">AI 检测：需人工复核（含第三方机构名称）</div>
-            </div>
-            <div class="qcard" id="tes2">
-              <div class="who">🇨🇳 王姊妹 <span class="lang">中文</span></div>
-              <p>从拜偶像到归信基督：我的十年信仰之路。</p>
-              <div class="acts"><button class="btn-s ok" onclick="moderate('tes2',true)">✓ 通过</button><button class="btn-s danger" onclick="moderate('tes2',false)">✗ 驳回</button></div>
-              <div class="meta">AI 检测：无风险 · 建议通过</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ========== 翻译管理 ========== -->
-      <div class="panel" id="panel-trans">
-        <div class="card" style="margin-top:0">
-          <h3>🌍 多语言覆盖</h3>
-          <div class="legend">
-            <div class="lg-row"><b>🇨🇳 中文</b><div class="track"><i style="width:100%;background:#4f46e5"></i></div><span class="pct">100%</span></div>
-            <div class="lg-row"><b>🇯🇵 日本語</b><div class="track"><i style="width:100%;background:#4f46e5"></i></div><span class="pct">100%</span></div>
-            <div class="lg-row"><b>🇺🇸 English</b><div class="track"><i style="width:96%;background:#4f46e5"></i></div><span class="pct">96%</span></div>
-            <div class="lg-row"><b>🇰🇷 한국어</b><div class="track"><i style="width:72%;background:#c9a227"></i></div><span class="pct">72%</span></div>
-            <div class="lg-row"><b>🇪🇸 Español</b><div class="track"><i style="width:55%;background:#c9a227"></i></div><span class="pct">55%</span></div>
-            <div class="lg-row"><b>🇩🇪 Deutsch</b><div class="track"><i style="width:38%;background:#c9a227"></i></div><span class="pct">38%</span></div>
-          </div>
-          <p style="font-size:12px;color:var(--sub);margin-top:12px">💡 圣经正文以公版/授权译本为基础；UI 文案与 AI 内容可自动生成后人工校对。</p>
-        </div>
-      </div>
-
-      <!-- ========== 服事管理 ========== -->
-      <div class="panel" id="panel-serving">
-        <div class="kpis">
-          <div class="kpi"><div class="lab">🔥 服事报名</div><div class="num">312</div><div class="delta up"><span class="ic">▲</span> +28 本周</div></div>
-          <div class="kpi"><div class="lab">🎓 培训中</div><div class="num">94</div><div class="delta up"><span class="ic">▲</span> 8 个领域</div></div>
-          <div class="kpi"><div class="lab">🧪 实习中</div><div class="num">41</div><div class="delta up"><span class="ic">▲</span> +6 本月</div></div>
-          <div class="kpi"><div class="lab">✅ 已参与服事</div><div class="num">127</div><div class="delta up"><span class="ic">▲</span> 转化率 40%</div></div>
-        </div>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>领域</th><th>报名</th><th>培训</th><th>实习</th><th>已服事</th><th>进度</th></tr></thead>
-            <tbody>
-              <tr><td class="cell-main">🎵 敬拜</td><td>86</td><td>28</td><td>12</td><td>34</td><td><span class="st ok">正常</span></td></tr>
-              <tr><td class="cell-main">🌍 翻译</td><td>54</td><td>16</td><td>9</td><td>22</td><td><span class="st ok">正常</span></td></tr>
-              <tr><td class="cell-main">👶 儿童</td><td>41</td><td>12</td><td>6</td><td>18</td><td><span class="st ok">正常</span></td></tr>
-              <tr><td class="cell-main">💻 IT / 直播</td><td>37</td><td>14</td><td>8</td><td>15</td><td><span class="st wait">缺人手</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ========== 系统设置 ========== -->
-      <div class="panel" id="panel-setting">
-        <div class="card" style="margin-top:0">
-          <h3>⚙️ 基础设置</h3>
-          <div class="toggle-row"><div class="info"><b>维护模式</b><p>开启后前台进入维护提示页</p></div><div class="switch" onclick="this.classList.toggle('on')"></div></div>
-          <div class="toggle-row"><div class="info"><b>新用户邮件验证</b><p>注册后需邮箱/手机验证</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="toggle-row"><div class="info"><b>匿名祷告允许</b><p>祷告墙支持匿名提交</p></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-        </div>
+      <div class="panel" id="panel-ai">
         <div class="card">
-          <h3>📊 数据与合规</h3>
-          <div class="legend">
-            <div class="lg-row"><b>数据备份</b><div class="track"><i style="width:100%;background:#16a34a"></i></div><span class="pct">每日</span></div>
-            <div class="lg-row"><b>GDPR 合规</b><div class="track"><i style="width:90%;background:#16a34a"></i></div><span class="pct">90%</span></div>
-            <div class="lg-row"><b>儿童保护</b><div class="track"><i style="width:80%;background:#c9a227"></i></div><span class="pct">80%</span></div>
+          <h3>🤖 AI 能力</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13.5px;color:var(--sub)">
+            <div>🎙️ 语音识别 / 字幕生成：<b style="color:var(--ok)">启用</b></div>
+            <div>🌍 多语言翻译：<b style="color:var(--ok)">启用 · 12 语言</b></div>
+            <div>📖 自动识别经文：<b style="color:var(--ok)">启用</b></div>
+            <div>📝 自动生成笔记：<b style="color:var(--ok)">启用</b></div>
+            <div>🧒 多年龄版本内容：<b style="color:var(--warn)">待开通</b></div>
+            <div>🛡️ 敏感内容过滤：<b style="color:var(--ok)">启用</b></div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
-
-<div class="vswitch">
-  <a href="index.html">💻 电脑版</a>
-  <a href="mobile.html">📱 手机版</a>
-</div>
 <div class="toast" id="toast"></div>
-
 <script>
-  // 侧边栏切换
-  document.querySelectorAll('.side .item').forEach(item=>{
-    item.addEventListener('click',()=>{
-      document.querySelectorAll('.side .item').forEach(i=>i.classList.remove('on'));
-      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
-      item.classList.add('on');
-      const id='panel-'+item.dataset.panel;
-      document.getElementById(id).classList.add('on');
-      const titles={dash:['📊 仪表盘','总览 / 仪表盘'],live:['🔴 直播管理','内容运营 / 直播'],bible:['📖 圣经内容','内容运营 / 圣经'],course:['🎓 神学院课程','内容运营 / 神学院'],ai:['🤖 AI 设置','内容运营 / AI'],user:['👤 用户管理','社区 / 用户'],group:['👥 小组管理','社区 / 小组'],moderate:['📋 审核中心','社区 / 审核'],trans:['🌍 翻译管理','系统 / 翻译'],serving:['🔥 服事管理','系统 / 服事'],setting:['⚙️ 系统设置','系统 / 设置']};
-      document.getElementById('pageTitle').textContent=titles[item.dataset.panel][0];
-      document.getElementById('pageCrumb').textContent=titles[item.dataset.panel][1];
-    });
-  });
-
-  // 近 7 日柱状图
-  const days=[['周一',3240],['周二',3680],['周三',4120],['周四',3980],['周五',4660],['周六',5310],['今天',2840]];
-  const max=Math.max(...days.map(d=>d[1]));
-  document.getElementById('barChart').innerHTML=days.map((d,i)=>{
-    const h=Math.max(8,Math.round(d[1]/max*100));
-    return `<div class="bar-col"><span class="val">${(d[1]/1000).toFixed(1)}k</span><div class="v" style="--h:${h}%"></div><span class="d">${d[0]}</span></div>`;
-  }).join('');
-
-  // 语言分布
-  const langs=[['🇨🇳 中文',46,'#4f46e5'],['🇯🇵 日本語',28,'#7c3aed'],['🇺🇸 English',14,'#818cf8'],['🇰🇷 한국어',6,'#c9a227'],['其他',6,'#94a3b8']];
-  document.getElementById('langLegend').innerHTML=langs.map(l=>
-    `<div class="lg-row"><b>${l[0]}</b><div class="track"><i style="width:${l[1]*2}%;background:${l[2]}"></i></div><span class="pct">${l[1]}%</span></div>`
-  ).join('');
-
-  // 审核操作
-  function moderate(id,ok){
-    const el=document.getElementById(id);
-    el.style.transition='.3s';
-    el.style.opacity='0';
-    setTimeout(()=>{
-      el.remove();
-      toast(ok?'✓ 已通过，内容已发布':'✗ 已驳回，并已通知提交者');
-    },280);
-  }
-
-  let timer;
-  function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>t.classList.remove('show'),2400);}
+  document.querySelectorAll('.side .item').forEach(function(item){item.addEventListener('click',function(){
+    document.querySelectorAll('.side .item').forEach(function(i){i.classList.remove('on');});
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
+    item.classList.add('on');
+    document.getElementById('panel-'+item.dataset.panel).classList.add('on');
+    var t={dash:'📊 数据看板',videos:'🎬 影片管理',courses:'🎓 课程管理',review:'📋 评论审核',users:'👤 用户管理',ai:'🤖 AI 设置'};
+    document.getElementById('pageTitle').textContent=t[item.dataset.panel];
+  });});
+  function approve(id){var el=document.getElementById(id);el.style.opacity='0';el.style.transition='.3s';setTimeout(function(){el.remove();toast('✓ 已处理');},280);}
+  var timer;
+  function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(timer);timer=setTimeout(function(){t.classList.remove('show');},2400);}
 </script>
 </body>
 </html>

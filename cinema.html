@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云会幕 · 教会影院</title>
+<link rel="stylesheet" href="assets.css">
+<style>
+  .pagehead .search{max-width:520px;margin:22px auto 0;display:flex;gap:10px}
+  .pagehead .search input{flex:1}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-inner">
+  <a class="brand" href="index.html"><span class="mark">🎬</span><span class="name">云会幕<small>CHURCH CINEMA · SEMINARY</small></span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">首页</a>
+    <a href="cinema.html" class="active">影院</a>
+    <a href="live.html">直播</a>
+    <a href="seminary.html">神学院</a>
+    <a href="community.html">社区</a>
+    <a href="my.html">我的</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang" onclick="toast('🌐 语言切换（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-red btn-sm nav-cta">🔴 进入直播间</a>
+  </div>
+  <button class="hamburger">☰</button>
+</div></nav>
+
+<main class="wrap">
+  <section class="pagehead reveal in">
+    <div class="icon">🎬</div>
+    <h1>教会影院</h1>
+    <p>讲道 · 查经 · 圣经电影 · 见证 · 敬拜 · 青年 —— 用影像喂养生命</p>
+    <div class="search"><input class="inline-input" id="searchInput" placeholder="🔍 搜索影片标题…"><button class="btn btn-gold" onclick="doSearch()">搜索</button></div>
+  </section>
+
+  <section class="section reveal" style="padding-top:20px">
+    <div class="tags" id="catTags">
+      <button class="on" data-cat="全部">全部</button>
+      <button data-cat="讲道">⛪ 讲道</button>
+      <button data-cat="查经">📖 查经</button>
+      <button data-cat="圣经电影">🎥 圣经电影</button>
+      <button data-cat="见证">💛 见证</button>
+      <button data-cat="敬拜">🎶 敬拜</button>
+      <button data-cat="青年">🔥 青年</button>
+    </div>
+    <div class="vgrid" id="cinemaGrid"></div>
+    <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:24px" id="emptyTip"></p>
+  </section>
+</main>
+
+<footer>
+  <div class="cross">✝️</div>
+  <p class="slogan2">云会幕 — 教会影院 × 线上神学院</p>
+  <p style="margin-top:6px">© 2026 云会幕 · 产品原型演示</p>
+  <div class="links">
+    <a href="index.html" class="pill" style="text-decoration:none">🏠 首页</a>
+    <a href="cinema.html" class="pill" style="text-decoration:none">🎬 影院</a>
+    <a href="live.html" class="pill" style="text-decoration:none">🔴 直播</a>
+    <a href="seminary.html" class="pill" style="text-decoration:none">🎓 神学院</a>
+    <a href="community.html" class="pill" style="text-decoration:none">👥 社区</a>
+    <a href="my.html" class="pill" style="text-decoration:none">❤️ 我的</a>
+    <a href="live-admin.html" class="pill" style="text-decoration:none">🎛️ 直播后台</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 管理后台</a>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+<div class="stars" id="stars"></div>
+<script src="assets.js"></script>
+<script>
+var VIDEOS=[
+  ['讲道','⛪','王牧 · 登山宝训（一）：八福','48:20','2.4万次观看','#2b1a5e','#4f46e5','watch.html?vid=2'],
+  ['讲道','⛪','李牧 · 登山宝训（二）：盐与光','41:05','1.8万次观看','#1f1555','#3b82f6','watch.html?vid=8'],
+  ['查经','📖','罗马书 8 章 · 互动查经课','55:40','6,980次观看','#123b66','#0ea5e9','watch.html?vid=5'],
+  ['查经','📖','马太福音 5 章 · 八福查经','42:12','5,240次观看','#123b66','#06b6d4','watch.html?vid=9'],
+  ['圣经电影','🎥','《耶稣传 · 约翰福音》','2:46:00','1.2万次观看','#3b0d1e','#e63946','watch.html?vid=1'],
+  ['圣经电影','🎥','《十诫 · 摩西》精选片段','18:10','1.1万次观看','#3b0d1e','#c026d3','watch.html?vid=7'],
+  ['见证','💛','在低谷中，神仍然信实','12:05','8,620次观看','#5c3a0e','#d97706','watch.html?vid=3'],
+  ['见证','💛','从拜偶像到归信基督','15:40','7,310次观看','#5c3a0e','#f59e0b','watch.html?vid=10'],
+  ['敬拜','🎶','诗篇 23 · 全地敬拜现场','32:15','1.5万次观看','#3d1250','#a21caf','watch.html?vid=4'],
+  ['敬拜','🎶','圣诗之夜 · 赞美会','58:30','1.9万次观看','#3d1250','#7c3aed','watch.html?vid=11'],
+  ['青年','🔥','青年特会：为什么神不回答我的祷告？','42:30','9,240次观看','#12404a','#0d9488','watch.html?vid=6'],
+  ['青年','🔥','恋爱与信仰：青年问答','36:50','7,880次观看','#12404a','#0891b2','watch.html?vid=12']
+];
+var currentCat='全部',currentQ='';
+function render(){
+  var list=VIDEOS.filter(function(v){return (currentCat==='全部'||v[0]===currentCat)&&(!currentQ||v[2].indexOf(currentQ)>-1);});
+  document.getElementById('cinemaGrid').innerHTML=list.map(function(v){
+    return '<a class="vcard" href="'+v[7]+'"><div class="vthumb" style="background:linear-gradient(135deg,'+v[5]+','+v[6]+')"><span class="cat">'+v[0]+'</span><span class="play">▶</span><span class="dur">'+v[3]+'</span><span style="font-size:34px">'+v[1]+'</span></div><div class="vbody"><h4>'+v[2]+'</h4><div class="meta"><span>'+v[4]+'</span></div></div></a>';
+  }).join('');
+  document.getElementById('emptyTip').textContent=list.length?'':'没有找到相关影片，试试其他关键词。';
+}
+document.querySelectorAll('#catTags button').forEach(function(b){b.addEventListener('click',function(){
+  document.querySelectorAll('#catTags button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');
+  currentCat=b.dataset.cat;render();
+});});
+function doSearch(){currentQ=document.getElementById('searchInput').value.trim();render();}
+document.getElementById('searchInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
+render();
+</script>
+</body>
+</html>

@@ -6,97 +6,98 @@
 <title>云会幕 · 线上神学院</title>
 <link rel="stylesheet" href="assets.css">
 <style>
-.course-list{display:flex;flex-direction:column;gap:12px}
-.course{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 20px;cursor:pointer;transition:.25s}
-.course:hover{border-color:rgba(240,217,138,.45);transform:translateX(4px)}
-.c-icon{font-size:26px;flex:0 0 auto}
-.c-body{flex:1;min-width:0}
-.c-body h4{font-size:15.5px}
-.c-body p{font-size:13px;color:var(--muted)}
-.quiz-q{font-size:16px;margin-bottom:14px;color:#f3f5ff}
-.quiz-row{display:flex;align-items:center;gap:14px;padding:10px 0;cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.08)}
-.quiz-row .opt{flex:0 0 260px;font-size:14.5px}
-.quiz-row .track{flex:1;height:11px;background:rgba(255,255,255,.09);border-radius:99px;overflow:hidden}
-.quiz-row .track i{display:block;height:100%;background:linear-gradient(90deg,#818cf8,#7c3aed);border-radius:99px;transition:width .6s}
-.quiz-row b{width:48px;text-align:right;color:var(--gold2)}
-@media(max-width:720px){.quiz-row .opt{flex:0 0 200px}.course .progress{display:none}}
+  .level-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .quiz-opt.correct{border-color:#22c55e;background:rgba(34,197,94,.12)}
+  .quiz-opt.wrong{border-color:#e63946;background:rgba(230,57,70,.12)}
+  @media(max-width:900px){.level-row{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 <nav><div class="wrap nav-inner">
-  <a class="brand" href="index.html"><span class="mark">✝</span><span class="name">云会幕<small>YUNHUIMU · CLOUD TABERNACLE</small></span></a>
+  <a class="brand" href="index.html"><span class="mark">🎬</span><span class="name">云会幕<small>CHURCH CINEMA · SEMINARY</small></span></a>
   <div class="nav-links" id="navLinks">
-    <a href="index.html" >首页</a>
-    <a href="bible-index.html" >圣经</a>
-    <a href="live.html" >直播</a>
-    <a href="community.html" >社区</a>
+    <a href="index.html">首页</a>
+    <a href="cinema.html">影院</a>
+    <a href="live.html">直播</a>
     <a href="seminary.html" class="active">神学院</a>
-    <a href="global.html" >全球</a>
-    <a href="ai.html" >AI</a>
-    <a href="my.html" >我的</a>
+    <a href="community.html">社区</a>
+    <a href="my.html">我的</a>
   </div>
   <div class="nav-right">
-    <div class="lang" onclick="toast('🌐 语言切换：中文 / 日本語 / English / 한국어（演示）')">🌐 <b>中文</b></div>
-    <a href="live.html" class="btn btn-gold btn-sm nav-cta" onclick="toast('🔴 正在进入直播间…（演示）')">🔴 进入直播间</a>
+    <div class="lang" onclick="toast('🌐 语言切换（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-red btn-sm nav-cta">🔴 进入直播间</a>
   </div>
   <button class="hamburger">☰</button>
 </div></nav>
+
 <main class="wrap">
-<section class="pagehead reveal in">
-  <div class="icon">🎓</div>
-  <h1>线上神学院</h1>
-  <p>从信仰入门到服事装备，4 级完整学习体系；互动课堂、作业、考试与结业证书。</p>
-</section>
-<section class="section reveal" style="padding-top:28px">
-  <div class="grid4" id="levelGrid">
-    <div class="card" onclick="filterLevel('L1')"><div class="tag">起点</div><span class="emoji">🌱</span><h3>Level 1 信仰入门</h3><p>认识神 · 救恩 · 祷告 · 读经习惯</p><div class="meta"><span>8 门课</span></div></div>
-    <div class="card" onclick="filterLevel('L2')"><div class="tag">扎根</div><span class="emoji">🌿</span><h3>Level 2 圣经基础</h3><p>旧约 / 新约 / 圣经概论</p><div class="meta"><span>12 门课</span></div></div>
-    <div class="card" onclick="filterLevel('L3')"><div class="tag">进深</div><span class="emoji">🌳</span><h3>Level 3 神学基础</h3><p>系统神学 · 基督论 · 救恩论 · 教会论</p><div class="meta"><span>10 门课</span></div></div>
-    <div class="card" onclick="filterLevel('L4')"><div class="tag">装备</div><span class="emoji">🌲</span><h3>Level 4 服事装备</h3><p>讲道 · 查经带领 · 青年事工 · 宣教 · 敬拜</p><div class="meta"><span>10 门课</span></div></div>
-  </div>
-</section>
-<section class="section reveal">
-  <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>全部课程</h2><p class="sub">40 门 · 点击进入课程页</p></div></div>
-  <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="filterLevel('ALL')">全部</button><button class="btn btn-ghost btn-sm" onclick="filterLevel('L1')">🌱 L1</button><button class="btn btn-ghost btn-sm" onclick="filterLevel('L2')">🌿 L2</button><button class="btn btn-ghost btn-sm" onclick="filterLevel('L3')">🌳 L3</button><button class="btn btn-ghost btn-sm" onclick="filterLevel('L4')">🌲 L4</button></div></div>
-  <div class="course-list" id="courseList">
-    <div class="course" data-lv="L1" onclick="toast('🎓 开始课程：信仰入门（演示）')"><span class="c-icon">🌱</span><div class="c-body"><h4>信仰入门 · 认识神</h4><p>12 章 · 3,240 人学习 · 完成率 82%</p></div><div class="progress" style="width:120px"><i style="width:82%"></i></div><span class="st ok">继续</span></div>
-    <div class="course" data-lv="L1" onclick="toast('🎓 开始课程：祷告与读经（演示）')"><span class="c-icon">🙏</span><div class="c-body"><h4>祷告与读经习惯</h4><p>10 章 · 2,860 人学习 · 完成率 76%</p></div><div class="progress" style="width:120px"><i style="width:76%"></i></div><span class="st ok">继续</span></div>
-    <div class="course" data-lv="L2" onclick="toast('🎓 开始课程：旧约概论（演示）')"><span class="c-icon">📜</span><div class="c-body"><h4>旧约概论</h4><p>14 章 · 1,940 人学习 · 完成率 68%</p></div><div class="progress" style="width:120px"><i style="width:68%"></i></div><span class="st ok">继续</span></div>
-    <div class="course" data-lv="L2" onclick="toast('🎓 开始课程：新约概论（演示）')"><span class="c-icon">📖</span><div class="c-body"><h4>新约概论</h4><p>14 章 · 1,880 人学习 · 完成率 64%</p></div><div class="progress" style="width:120px"><i style="width:64%"></i></div><span class="st wait">未完成</span></div>
-    <div class="course" data-lv="L3" onclick="toast('🎓 开始课程：因信称义（演示）')"><span class="c-icon">⚖️</span><div class="c-body"><h4>因信称义 · 救恩论</h4><p>8 章 · 1,186 人学习 · 完成率 74%</p></div><div class="progress" style="width:120px"><i style="width:74%"></i></div><span class="st ok">继续</span></div>
-    <div class="course" data-lv="L3" onclick="toast('🎓 开始课程：基督论（演示）')"><span class="c-icon">✝️</span><div class="c-body"><h4>基督论</h4><p>9 章 · 1,020 人学习 · 完成率 71%</p></div><div class="progress" style="width:120px"><i style="width:71%"></i></div><span class="st wait">未完成</span></div>
-    <div class="course" data-lv="L4" onclick="toast('🎓 开始课程：讲道学基础（演示）')"><span class="c-icon">🎤</span><div class="c-body"><h4>讲道学基础</h4><p>10 章 · 642 人学习 · 完成率 56%</p></div><div class="progress" style="width:120px"><i style="width:56%"></i></div><span class="st wait">未完成</span></div>
-    <div class="course" data-lv="L4" onclick="toast('🎓 开始课程：青年事工导论（演示）')"><span class="c-icon">🔥</span><div class="c-body"><h4>青年事工导论</h4><p>9 章 · 518 人学习 · 完成率 61%</p></div><div class="progress" style="width:120px"><i style="width:61%"></i></div><span class="st wait">未完成</span></div>
-  </div>
-</section>
-<section class="section reveal">
-  <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>互动课堂（演示）</h2><p class="sub">老师提问 · 学生实时作答 · 全班统计即时呈现</p></div></div></div>
-  <div class="box">
-    <div class="quiz-q">📊 课堂提问：根据罗马书 3:23-24，「因信称义」的核心是——</div>
-    <div class="quiz-rows" id="quiz">
-      <div class="quiz-row" onclick="quiz(this,0)"><span class="opt">A. 靠好行为赚取义</span><div class="track"><i style="width:12%"></i></div><b>12%</b></div>
-      <div class="quiz-row" onclick="quiz(this,1)"><span class="opt">B. 白白领受神的恩典</span><div class="track"><i style="width:70%"></i></div><b>70%</b></div>
-      <div class="quiz-row" onclick="quiz(this,2)"><span class="opt">C. 遵守律法得称义</span><div class="track"><i style="width:18%"></i></div><b>18%</b></div>
+  <section class="pagehead reveal in">
+    <div class="icon">🎓</div>
+    <h1>线上神学院</h1>
+    <p>从信仰入门到服事装备 · 4 级完整体系 · 视频课 + 作业 + 测验 + 证书</p>
+  </section>
+
+  <section class="section reveal" style="padding-top:18px">
+    <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>学习路径</h2><p class="sub">按你的基础选择起点</p></div></div></div>
+    <div class="level-row">
+      <div class="level" onclick="filterLevel('L1')"><div class="ic">🌱</div><h3>Level 1 信仰入门</h3><p>认识神 · 救恩 · 祷告 · 读经习惯</p><span class="n">8 门课</span></div>
+      <div class="level" onclick="filterLevel('L2')"><div class="ic">🌿</div><h3>Level 2 圣经基础</h3><p>旧约 / 新约 / 圣经概论</p><span class="n">12 门课</span></div>
+      <div class="level" onclick="filterLevel('L3')"><div class="ic">🌳</div><h3>Level 3 神学基础</h3><p>系统神学 · 基督论 · 救恩论</p><span class="n">10 门课</span></div>
+      <div class="level" onclick="filterLevel('L4')"><div class="ic">🌲</div><h3>Level 4 服事装备</h3><p>讲道 · 查经带领 · 青年事工 · 宣教</p><span class="n">10 门课</span></div>
     </div>
-    <p style="font-size:13px;color:var(--muted);margin-top:10px">全班 214 人作答 · 点击选项模拟你的投票</p>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px">
-      <button class="btn btn-ghost btn-sm" onclick="toast('📚 作业已查看（演示）')">📚 本周作业</button>
-      <button class="btn btn-ghost btn-sm" onclick="toast('💬 课程讨论区（演示）')">💬 讨论</button>
-      <button class="btn btn-gold btn-sm" onclick="toast('🎓 完成课程后颁发结业证书（演示）')">🎓 领取证书</button>
+  </section>
+
+  <section class="section reveal">
+    <div class="sec-head">
+      <div class="t"><span class="bar"></span><div><h2>全部课程</h2><p class="sub">40 门 · 点击进入课程</p></div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="filterLevel('ALL')">全部</button>
+        <button class="btn btn-ghost btn-sm" onclick="filterLevel('L1')">🌱 L1</button>
+        <button class="btn btn-ghost btn-sm" onclick="filterLevel('L2')">🌿 L2</button>
+        <button class="btn btn-ghost btn-sm" onclick="filterLevel('L3')">🌳 L3</button>
+        <button class="btn btn-ghost btn-sm" onclick="filterLevel('L4')">🌲 L4</button>
+      </div>
     </div>
-  </div>
-</section>
+    <div class="course-row" id="courseList">
+      <a class="course" data-lv="L1" href="course.html?id=1"><span class="c-icon">🌱</span><div class="c-body"><h4>信仰入门 · 认识神</h4><p>12 课 · 3,240 人学习 · 完成率 82%</p></div><div class="c-prog progress"><i style="width:82%"></i></div><span class="c-st st ok">继续</span></a>
+      <a class="course" data-lv="L1" href="course.html?id=4"><span class="c-icon">🙏</span><div class="c-body"><h4>祷告与读经习惯</h4><p>10 课 · 2,860 人学习 · 完成率 76%</p></div><div class="c-prog progress"><i style="width:76%"></i></div><span class="c-st st ok">继续</span></a>
+      <a class="course" data-lv="L2" href="course.html?id=2"><span class="c-icon">📖</span><div class="c-body"><h4>新约概论</h4><p>14 课 · 1,880 人学习 · 完成率 64%</p></div><div class="c-prog progress"><i style="width:64%"></i></div><span class="c-st st wait">未完成</span></a>
+      <a class="course" data-lv="L2" href="course.html?id=5"><span class="c-icon">📜</span><div class="c-body"><h4>旧约概论</h4><p>14 课 · 1,940 人学习 · 完成率 68%</p></div><div class="c-prog progress"><i style="width:68%"></i></div><span class="c-st st wait">未完成</span></a>
+      <a class="course" data-lv="L3" href="course.html?id=3"><span class="c-icon">⚖️</span><div class="c-body"><h4>因信称义 · 救恩论</h4><p>8 课 · 1,186 人学习 · 完成率 74%</p></div><div class="c-prog progress"><i style="width:74%"></i></div><span class="c-st st ok">继续</span></a>
+      <a class="course" data-lv="L3" href="course.html?id=6"><span class="c-icon">✝️</span><div class="c-body"><h4>基督论</h4><p>9 课 · 1,020 人学习 · 完成率 71%</p></div><div class="c-prog progress"><i style="width:71%"></i></div><span class="c-st st wait">未完成</span></a>
+      <a class="course" data-lv="L4" href="course.html?id=7"><span class="c-icon">🎤</span><div class="c-body"><h4>讲道学基础</h4><p>10 课 · 642 人学习 · 完成率 56%</p></div><div class="c-prog progress"><i style="width:56%"></i></div><span class="c-st st wait">未完成</span></a>
+      <a class="course" data-lv="L4" href="course.html?id=8"><span class="c-icon">🔥</span><div class="c-body"><h4>青年事工导论</h4><p>9 课 · 518 人学习 · 完成率 61%</p></div><div class="c-prog progress"><i style="width:61%"></i></div><span class="c-st st wait">未完成</span></a>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>互动课堂（演示）</h2><p class="sub">视频课 + 即时测验 · 学完即测</p></div></div></div>
+    <div class="box">
+      <div class="quiz-q">📊 课堂测验：根据罗马书 3:23-24，「因信称义」的核心是——</div>
+      <div class="quiz-opt" onclick="quiz(this,true)">A. 靠好行为赚取义</div>
+      <div class="quiz-opt" onclick="quiz(this,false)">B. 白白领受神的恩典</div>
+      <div class="quiz-opt" onclick="quiz(this,false)">C. 遵守律法得称义</div>
+      <p style="font-size:13px;color:var(--muted);margin-top:12px">点击选项作答（演示）· 正式版接入题库与成绩</p>
+      <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap">
+        <a class="btn btn-gold btn-sm" href="course.html?id=3">🎓 进入「因信称义」课程</a>
+        <a class="btn btn-ghost btn-sm" href="lesson.html?id=3&l=1">▶ 试听第一课</a>
+      </div>
+    </div>
+  </section>
 </main>
+
 <footer>
   <div class="cross">✝️</div>
-  <p class="slogan2">云会幕 — 全球线上教会 × 全圣经互动 × AI 多语言 × 线上神学院 × 小组社区</p>
-  <p style="margin-top:8px">© 2026 云会幕 · 产品原型演示</p>
+  <p class="slogan2">云会幕 — 教会影院 × 线上神学院</p>
   <div class="links">
-    <a href="index.html" class="pill" style="text-decoration:none">💻 电脑版</a>
-    <a href="mobile.html" class="pill" style="text-decoration:none">📱 手机版</a>
-    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 后台管理</a>
-    <a href="more.html" class="pill" style="text-decoration:none">✨ 更多功能</a>
-    <a href="PRD.md" class="pill" style="text-decoration:none">📄 PRD</a>
+    <a href="index.html" class="pill" style="text-decoration:none">🏠 首页</a>
+    <a href="cinema.html" class="pill" style="text-decoration:none">🎬 影院</a>
+    <a href="live.html" class="pill" style="text-decoration:none">🔴 直播</a>
+    <a href="seminary.html" class="pill" style="text-decoration:none">🎓 神学院</a>
+    <a href="community.html" class="pill" style="text-decoration:none">👥 社区</a>
+    <a href="my.html" class="pill" style="text-decoration:none">❤️ 我的</a>
+    <a href="live-admin.html" class="pill" style="text-decoration:none">🎛️ 直播后台</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 管理后台</a>
   </div>
 </footer>
 <div class="toast" id="toast"></div>
@@ -107,12 +108,10 @@ function filterLevel(lv){
   document.querySelectorAll('.course').forEach(function(c){c.style.display=(lv==='ALL'||c.dataset.lv===lv)?'':'none';});
 }
 var quizDone=false;
-function quiz(el,idx){
+function quiz(el,correct){
   if(quizDone){toast('⏳ 你已作答');return;}quizDone=true;
-  var rows=document.querySelectorAll('.quiz-row'),vals=[12,70,18];vals[idx]+=2;
-  var sum=vals.reduce(function(a,b){return a+b;},0);
-  rows.forEach(function(r,i){r.querySelector('i').style.width=Math.round(vals[i]/sum*100)+'%';r.querySelector('b').textContent=Math.round(vals[i]/sum*100)+'%';});
-  toast('🗳️ 已提交答案，实时统计已更新');
+  if(correct){el.classList.add('correct');toast('🎉 答对了！正确答案是 B');}
+  else{el.classList.add('wrong');toast('❌ 再想想～正确答案是 B：白白领受神的恩典');}
 }
 </script>
 </body>

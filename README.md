@@ -10,7 +10,7 @@
 | 入口 | 文件 | 说明 |
 |------|------|------|
 | 🏠 首页 | `index.html` | 线上教会大厅 |
-| 📖 圣经 | `bible-index.html` / `bible.html` | 66 卷书架 + 马太福音 5 章互动查经 |
+| 📖 圣经 | `bible-index.html` / `book.html` / `bible.html` | 66 卷书架 → 每卷全部章节 → 任意卷章互动查经 |
 | 🔴 直播 | `live.html` | 直播间（AI 多语言字幕 · 聊天 · 投票） |
 | 🎓 神学院 | `seminary.html` | 4 级课程 + 互动课堂 |
 | 👥 社区 | `community.html` | 小组 / 祷告墙 / 见证 / 青年 |

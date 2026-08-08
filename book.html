@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云会幕 · 书卷</title>
+<link rel="stylesheet" href="assets.css">
+<style>
+  .pagehead{padding-bottom:6px}
+  .book-info{display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .book-info .pill{font-size:14px}
+  .chap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:12px;margin-top:8px}
+  .chap-btn{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 6px;
+    color:#e3e7fb;text-decoration:none;font-size:17px;font-weight:700;transition:.25s;cursor:pointer;
+  }
+  .chap-btn small{font-size:11px;color:var(--muted);font-weight:400}
+  .chap-btn:hover{border-color:rgba(240,217,138,.55);color:var(--gold2);transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.35)}
+  .chap-btn.locked{opacity:.5}
+  .chap-btn.locked:hover{opacity:.9}
+  .book-map{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .map-stop{display:flex;align-items:center;gap:12px;font-size:14px;color:#e3e7fb;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.07)}
+  .map-stop .n{width:26px;height:26px;flex:0 0 26px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#241a05;font-weight:800;font-size:12px}
+  .map-stop:last-child{border-bottom:none}
+  .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:20px 0 6px}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav-inner">
+  <a class="brand" href="index.html"><span class="mark">✝</span><span class="name">云会幕<small>YUNHUIMU · CLOUD TABERNACLE</small></span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">首页</a>
+    <a href="bible-index.html" class="active">圣经</a>
+    <a href="live.html">直播</a>
+    <a href="community.html">社区</a>
+    <a href="seminary.html">神学院</a>
+    <a href="global.html">全球</a>
+    <a href="ai.html">AI</a>
+    <a href="my.html">我的</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang" onclick="toast('🌐 语言切换（演示）')">🌐 <b>中文</b></div>
+    <a href="live.html" class="btn btn-gold btn-sm nav-cta">🔴 进入直播间</a>
+  </div>
+  <button class="hamburger">☰</button>
+</div></nav>
+
+<main class="wrap">
+  <section class="pagehead reveal in">
+    <div class="icon" id="bookIcon">📜</div>
+    <h1 id="bookName">马太福音</h1>
+    <p id="bookDesc">书卷互动查经 · 点击章节开始学习</p>
+    <div class="book-info" id="bookInfo"></div>
+  </section>
+
+  <section class="section reveal" style="padding-top:16px">
+    <div class="toolbar">
+      <button class="btn btn-gold btn-sm" onclick="location.href='bible.html?book='+encodeURIComponent(book)+'&chap=1'">📖 从第 1 章开始</button>
+      <button class="btn btn-ghost btn-sm" onclick="randomChap()">🎲 随机一章</button>
+      <span style="flex:1"></span>
+      <a href="bible-index.html" class="more">← 返回书架</a>
+    </div>
+    <div class="box">
+      <h3>📄 全部章节（共 <b id="chapCount">0</b> 章）</h3>
+      <div class="chap-grid" id="chapGrid"></div>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="sec-head"><div class="t"><span class="bar"></span><div><h2>🗺️ 书卷地图</h2><p class="sub" id="mapSub">该卷的研读路线</p></div></div></div>
+    <div class="box" id="mapBox"><p style="color:var(--muted)">书卷地图（研读路线）将在内容阶段逐卷制作。</p></div>
+  </section>
+</main>
+
+<footer>
+  <div class="cross">✝️</div>
+  <p class="slogan2">云会幕 — 全球线上教会 × 全圣经互动 × AI 多语言 × 线上神学院 × 小组社区</p>
+  <p style="margin-top:8px">© 2026 云会幕 · 产品原型演示</p>
+  <div class="links">
+    <a href="index.html" class="pill" style="text-decoration:none">💻 电脑版</a>
+    <a href="mobile.html" class="pill" style="text-decoration:none">📱 手机版</a>
+    <a href="admin.html" class="pill" style="text-decoration:none">⚙️ 后台管理</a>
+    <a href="more.html" class="pill" style="text-decoration:none">✨ 更多功能</a>
+    <a href="PRD.md" class="pill" style="text-decoration:none">📄 PRD</a>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+<div class="stars" id="stars"></div>
+
+<script>
+/* 66 卷章节数（和合本标准） */
+var BOOKS = {
+  "创世记":50,"出埃及记":40,"利未记":27,"民数记":36,"申命记":34,
+  "约书亚记":24,"士师记":21,"路得记":4,"撒母耳记上":31,"撒母耳记下":24,"列王纪上":22,"列王纪下":25,"历代志上":29,"历代志下":36,"以斯拉记":10,"尼希米记":13,"以斯帖记":10,
+  "约伯记":42,"诗篇":150,"箴言":31,"传道书":12,"雅歌":8,
+  "以赛亚书":66,"耶利米书":52,"耶利米哀歌":5,"以西结书":48,"但以理书":12,
+  "何西阿书":14,"约珥书":3,"阿摩司书":9,"俄巴底亚书":1,"约拿书":4,"弥迦书":7,"那鸿书":3,"哈巴谷书":3,"西番雅书":3,"哈该书":2,"撒迦利亚书":14,"玛拉基书":4,
+  "马太福音":28,"马可福音":16,"路加福音":24,"约翰福音":21,"使徒行传":28,
+  "罗马书":16,"哥林多前书":16,"哥林多后书":13,"加拉太书":6,"以弗所书":6,"腓立比书":4,"歌罗西书":4,"帖撒罗尼迦前书":5,"帖撒罗尼迦后书":3,"提摩太前书":6,"提摩太后书":4,"提多书":3,"腓利门书":1,
+  "希伯来书":13,"雅各书":5,"彼得前书":5,"彼得后书":3,"约翰一书":5,"约翰二书":1,"约翰三书":1,"犹大书":1,"启示录":22
+};
+var CATS = {
+  "创世记":"律法书","出埃及记":"律法书","利未记":"律法书","民数记":"律法书","申命记":"律法书",
+  "约书亚记":"历史书","士师记":"历史书","路得记":"历史书","撒母耳记上":"历史书","撒母耳记下":"历史书","列王纪上":"历史书","列王纪下":"历史书","历代志上":"历史书","历代志下":"历史书","以斯拉记":"历史书","尼希米记":"历史书","以斯帖记":"历史书",
+  "约伯记":"诗歌智慧书","诗篇":"诗歌智慧书","箴言":"诗歌智慧书","传道书":"诗歌智慧书","雅歌":"诗歌智慧书",
+  "以赛亚书":"大先知书","耶利米书":"大先知书","耶利米哀歌":"大先知书","以西结书":"大先知书","但以理书":"大先知书",
+  "何西阿书":"小先知书","约珥书":"小先知书","阿摩司书":"小先知书","俄巴底亚书":"小先知书","约拿书":"小先知书","弥迦书":"小先知书","那鸿书":"小先知书","哈巴谷书":"小先知书","西番雅书":"小先知书","哈该书":"小先知书","撒迦利亚书":"小先知书","玛拉基书":"小先知书",
+  "马太福音":"福音书","马可福音":"福音书","路加福音":"福音书","约翰福音":"福音书","使徒行传":"历史书",
+  "罗马书":"保罗书信","哥林多前书":"保罗书信","哥林多后书":"保罗书信","加拉太书":"保罗书信","以弗所书":"保罗书信","腓立比书":"保罗书信","歌罗西书":"保罗书信","帖撒罗尼迦前书":"保罗书信","帖撒罗尼迦后书":"保罗书信","提摩太前书":"保罗书信","提摩太后书":"保罗书信","提多书":"保罗书信","腓利门书":"保罗书信",
+  "希伯来书":"普通书信","雅各书":"普通书信","彼得前书":"普通书信","彼得后书":"普通书信","约翰一书":"普通书信","约翰二书":"普通书信","约翰三书":"普通书信","犹大书":"普通书信","启示录":"预言书"
+};
+var ICONS = {"律法书":"📜","历史书":"📜","诗歌智慧书":"🎵","大先知书":"🗣️","小先知书":"🗣️","福音书":"👑","保罗书信":"✉️","普通书信":"✉️","预言书":"🌅"};
+/* 部分书卷地图示例 */
+var MAPS = {
+  "马太福音":[["君王降生","太1-2"],["君王受洗","太3"],["旷野试探","太4:1-11"],["天国生活","太5-7"],["神迹与权柄","太8-9"],["门徒训练","太10"],["彼得认信","太16"],["进入耶路撒冷","太21"],["十字架","太27"],["复活与大使命","太28"]],
+  "创世记":[["创造","创1-2"],["堕落","创3"],["洪水","创6-9"],["亚伯拉罕之约","创12"],["约瑟被卖","创37"],["下埃及","创39-47"],["雅各祝福","创48-49"],["约瑟饶恕","创50"]],
+  "出埃及记":[["摩西诞生","出2"],["燃烧的荆棘","出3"],["十灾","出7-12"],["逾越节","出12"],["过红海","出14"],["十诫","出20"],["会幕","出25-31"],["云彩遮盖会幕","出40"]],
+  "诗篇":[["义人之路","诗1"],["受苦与盼望","诗22"],["好牧人","诗23"],["赦罪","诗51"],["受造之歌","诗104"],["上行之歌","诗120-134"]]
+};
+
+var params = new URLSearchParams(location.search);
+var book = params.get('book') || '马太福音';
+if(!BOOKS[book]) book = '马太福音';
+var total = BOOKS[book];
+var cat = CATS[book] || '圣经';
+
+document.title = '云会幕 · ' + book;
+document.getElementById('bookName').textContent = book;
+document.getElementById('bookIcon').textContent = ICONS[cat] || '📜';
+document.getElementById('bookDesc').textContent = '《' + book + '》· ' + cat + ' · 点击章节开始互动查经';
+document.getElementById('bookInfo').innerHTML =
+  '<span class="pill">' + (ICONS[cat]||'') + ' ' + cat + '</span>' +
+  '<span class="pill">' + total + ' 章</span>' +
+  '<span class="pill">' + (Object.keys(BOOKS).indexOf(book) < 39 ? '旧约' : '新约') + '</span>';
+document.getElementById('chapCount').textContent = total;
+
+/* 章节网格 */
+var grid = document.getElementById('chapGrid');
+for (var c = 1; c <= total; c++) {
+  var a = document.createElement('a');
+  a.className = 'chap-btn';
+  a.href = 'bible.html?book=' + encodeURIComponent(book) + '&chap=' + c;
+  a.innerHTML = c + '<small>第 ' + c + ' 章</small>';
+  grid.appendChild(a);
+}
+
+/* 书卷地图 */
+var mapBox = document.getElementById('mapBox');
+if (MAPS[book]) {
+  document.getElementById('mapSub').textContent = '「' + book + '」研读路线 · ' + MAPS[book].length + ' 站';
+  mapBox.innerHTML = '<div class="book-map">' + MAPS[book].map(function(m){
+    return '<div class="map-stop"><span class="n">' + (MAPS[book].indexOf(m)+1) + '</span><span style="flex:1">' + m[0] + '</span><span class="pill" style="font-size:11px">' + m[1] + '</span></div>';
+  }).join('') + '</div>';
+} else {
+  document.getElementById('mapSub').textContent = '该卷的研读路线将在内容阶段逐卷制作';
+}
+
+function randomChap(){ location.href = 'bible.html?book=' + encodeURIComponent(book) + '&chap=' + (Math.floor(Math.random()*total)+1); }
+</script>
+<script src="assets.js"></script>
+</body>
+</html>
